@@ -1,0 +1,131 @@
+{
+    "margin-top": 5,
+    "margin-left": 10,
+    "margin-right": 10,
+    "height": 35,
+    "modules-left": [
+        "custom/distro",
+        "cpu",
+        "memory",
+        "disk",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "tray",
+        "pulseaudio",
+        "network",
+        "clock",
+        "custom/power"
+    ],
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "active": " "
+        },
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+    "hyprland/window": {
+        "format": "{initialTitle}",
+        "max-length": 60,
+        "icon": true,
+        "icon-size": 19,
+        "rewrite": {
+            "": "󰇄 Desktop"
+        }
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%Y-%m-%d %H:%M}",
+        "on-click": "gnome-calendar"
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " {percentage}%",
+        "tooltip": false
+    },
+    "disk": {
+        "format": " {percentage_used}%",
+        "tooltip": false
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": [
+            "",
+            "",
+            ""
+        ]
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-full": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": "{time}  {icon}",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    "network": {
+        "format-wifi": "  {signalStrength}%",
+        "format-ethernet": " ",
+        "format-disconnected": " ",
+        "tooltip": false,
+        "on-click": "nm-connection-editor",
+        "interval": 5
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " {format_source}",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                " ",
+                " ",
+                " "
+            ]
+        },
+        "on-click": "pavucontrol"
+    },
+    "tray": {
+        "icon-size": 19,
+        "spacing": 5,
+        "show-passive-items": true
+    },
+    "custom/power": {
+        "format": "  ",
+        "on-click": "exec .config/scripts/fuzzel-power-menu.sh",
+        "tooltip": false
+    },
+    "custom/distro": {
+        "format": "󰣇",
+        "tooltip": false
+    }
+}
