@@ -85,8 +85,8 @@ button:hover {
 #pulseaudio {
     padding: 0 7px 0 15px;
     background-color: @base;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     color: @maroon;
 }
 
@@ -109,24 +109,24 @@ button:hover {
 }
 
 #window {
-    padding: 0 15px;
-    margin: 0 15px;
+    padding: 0 10px;
+    margin: 0 10px;
     background-color: @base;
-    border-radius: 15px;
+    border-radius: 10px;
     color: @rosewater;
 }
 
 .modules-center {
     background-color: @base;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .modules-right {
-    padding: 0 10px;
+    padding: 0 0px;
 }
 
 .modules-left {
-    padding: 0 10px;
+    padding: 0 0px;
 }
 
 .modules-center {
@@ -163,8 +163,8 @@ label:focus {
 
 #tray {
     background-color: @base;
-    border-radius: 15px;
-    margin: 0 15px 0 0;
+    border-radius: 10px;
+    margin: 0 10px 0 0;
     padding: 0 12px;
 }
 
@@ -184,8 +184,8 @@ label:focus {
 }
 
 #custom-power {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     background-color: @base;
     padding: 0 8px 0 0;
     color: @teal;
@@ -200,8 +200,8 @@ label:focus {
 #custom-distro {
     background-color: @base;
     padding: 0 15px;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     font-size: 22px;
     color: @blue;
 }
@@ -219,8 +219,8 @@ label:focus {
 }
 
 #disk {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     padding: 0 15px 0 5px;
     background-color: @base;
     color: @teal;
