@@ -108,12 +108,20 @@ button:hover {
     color: @flamingo;
 }
 
-#window {
+#window, #mpris {
     padding: 0 10px;
-    margin: 0 10px;
     background-color: @base;
     border-radius: 10px;
-    color: @rosewater;
+}
+
+#window {
+    color: @peach;
+    margin: 0 0 0 10px;
+}
+
+#mpris {
+    color: @pink;
+    margin: 0 0 0 10px;
 }
 
 .modules-center {
