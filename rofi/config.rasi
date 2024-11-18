@@ -1,0 +1,9 @@
+@theme "catppuccin-lavrent-mocha"
+
+configuration {
+	show-icons: true;
+}
+
+/* inputbar {
+  enabled: false;
+}*/
