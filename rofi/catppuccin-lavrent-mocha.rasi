@@ -31,7 +31,6 @@
 
 element {
     padding: 1px ;
-    cursor:  pointer;
     spacing: 5px ;
     border:  0;
 }
@@ -83,7 +82,6 @@ element alternate.active {
 
 element-text {
     background-color: transparent;
-    cursor:           inherit;
     highlight:        inherit;
     text-color:       inherit;
 }
@@ -91,7 +89,6 @@ element-text {
 element-icon {
     background-color: transparent;
     size:             1.0000em ;
-    cursor:           inherit;
     text-color:       inherit;
 }
 
@@ -142,7 +139,6 @@ sidebar {
 }
 
 button {
-    cursor:     pointer;
     spacing:    0;
     text-color: var(normal-foreground);
 }
@@ -182,7 +178,6 @@ case-indicator {
 
 entry {
     text-color:        var(normal-foreground);
-    cursor:            text;
     spacing:           0;
     placeholder-color: Gray;
     placeholder:       "Type to filter";
