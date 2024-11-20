@@ -1,4 +1,5 @@
 au Filetype * setl ts=2 sts=2 sw=2
+set shell=zsh\ -i
 
 call plug#begin()
 
