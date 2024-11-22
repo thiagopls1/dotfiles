@@ -69,6 +69,14 @@ require"barbar".setup{
         exclude_name = {'zsh'},
 }
 
+require"telescope".setup{
+	pickers = {
+		find_files = {
+			theme = "dropdown"
+		}
+	}
+}
+
 local cmp = require'cmp'
 
 -- Completion
