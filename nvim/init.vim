@@ -1,11 +1,10 @@
 au Filetype * setl ts=2 sts=2 sw=2
-set shell=zsh\ -i
 
 call plug#begin()
 
 Plug 'numToStr/Comment.nvim'
 Plug 'sindrets/diffview.nvim'
-Plug 'davidgranstrom/nvim-markdown-preview'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes npm install' }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'nvim-tree/nvim-web-devicons'
@@ -66,7 +65,6 @@ require"barbar".setup{
                 NvimTree = true
         },
         animation = false,
-        exclude_name = {'zsh'},
 }
 
 require"telescope".setup{
@@ -136,13 +134,13 @@ local telescope_builtin = require"telescope.builtin"
 local barbar_opts = { noremap = true, silent = true }
 local nvim_map = vim.api.nvim_set_keymap
 -- Move to previous/next
-nvim_map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', barbar_opts)
-nvim_map('n', '<A-.>', '<Cmd>BufferNext<CR>', barbar_opts)
+nvim_map('n', '<A-Left>', '<Cmd>BufferPrevious<CR>', barbar_opts)
+nvim_map('n', '<A-Right>', '<Cmd>BufferNext<CR>', barbar_opts)
 -- Re-order to previous/next
-nvim_map('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', barbar_opts)
-nvim_map('n', '<A->>', '<Cmd>BufferMoveNext<CR>', barbar_opts)
+nvim_map('n', '<A-PageDown>', '<Cmd>BufferMovePrevious<CR>', barbar_opts)
+nvim_map('n', '<A-PageUp>', '<Cmd>BufferMoveNext<CR>', barbar_opts)
 -- Close tab
-nvim_map('n', '<A-c>', '<Cmd>BufferClose<CR>', barbar_opts)
+nvim_map('n', '<A-w>', '<Cmd>BufferClose<CR>', barbar_opts)
 
 --nvim.api.nvim_set_keymap("n", "<C-h>", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
 --vim.keymap.set("n", "l", edit_or_open,          {})
