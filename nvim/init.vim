@@ -1,5 +1,8 @@
 au Filetype * setl ts=2 sts=2 sw=2
 
+set nowrap
+set formatoptions-=t
+
 call plug#begin()
 
 Plug 'numToStr/Comment.nvim'
