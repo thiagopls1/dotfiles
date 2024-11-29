@@ -22,11 +22,16 @@ Plug 'barrett-ruth/live-server.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'windwp/nvim-autopairs'
 Plug 'romgrk/barbar.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+
 
 call plug#end()
 
@@ -56,6 +61,10 @@ require"lspconfig".pyright.setup{
                 }
         }
 }
+
+require"dapui".setup{}
+require"dap-python".setup("python")
+
 require"lspconfig".csharp_ls.setup{}
 require"lspconfig".ts_ls.setup{}
 require"lspconfig".angularls.setup{}
@@ -69,7 +78,7 @@ require"barbar".setup{
         },
         animation = false,
 }
-
+require"nvim-autopairs".setup{}
 require"telescope".setup{
 	pickers = {
 		find_files = {
@@ -140,8 +149,8 @@ local nvim_map = vim.api.nvim_set_keymap
 nvim_map('n', '<A-Left>', '<Cmd>BufferPrevious<CR>', barbar_opts)
 nvim_map('n', '<A-Right>', '<Cmd>BufferNext<CR>', barbar_opts)
 -- Re-order to previous/next
-nvim_map('n', '<A-PageDown>', '<Cmd>BufferMovePrevious<CR>', barbar_opts)
-nvim_map('n', '<A-PageUp>', '<Cmd>BufferMoveNext<CR>', barbar_opts)
+nvim_map('n', '<A-PageUp>', '<Cmd>BufferMovePrevious<CR>', barbar_opts)
+nvim_map('n', '<A-PageDown>', '<Cmd>BufferMoveNext<CR>', barbar_opts)
 -- Close tab
 nvim_map('n', '<A-w>', '<Cmd>BufferClose<CR>', barbar_opts)
 
@@ -150,6 +159,36 @@ nvim_map('n', '<A-w>', '<Cmd>BufferClose<CR>', barbar_opts)
 --vim.keymap.set("n", "L", vsplit_preview,        {})
 vim.keymap.set("n", "<leader>e", nvim_tree_api.tree.toggle, opts("Open"))
 vim.keymap.set("n", "<leader>p", telescope_builtin.find_files, { desc = "Telescope find files" })
+
+-- DAP & DAPUI Config
+local dap, dapui = require"dap", require"dapui"
+
+-- Open automatically when a new debug session is created
+dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+end
+
+dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+end
+
+dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+end
+
+vim.fn.sign_define("DapBreakpoint", { text='' })
+vim.fn.sign_define("DapStopped", { text='' })
+
+-- DAP Keybindings
+vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue/Start DAP session" })
+vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Step Over" })
+vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into"})
+vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out"})
+vim.keymap.set("n", "<F8>", dap.terminate, { desc = "Terminate"})
+vim.keymap.set("n", "<F20>", dap.disconnect, { desc = "Disconnect"})
+
+vim.keymap.set("n", "<leader>b", dapui.toggle, { desc = "Toggle Dap UI" })
 
 EOF
 
