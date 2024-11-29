@@ -28,170 +28,37 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'windwp/nvim-autopairs'
 Plug 'romgrk/barbar.nvim'
 Plug 'mfussenegger/nvim-dap'
-Plug 'mfussenegger/nvim-dap-python'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
-
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'mxsdev/nvim-dap-vscode-js', { 'do': 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out' }
 
 call plug#end()
 
 
 lua << EOF
--- Language supports
 
--- opts - nvim
-local function opts(desc)
-    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-  end
-
+-- Theme Config - Catppuccin
 require"catppuccin".setup{
         flavour = "macchiato",
         transparent_background = true
 }
 
-require"lspconfig".pyright.setup{
-        settings = {
-                pyright = {
-                        strictParameterNoneValue = false,
-                        strictSetInference = false,
-                        strictListInference = false,
-                        strictDictionaryInference = false,
-                        typeCheckingMode = 'off',
-                        analyzeUnannotatedFunctions = false
-                }
-        }
-}
 
-require"dapui".setup{}
-require"dap-python".setup("python")
-
-require"lspconfig".csharp_ls.setup{}
-require"lspconfig".ts_ls.setup{}
-require"lspconfig".angularls.setup{}
 require"Comment".setup{}
 require"rainbow-delimiters.setup".setup{}
 require"live-server".setup{}
---require"ibl".setup(require"indent-rainbowline".make_opts{})
-require"barbar".setup{
-        sidebar_filetypes = {
-                NvimTree = true
-        },
-        animation = false,
-}
 require"nvim-autopairs".setup{}
-require"telescope".setup{
-	pickers = {
-		find_files = {
-			theme = "dropdown"
-		}
-	}
-}
-
-local cmp = require'cmp'
-
--- Completion
-cmp.setup{
-        snippet = {
-                expand = function(args)
-                        vim.snippet.expand(args.body)
-                end,
-        },
-  window = {
-
-        },
-        mapping = cmp.mapping.preset.insert({
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-                { name = 'nvim_lsp' }
-        }),
-}
-
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
-vim.opt.termguicolors = true
-
-require"nvim-tree".setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = false,
-    git_ignored = false,
-  },
-})
+--require"ibl".setup(require"indent-rainbowline".make_opts{})
 
 require'lualine'.setup {
         options = { theme = 'ayu_mirage' }
 }
 
-
-
-local nvim_tree_api = require"nvim-tree.api"
-local telescope_builtin = require"telescope.builtin"
-
--- KEYBINDINGS
-
-local barbar_opts = { noremap = true, silent = true }
-local nvim_map = vim.api.nvim_set_keymap
--- Move to previous/next
-nvim_map('n', '<A-Left>', '<Cmd>BufferPrevious<CR>', barbar_opts)
-nvim_map('n', '<A-Right>', '<Cmd>BufferNext<CR>', barbar_opts)
--- Re-order to previous/next
-nvim_map('n', '<A-PageUp>', '<Cmd>BufferMovePrevious<CR>', barbar_opts)
-nvim_map('n', '<A-PageDown>', '<Cmd>BufferMoveNext<CR>', barbar_opts)
--- Close tab
-nvim_map('n', '<A-w>', '<Cmd>BufferClose<CR>', barbar_opts)
-
---nvim.api.nvim_set_keymap("n", "<C-h>", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
---vim.keymap.set("n", "l", edit_or_open,          {})
---vim.keymap.set("n", "L", vsplit_preview,        {})
-vim.keymap.set("n", "<leader>e", nvim_tree_api.tree.toggle, opts("Open"))
-vim.keymap.set("n", "<leader>p", telescope_builtin.find_files, { desc = "Telescope find files" })
-
--- DAP & DAPUI Config
-local dap, dapui = require"dap", require"dapui"
-
--- Open automatically when a new debug session is created
-dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-end
-
-dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-end
-
-dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-end
-
-vim.fn.sign_define("DapBreakpoint", { text='' })
-vim.fn.sign_define("DapStopped", { text='' })
-
--- DAP Keybindings
-vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue/Start DAP session" })
-vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Step Over" })
-vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into"})
-vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out"})
-vim.keymap.set("n", "<F8>", dap.terminate, { desc = "Terminate"})
-vim.keymap.set("n", "<F20>", dap.disconnect, { desc = "Disconnect"})
-
-vim.keymap.set("n", "<leader>b", dapui.toggle, { desc = "Toggle Dap UI" })
-
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
 EOF
 
 colorscheme catppuccin
-
 set number
