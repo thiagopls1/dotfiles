@@ -33,6 +33,9 @@ Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'mxsdev/nvim-dap-vscode-js', { 'do': 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out' }
 Plug 'akinsho/git-conflict.nvim'
+Plug 'airblade/vim-gitgutter'
+Plug 'brenoprata10/nvim-highlight-colors'
+Plug 'onsails/lspkind.nvim'
 
 call plug#end()
 
@@ -45,7 +48,7 @@ require"catppuccin".setup{
         transparent_background = true
 }
 
-
+require"nvim-highlight-colors".setup{}
 require"Comment".setup{}
 require"rainbow-delimiters.setup".setup{}
 require"live-server".setup{}
