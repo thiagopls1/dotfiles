@@ -36,6 +36,7 @@ Plug 'akinsho/git-conflict.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'
 Plug 'onsails/lspkind.nvim'
+Plug 'andweeb/presence.nvim'
 
 call plug#end()
 
@@ -53,10 +54,12 @@ require"Comment".setup{}
 require"rainbow-delimiters.setup".setup{}
 require"live-server".setup{}
 require"nvim-autopairs".setup{}
---require"ibl".setup(require"indent-rainbowline".make_opts{})
-
 require'lualine'.setup {
         options = { theme = 'ayu_mirage' }
+}
+require"presence".setup{
+	auto_update = true,
+	debounce_timeout = 1,
 }
 
 vim.g.loaded_netrw = 1
