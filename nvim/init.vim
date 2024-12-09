@@ -37,26 +37,27 @@ Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'
 Plug 'onsails/lspkind.nvim'
 Plug 'andweeb/presence.nvim'
+Plug 'goolord/alpha-nvim'
 
 call plug#end()
 
 
 lua << EOF
-
--- Theme Config - Catppuccin
-require"catppuccin".setup{
-        flavour = "macchiato",
-        transparent_background = true
-}
-
 require"nvim-highlight-colors".setup{}
 require"Comment".setup{}
 require"rainbow-delimiters.setup".setup{}
 require"live-server".setup{}
 require"nvim-autopairs".setup{}
+
+require"catppuccin".setup{
+        flavour = "macchiato",
+        transparent_background = true
+}
+
 require'lualine'.setup {
         options = { theme = 'ayu_mirage' }
 }
+
 require"presence".setup{
 	auto_update = true,
 	debounce_timeout = 1,
