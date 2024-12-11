@@ -13,15 +13,31 @@ require"lspconfig".pyright.setup{
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+local lspconf = require"lspconfig"
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require"lspconfig".csharp_ls.setup{}
-require"lspconfig".ts_ls.setup{}
-require"lspconfig".angularls.setup{}
-require"lspconfig".cssls.setup{
+lspconf.csharp_ls.setup{}
+lspconf.ts_ls.setup{}
+lspconf.angularls.setup{}
+lspconf.lua_ls.setup{
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" }
+			},
+		},
+	},
+}
+
+lspconf.cssls.setup{
 	capabilities = capabilities,
 }
-require"lspconfig".azure_pipelines_ls.setup{
+
+lspconf.html.setup{
+	capabilities = capabilities,
+}
+
+lspconf.azure_pipelines_ls.setup{
 	settings = {
 		yaml = {
 			schemas = {
