@@ -37,7 +37,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'
 Plug 'onsails/lspkind.nvim'
 Plug 'andweeb/presence.nvim'
-Plug 'goolord/alpha-nvim'
+Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 
 call plug#end()
