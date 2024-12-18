@@ -6,6 +6,9 @@ db.setup{
     week_header = {
      enable = true,
     },
+		packages = {
+			enable = false,
+		},
     shortcut = {
       { desc = "󰊳 Update", group = "@property", action = "PlugUpdate", key = "u" },
       {
