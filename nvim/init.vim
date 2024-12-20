@@ -21,12 +21,15 @@ Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'barrett-ruth/live-server.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-writer.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'windwp/nvim-autopairs'
-Plug 'romgrk/barbar.nvim'
+" Plug 'romgrk/barbar.nvim'
+Plug 'nanozuki/tabby.nvim'
 Plug 'mfussenegger/nvim-dap'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
@@ -39,6 +42,8 @@ Plug 'onsails/lspkind.nvim'
 Plug 'andweeb/presence.nvim'
 Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
+Plug 'lukas-reineke/lsp-format.nvim'
+Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --production' }
 
 call plug#end()
 

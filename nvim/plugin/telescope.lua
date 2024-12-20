@@ -1,7 +1,19 @@
-require"telescope".setup{
+require "telescope".setup {
 	pickers = {
 		find_files = {
-			theme = "dropdown"
+			file_ignore_patterns = {
+				"node_modules",
+				"__pycache__",
+				".pytest_cache",
+				"htmlcov",
+				".venv",
+				".git",
+				"dist",
+				".next",
+				"bin",
+				"obj",
+			},
+			hidden = true,
 		}
 	}
 }
