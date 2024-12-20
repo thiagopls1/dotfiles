@@ -7,7 +7,7 @@ require "telescope".setup {
 				".pytest_cache",
 				"htmlcov",
 				".venv",
-				".git",
+				".git/.*",
 				"dist",
 				".next",
 				"bin",
@@ -18,6 +18,5 @@ require "telescope".setup {
 	}
 }
 
-local telescope_builtin = require"telescope.builtin"
+local telescope_builtin = require "telescope.builtin"
 vim.keymap.set("n", "<leader>p", telescope_builtin.find_files, { desc = "Telescope find files" })
-
