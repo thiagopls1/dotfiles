@@ -1,12 +1,26 @@
--- LSP Format setup
-local lsp_format = require "lsp-format"
-lsp_format.setup {}
-
--- Languages Support
 local lspconf = require "lspconfig"
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+-- LSP Format setup
+local lsp_format = require "lsp-format"
+lsp_format.setup {}
+
+-- LSP File Operations setup
+lspconf.util.default_config = vim.tbl_extend(
+	'force',
+	lspconf.util.default_config,
+	{
+		capabilities = vim.tbl_deep_extend(
+			"force",
+			vim.lsp.protocol.make_client_capabilities{},
+			require "lsp-file-operations".default_capabilities{}
+		)
+	}
+)
+require "lsp-file-operations".setup {}
+
+-- Languages Support
 lspconf.pyright.setup {
 	settings = {
 		pyright = {
