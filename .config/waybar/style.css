@@ -1,0 +1,235 @@
+@import "macchiato.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+}
+
+window#waybar {
+    background-color: rgba(0,0,0,0);
+    border-radius: 13px;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px transparent;
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+    background: inherit;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+/* you can set a style on hover for any module like this */
+#pulseaudio:hover {
+    background-color: @surface2;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#network:hover {
+    background-color: @surface2;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#clock:hover {
+    background-color: @surface2;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.focused {
+    background-color: @lavender;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+}
+
+#mode {
+    background-color: #64727D;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#network,
+#pulseaudio
+{
+    padding: 0 7px;
+}
+
+#pulseaudio {
+    padding: 0 7px 0 15px;
+    background-color: @base;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: @maroon;
+}
+
+#network {
+    background-color: @base;
+    color: @yellow;
+}
+
+#temperature {
+    color: @sky;
+}
+
+#battery {
+    color: @green;
+}
+
+#clock {
+    background-color: @base;
+    color: @flamingo;
+}
+
+#window, #mpris {
+    padding: 0 10px;
+    background-color: @base;
+    border-radius: 10px;
+}
+
+#window {
+    color: @peach;
+    margin: 0 0 0 10px;
+}
+
+#mpris {
+    color: @pink;
+    margin: 0 0 0 10px;
+}
+
+.modules-center {
+    background-color: @base;
+    border-radius: 10px;
+}
+
+.modules-right {
+    padding: 0 0px;
+}
+
+.modules-left {
+    padding: 0 0px;
+}
+
+.modules-center {
+    padding: 0 10px;
+}
+#battery.charging, #battery.plugged {
+    color: @sapphire;
+}
+
+@keyframes blink {
+    to {
+        color: #000000;
+    }
+}
+
+/* Using steps() instead of linear as a timing function to limit cpu usage */
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#pulseaudio.muted {
+    color: @text;
+}
+
+#tray {
+    background-color: @base;
+    border-radius: 10px;
+    margin: 0 10px 0 0;
+    padding: 0 12px;
+}
+
+#tray * {
+    margin: 0;
+    padding: 0 5px;
+}
+
+/* #tray > .passive, .active, .needs-atention {
+    padding: 0 5px;
+} */
+
+#tray > .passive:hover, .active:hover, .needs-atention:hover {
+    background-color: @surface2;
+    box-shadow: inset 0 -3px #ffffff;
+    transition-duration: .5s;
+}
+
+#custom-power {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: @base;
+    padding: 0 8px 0 0;
+    color: @teal;
+}
+
+#custom-power:hover {
+    background-color: @surface2;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#custom-distro {
+    background-color: @base;
+    padding: 0 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    font-size: 22px;
+    color: @blue;
+}
+
+#cpu {
+    padding: 0 5px;
+    background-color: @base;
+    color: @yellow;
+}
+
+#memory {
+    padding: 0 5px;
+    background-color: @base;
+    color: @lavender;
+}
+
+#disk {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 0 15px 0 5px;
+    background-color: @base;
+    color: @teal;
+}
