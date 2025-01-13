@@ -63,15 +63,18 @@ lspconf.docker_compose_language_service.setup {
 	on_attach = lsp_format.on_attach,
 }
 
-lspconf.dockerls.setup {
+lspconf.yamlls.setup {
 	settings = {
-		docker = {
-			languageserver = {
-				formatter = {
-					ignoreMultilineInstructions = true,
+		yaml = {
+			schemas = {
+				["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = {
+					"/azure-pipeline*.y*l",
+					"/*.azure*",
+					"Azure-Pipelines/**/*.y*l",
+					"Pipelines/*.y*l",
 				},
 			},
-		}
+		},
 	},
 	on_attach = lsp_format.on_attach,
 }
@@ -88,6 +91,18 @@ lspconf.dockerls.setup {
 -- 				},
 -- 			},
 -- 		},
+-- 	},
+-- }
+
+-- lspconf.dockerls.setup {
+-- 	settings = {
+-- 		docker = {
+-- 			languageserver = {
+-- 				formatter = {
+-- 					ignoreMultilineInstructions = true,
+-- 				},
+-- 			},
+-- 		}
 -- 	},
 -- 	on_attach = lsp_format.on_attach,
 -- }
