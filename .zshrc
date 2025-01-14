@@ -4,6 +4,8 @@ alias lsa='ls -lah'
 alias la='ls -lAh'
 alias ll='ls -lh'
 
+alias dvrc=$HOME/scripts/convert_davinci.sh
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -77,7 +79,7 @@ ZSH_THEME="spaceship"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-auto-fetch zsh-auto-nvm-use)
+plugins=(git git-auto-fetch)
 
 # User configuration
 

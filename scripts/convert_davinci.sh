@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -lt 1 ] -a [ $# -gt 2]; then
+if [ $# -ne 1 ] || [ $# -ne 2]; then
 	echo "Usage: $0 /path/to/folder /destination/path (optional)" 
     exit 1
 fi
@@ -8,7 +8,7 @@ fi
 input_folder="$1"
 output_folder="$input_folder/Converted"
 
-if [ -z "$2" ]; then
+if [ -n "$2" ]; then
 	output_folder="$2"
 fi
 
