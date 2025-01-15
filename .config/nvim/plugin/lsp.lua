@@ -73,39 +73,20 @@ lspconf.yamlls.setup {
 					"Azure-Pipelines/**/*.y*l",
 					"Pipelines/*.y*l",
 				},
+				["https://json.schemastore.org/github-action.json"] = {
+					".github/**/*.y*l",
+				},
+				["https://json.schemastore.org/github-workflows.json"] = {
+					".github/**/*.y*l",
+				}
 			},
+			format = {
+				enable = true
+			}
 		},
 	},
 	on_attach = lsp_format.on_attach,
 }
-
--- lspconf.azure_pipelines_ls.setup {
--- 	settings = {
--- 		yaml = {
--- 			schemas = {
--- 				["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = {
--- 					"/azure-pipeline*.y*l",
--- 					"/*.azure*",
--- 					"Azure-Pipelines/**/*.y*l",
--- 					"Pipelines/*.y*l",
--- 				},
--- 			},
--- 		},
--- 	},
--- }
-
--- lspconf.dockerls.setup {
--- 	settings = {
--- 		docker = {
--- 			languageserver = {
--- 				formatter = {
--- 					ignoreMultilineInstructions = true,
--- 				},
--- 			},
--- 		}
--- 	},
--- 	on_attach = lsp_format.on_attach,
--- }
 
 -- Prettier setup
 vim.g['prettier#exec_cmd_async'] = 1
