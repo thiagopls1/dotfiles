@@ -44,7 +44,6 @@ Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
-
 Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --production' }
 
 call plug#end()

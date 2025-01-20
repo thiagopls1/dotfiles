@@ -36,8 +36,12 @@ lspconf.pyright.setup {
 }
 
 lspconf.csharp_ls.setup { on_attach = lsp_format.on_attach, }
-lspconf.ts_ls.setup { on_attach = lsp_format.on_attach, }
+
+lspconf.ts_ls.setup {
+	on_attach = lsp_format.on_attach,
+}
 lspconf.angularls.setup { on_attach = lsp_format.on_attach, }
+
 lspconf.lua_ls.setup {
 	settings = {
 		Lua = {
@@ -63,6 +67,10 @@ lspconf.docker_compose_language_service.setup {
 	on_attach = lsp_format.on_attach,
 }
 
+lspconf.eslint.setup {
+	on_attach = lsp_format.on_attach,
+}
+
 lspconf.yamlls.setup {
 	settings = {
 		yaml = {
@@ -73,10 +81,10 @@ lspconf.yamlls.setup {
 					"Azure-Pipelines/**/*.y*l",
 					"Pipelines/*.y*l",
 				},
-				["https://json.schemastore.org/github-action.json"] = {
-					".github/**/*.y*l",
-				},
-				["https://json.schemastore.org/github-workflows.json"] = {
+				-- ["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-action.json"] = {
+				-- 	".github/**/*.y*l",
+				-- },
+				["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-workflow.json"] = {
 					".github/**/*.y*l",
 				}
 			},
@@ -88,7 +96,18 @@ lspconf.yamlls.setup {
 	on_attach = lsp_format.on_attach,
 }
 
--- Prettier setup
-vim.g['prettier#exec_cmd_async'] = 1
-vim.g['prettier#autoformat'] = 1
-vim.cmd "au BufWritePre *.js,*.jsx,*.ts,*.tsx,*.html,*.css Prettier"
+local function file_exists(name)
+	local f = io.open(name, "r")
+	if f ~= nil then
+		io.close(f)
+		return true
+	else return false end
+end
+
+if file_exists(".prettierrc") or file_exists(".prettierignore") then
+	-- Prettier setup
+	vim.g['prettier#exec_cmd_async'] = 1
+	vim.g['prettier#autoformat'] = 1
+	vim.g['prettier#config#trailing_comma'] = 'all'
+	vim.cmd "au BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.html,*.css,*.yaml Prettier"
+end
