@@ -122,7 +122,7 @@
   },
   "custom/power": {
     "format": "  ",
-    "on-click": "exec .config/scripts/fuzzel-power-menu.sh",
+    "on-click": "exec scripts/fuzzel-power-menu.sh",
     "tooltip": false
   },
   "custom/distro": {
