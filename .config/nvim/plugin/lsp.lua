@@ -40,6 +40,18 @@ lspconf.csharp_ls.setup { on_attach = lsp_format.on_attach, }
 lspconf.ts_ls.setup {
 	on_attach = lsp_format.on_attach,
 }
+
+local nvm_path = string.gsub(os.getenv("nvm which current") or "", "/bin/node", "/lib/node_modules")
+local cmd = { "ngserver", "--stdio", "--tsProbeLocations", nvm_path, "--ngProbeLocations", nvm_path }
+
+lspconf.angularls.setup({
+	on_attach = lsp_format.on_attach,
+	cmd = cmd,
+	on_new_config = function(new_config, new_root_dir)
+		new_config.cmd = cmd
+	end,
+})
+
 lspconf.angularls.setup { on_attach = lsp_format.on_attach, }
 
 lspconf.lua_ls.setup {
@@ -58,6 +70,10 @@ lspconf.cssls.setup {
 	on_attach = lsp_format.on_attach,
 }
 
+lspconf.cssmodules_ls.setup {
+	on_attach = lsp_format.on_attach,
+}
+
 lspconf.html.setup {
 	capabilities = capabilities,
 	on_attach = lsp_format.on_attach,
@@ -67,9 +83,12 @@ lspconf.docker_compose_language_service.setup {
 	on_attach = lsp_format.on_attach,
 }
 
-lspconf.eslint.setup {
-	on_attach = lsp_format.on_attach,
-}
+-- lspconf.eslint.setup {
+-- 	options = {
+-- 		overrideConfigFile = ".eslintrc.json"
+-- 	},
+-- 	on_attach = lsp_format.on_attach,
+-- }
 
 lspconf.yamlls.setup {
 	settings = {
@@ -96,12 +115,18 @@ lspconf.yamlls.setup {
 	on_attach = lsp_format.on_attach,
 }
 
+lspconf.jsonls.setup {
+	capabilities = capabilities
+}
+
 local function file_exists(name)
 	local f = io.open(name, "r")
 	if f ~= nil then
 		io.close(f)
 		return true
-	else return false end
+	else
+		return false
+	end
 end
 
 if file_exists(".prettierrc") or file_exists(".prettierignore") then

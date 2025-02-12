@@ -1,4 +1,7 @@
-require "telescope".setup {
+local telescope = require "telescope"
+
+telescope.load_extension "emoji"
+telescope.setup {
 	pickers = {
 		find_files = {
 			file_ignore_patterns = {
@@ -21,3 +24,4 @@ require "telescope".setup {
 local telescope_builtin = require "telescope.builtin"
 vim.keymap.set("n", "<leader>p", telescope_builtin.find_files, { desc = "Telescope find files" })
 vim.keymap.set("n", "<leader>r", telescope_builtin.lsp_references, { desc = "Telescope peek references" })
+vim.keymap.set("n", "<leader>.", "<Cmd>Telescope emoji<CR>", { desc = "Telesope emojis" })

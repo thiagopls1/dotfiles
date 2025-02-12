@@ -23,6 +23,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim'
+Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
@@ -45,25 +46,26 @@ Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
 Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --production' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
 
 lua << EOF
-require"nvim-highlight-colors".setup{}
-require"Comment".setup{}
-require"rainbow-delimiters.setup".setup{}
-require"live-server".setup{}
-require"nvim-autopairs".setup{}
+require	"nvim-highlight-colors".setup{}
+require	"Comment".setup{}
+require	"rainbow-delimiters.setup".setup{}
+require	"live-server".setup{}
+require	"nvim-autopairs".setup{}
 
-require"catppuccin".setup{
+require "catppuccin".setup{
         flavour = "macchiato",
         transparent_background = true
 }
 
-require'lualine'.setup {
+require "lualine".setup {
   options = { 
-		theme = 'ayu_mirage', 
+		theme = "ayu_mirage", 
 		globalstatus = true 
 	}
 }
