@@ -47,6 +47,7 @@ Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
 Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --production' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'windwp/nvim-ts-autotag'
 
 call plug#end()
 
@@ -78,6 +79,13 @@ require"presence".setup{
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
+
+vim.api.nvim_create_user_command("Redir", function(ctx)
+	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
+	vim.cmd('new')
+	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+	vim.opt_local.modified = false
+end, { nargs = "+", complete = "command" })
 EOF
 
 vnoremap <leader>y "+y
