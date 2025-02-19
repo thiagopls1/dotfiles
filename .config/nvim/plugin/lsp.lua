@@ -48,15 +48,11 @@ lspconf.ts_ls.setup {
 	on_attach = on_attach,
 }
 
-local nvm_path = string.gsub(os.getenv("nvm which current") or "", "/bin/node", "/lib/node_modules")
-local cmd = { "ngserver", "--stdio", "--tsProbeLocations", nvm_path, "--ngProbeLocations", nvm_path }
+-- local nvm_path = string.gsub(os.getenv("nvm which current") or "", "/bin/node", "/lib/node_modules")
+-- local cmd = { "ngserver", "--stdio", "--tsProbeLocations", nvm_path, "--ngProbeLocations", nvm_path, "--viewEngine" }
 
 lspconf.angularls.setup({
 	on_attach = on_attach,
-	cmd = cmd,
-	on_new_config = function(new_config, new_root_dir)
-		new_config.cmd = cmd
-	end,
 })
 
 lspconf.lua_ls.setup {

@@ -30,6 +30,7 @@ Snacks.setup {
 			"mkv",
 			"webm",
 			"pdf",
+			"ico"
 		},
 		force = false, -- try displaying the image, even if the terminal does not support it
 		doc = {
