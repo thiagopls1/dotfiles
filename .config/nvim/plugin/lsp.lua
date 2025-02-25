@@ -116,6 +116,10 @@ lspconf.yamlls.setup {
 	on_attach = on_attach,
 }
 
+lspconf.ruby_lsp.setup {
+	on_attach = on_attach,
+}
+
 lspconf.jsonls.setup {
 	capabilities = capabilities,
 	on_attach = on_attach
