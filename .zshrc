@@ -186,3 +186,5 @@ fi
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+
+PATH=~/.console-ninja/.bin:$PATH
