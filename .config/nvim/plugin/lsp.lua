@@ -125,6 +125,8 @@ lspconf.jsonls.setup {
 	on_attach = on_attach
 }
 
+vim.lsp.enable('bashls')
+
 local function file_exists(name)
 	local f = io.open(name, "r")
 	if f ~= nil then
