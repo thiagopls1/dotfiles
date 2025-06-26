@@ -4,7 +4,7 @@ git clone --bare git@github.com:$USER_REPO.git $HOME/.dotfiles
 # define config alias locally since the dotfiles
 # aren't installed on the system yet
 echo "Creating alias for git dotfiles..."
-git config --global alias.dotfiles '!git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
+git config --global alias.dotfiles '!git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 echo "Done. Alias is set as 'git dotfiles'"
 
 # create a directory to backup existing dotfiles to
