@@ -6,6 +6,20 @@ alias ll='ls -lh'
 alias icat="kitten icat"
 alias dvrc=$HOME/scripts/convert_davinci.sh
 
+# Paste fix
+
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
 # ZSH Plugins & Theme
 #ZSH=/usr/share/oh-my-zsh/
 ZSH=~"/.oh-my-zsh"
