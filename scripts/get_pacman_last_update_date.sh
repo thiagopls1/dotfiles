@@ -11,5 +11,5 @@ LAST_DATE=$(grep -E "(pacman -Syu|full system upgrade)" $LOG_FILE | tail -n 1 | 
 if [ -z "$LAST_DATE" ]; then
   echo "No updates found"
 else
-	echo $(date -d $LAST_DATE '+%a %b %d %H:%m:%S')
+	echo $(date -d $LAST_DATE '+%a %b %d %H:%M:%S')
 fi
