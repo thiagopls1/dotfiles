@@ -98,6 +98,9 @@ export PATH="$PATH:$GEM_HOME/bin"
 # Nvm
 export NVM_DIR="$HOME/.nvm"
 
+# Rust
+export PATH=$PATH:$HOME/.cargo/bin
+
 # Android
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
