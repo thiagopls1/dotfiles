@@ -125,29 +125,32 @@ lspconf.jsonls.setup {
 	on_attach = on_attach
 }
 
-require('lspconfig').rust_analyzer.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = function()
-    return vim.fn.getcwd()
-  end,
-  cmd = { "rustup", "run", "stable", "rust-analyzer" },
-  settings = {
-    rust_analyzer = {
-      useLibraryCodeForTypes = true,
-      autoSearchPaths = true,
-      autoImportCompletions = false,
-      reportMissingImports = true,
-      followImportForHints = true,
+lspconf.rust_analyzer.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	root_dir = function()
+		return vim.fn.getcwd()
+	end,
+	cmd = { "rustup", "run", "stable", "rust-analyzer" },
+	settings = {
+		rust_analyzer = {
+			useLibraryCodeForTypes = true,
+			autoSearchPaths = true,
+			autoImportCompletions = false,
+			reportMissingImports = true,
+			followImportForHints = true,
 
-      cargo = {
-        allFeatures = true,
-      },
-      checkOnSave = {
-        command = "cargo clippy",
-      },
-    },
-  },
+			diagnostics = {
+				enable = true
+			},
+			cargo = {
+				allFeatures = true,
+			},
+			checkOnSave = {
+				command = "cargo clippy",
+			},
+		},
+	},
 })
 
 vim.lsp.enable('bashls')
