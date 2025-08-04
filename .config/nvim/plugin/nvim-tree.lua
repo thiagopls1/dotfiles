@@ -12,6 +12,10 @@ require "nvim-tree".setup({
 		dotfiles = false,
 		git_ignored = false,
 	},
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+	}
 })
 
 -- Bindings
