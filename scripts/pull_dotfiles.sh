@@ -7,15 +7,18 @@ echo "Creating alias for git dotfiles..."
 git config --global alias.dotfiles '!git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 echo "Done. Alias is set as 'git dotfiles'"
 
+# Checkout dotfiles from repo
 git dotfiles checkout
+
+# Check if `git dotfiles checkout` executed without errors
 if [ $? = 0 ]; then
-  echo "Checked out dotfiles from git@github.com:$USER_REPO.git";
-  else
-    echo "Moving existing dotfiles to ~/.dotfiles-backup";
-		# create a directory to backup existing dotfiles to
-		mkdir -p $HOME/.dotfiles-backup
-    mv $HOME/.dotfiles $HOME/.dotfiles-backup
+	echo "Checked out dotfiles from git@github.com:$USER_REPO.git";
+else
+	echo "Moving existing dotfiles to ~/.dotfiles-backup"
+	# create a directory to backup existing dotfiles to
+	mkdir -p $HOME/.dotfiles-backup
+	mv $HOME/.dotfiles $HOME/.dotfiles-backup;
 fi
-# checkout dotfiles from repo
+
 git dotfiles checkout
 git dotfiles config status.showUntrackedFiles no
