@@ -38,6 +38,12 @@ SPACESHIP_PROMPT_ORDER=(
   git           # Git section (git_branch + git_status)
   hg            # Mercurial section (hg_branch  + hg_status)
 	node
+	python
+	dotnet
+	rust
+	lua
+	ruby
+	python
   exec_time     # Execution time
   line_sep      # Line break
   # vi_mode       # Vi-mode indicator
@@ -109,7 +115,6 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-clear
 neofetch
 
 # Load Angular CLI autocompletion.

@@ -153,7 +153,24 @@ lspconf.rust_analyzer.setup({
 	},
 })
 
-vim.lsp.enable('bashls')
+lspconf.bashls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities
+})
+
+lspconf.ccls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	init_options = {
+		compilationDatabaseDirectory = "build",
+		index = {
+			threads = 0,
+		},
+		clang = {
+			excludeArgs = { "-frounding-math" },
+		},
+	}
+})
 
 local function file_exists(name)
 	local f = io.open(name, "r")
