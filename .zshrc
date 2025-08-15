@@ -107,6 +107,9 @@ export NVM_DIR="$HOME/.nvm"
 # Rust
 export PATH=$PATH:$HOME/.cargo/bin
 
+# Nim
+export PATH=$PATH:$HOME/.nimble/bin
+
 # Android
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools

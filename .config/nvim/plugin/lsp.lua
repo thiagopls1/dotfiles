@@ -172,6 +172,12 @@ lspconf.ccls.setup({
 	}
 })
 
+lspconf.nimls.setup({
+	cmd = { 'nimlangserver', "--lib:/usr/lib/nim" },
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 local function file_exists(name)
 	local f = io.open(name, "r")
 	if f ~= nil then
