@@ -39,6 +39,7 @@ SPACESHIP_PROMPT_ORDER=(
   hg            # Mercurial section (hg_branch  + hg_status)
 	node
 	python
+	venv
 	dotnet
 	rust
 	lua
@@ -109,6 +110,9 @@ export PATH=$PATH:$HOME/.cargo/bin
 
 # Nim
 export PATH=$PATH:$HOME/.nimble/bin
+
+# Dotnet
+export PATH=$PATH:$HOME/.dotnet/tools
 
 # Android
 export ANDROID_HOME=$HOME/Android/Sdk

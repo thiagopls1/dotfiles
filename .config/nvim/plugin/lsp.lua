@@ -28,8 +28,8 @@ lspconf.util.default_config = vim.tbl_extend(
 require "lsp-file-operations".setup {}
 
 -- Languages Support
-lspconf.pyright.setup {
-	settings = {
+vim.lsp.config('pyright', {
+  settings = {
 		pyright = {
 			strictParameterNoneValue = false,
 			strictSetInference = false,
@@ -40,22 +40,28 @@ lspconf.pyright.setup {
 		}
 	},
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('pyright')
 
-lspconf.csharp_ls.setup { on_attach = on_attach, }
-
-lspconf.ts_ls.setup {
+vim.lsp.config('csharp_ls', {
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('csharp_ls')
+
+vim.lsp.config('ts_ls', {
+	on_attach = on_attach,
+})
+vim.lsp.enable('ts_ls')
 
 -- local nvm_path = string.gsub(os.getenv("nvm which current") or "", "/bin/node", "/lib/node_modules")
 -- local cmd = { "ngserver", "--stdio", "--tsProbeLocations", nvm_path, "--ngProbeLocations", nvm_path, "--viewEngine" }
 
-lspconf.angularls.setup({
+vim.lsp.config('angularls', {
 	on_attach = on_attach,
 })
+vim.lsp.enable('angularls')
 
-lspconf.lua_ls.setup {
+vim.lsp.config('lua_ls', {
 	settings = {
 		Lua = {
 			diagnostics = {
@@ -64,25 +70,29 @@ lspconf.lua_ls.setup {
 		},
 	},
 	on_attach = on_attach,
-}
+})
 
-lspconf.cssls.setup {
+vim.lsp.config('cssls', {
 	capabilities = capabilities,
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('cssls')
 
-lspconf.cssmodules_ls.setup {
+vim.lsp.config('cssmodules', {
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('cssmodules')
 
-lspconf.html.setup {
+vim.lsp.config('html', {
 	capabilities = capabilities,
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('html')
 
-lspconf.docker_compose_language_service.setup {
+vim.lsp.config('docker_compose_language_service', {
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('docker_compose_language_service')
 
 -- lspconf.eslint.setup {
 -- 	options = {
@@ -91,7 +101,7 @@ lspconf.docker_compose_language_service.setup {
 -- 	on_attach = on_attach,
 -- }
 
-lspconf.yamlls.setup {
+vim.lsp.config('yamlls', {
 	settings = {
 		yaml = {
 			schemas = {
@@ -114,26 +124,27 @@ lspconf.yamlls.setup {
 		},
 	},
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('yamlls')
 
-lspconf.ruby_lsp.setup {
+vim.lsp.config('ruby_lsp', {
 	on_attach = on_attach,
-}
+})
+vim.lsp.enable('ruby_lsp')
 
-lspconf.jsonls.setup {
+
+vim.lsp.config('jsonls', {
 	capabilities = capabilities,
 	on_attach = on_attach
-}
+})
+vim.lsp.enable('jsonls')
 
-lspconf.rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
 	on_attach = on_attach,
 	capabilities = capabilities,
-	root_dir = function()
-		return vim.fn.getcwd()
-	end,
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
 	settings = {
-		rust_analyzer = {
+		['rust_analyzer'] = {
 			useLibraryCodeForTypes = true,
 			autoSearchPaths = true,
 			autoImportCompletions = false,
@@ -152,13 +163,15 @@ lspconf.rust_analyzer.setup({
 		},
 	},
 })
+vim.lsp.enable('rust_analyzer')
 
-lspconf.bashls.setup({
+vim.lsp.config('bashls', {
 	on_attach = on_attach,
 	capabilities = capabilities
 })
+vim.lsp.enable('bashls')
 
-lspconf.ccls.setup({
+vim.lsp.config('ccls', {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	init_options = {
@@ -171,12 +184,14 @@ lspconf.ccls.setup({
 		},
 	}
 })
+vim.lsp.enable('ccls')
 
-lspconf.nimls.setup({
+vim.lsp.config('nimls', {
 	cmd = { 'nimlangserver', "--lib:/usr/lib/nim" },
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+vim.lsp.enable('nimls')
 
 local function file_exists(name)
 	local f = io.open(name, "r")
