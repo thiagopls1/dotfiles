@@ -1,10 +1,10 @@
-local lspconf = require "lspconfig"
+local lspconf = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- LSP Format setup
-local lsp_format = require "lsp-format"
-lsp_format.setup {}
+local lsp_format = require("lsp-format")
+lsp_format.setup()
 
 local on_attach = function(client, bufnr)
 	lsp_format.on_attach(client, bufnr)
@@ -20,16 +20,16 @@ lspconf.util.default_config = vim.tbl_extend(
 		capabilities = vim.tbl_deep_extend(
 			"force",
 			capabilities,
-			require "lsp-file-operations".default_capabilities {}
+			require("lsp-file-operations").default_capabilities()
 		)
 	}
 )
 
-require "lsp-file-operations".setup {}
+require("lsp-file-operations").setup()
 
 -- Languages Support
 vim.lsp.config('pyright', {
-  settings = {
+	settings = {
 		pyright = {
 			strictParameterNoneValue = false,
 			strictSetInference = false,
@@ -41,25 +41,18 @@ vim.lsp.config('pyright', {
 	},
 	on_attach = on_attach,
 })
-vim.lsp.enable('pyright')
 
 vim.lsp.config('csharp_ls', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('csharp_ls')
 
 vim.lsp.config('ts_ls', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('ts_ls')
-
--- local nvm_path = string.gsub(os.getenv("nvm which current") or "", "/bin/node", "/lib/node_modules")
--- local cmd = { "ngserver", "--stdio", "--tsProbeLocations", nvm_path, "--ngProbeLocations", nvm_path, "--viewEngine" }
 
 vim.lsp.config('angularls', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('angularls')
 
 vim.lsp.config('lua_ls', {
 	settings = {
@@ -76,23 +69,19 @@ vim.lsp.config('cssls', {
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-vim.lsp.enable('cssls')
 
 vim.lsp.config('cssmodules', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('cssmodules')
 
 vim.lsp.config('html', {
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-vim.lsp.enable('html')
 
 vim.lsp.config('docker_compose_language_service', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('docker_compose_language_service')
 
 -- lspconf.eslint.setup {
 -- 	options = {
@@ -125,19 +114,16 @@ vim.lsp.config('yamlls', {
 	},
 	on_attach = on_attach,
 })
-vim.lsp.enable('yamlls')
 
 vim.lsp.config('ruby_lsp', {
 	on_attach = on_attach,
 })
-vim.lsp.enable('ruby_lsp')
 
 
 vim.lsp.config('jsonls', {
 	capabilities = capabilities,
 	on_attach = on_attach
 })
-vim.lsp.enable('jsonls')
 
 vim.lsp.config('rust_analyzer', {
 	on_attach = on_attach,
@@ -163,13 +149,11 @@ vim.lsp.config('rust_analyzer', {
 		},
 	},
 })
-vim.lsp.enable('rust_analyzer')
 
 vim.lsp.config('bashls', {
 	on_attach = on_attach,
 	capabilities = capabilities
 })
-vim.lsp.enable('bashls')
 
 vim.lsp.config('ccls', {
 	on_attach = on_attach,
@@ -184,29 +168,27 @@ vim.lsp.config('ccls', {
 		},
 	}
 })
-vim.lsp.enable('ccls')
 
 vim.lsp.config('nimls', {
 	cmd = { 'nimlangserver', "--lib:/usr/lib/nim" },
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+
+
+vim.lsp.enable('pyright')
+vim.lsp.enable('csharp_ls')
+vim.lsp.enable('ts_ls')
+vim.lsp.enable('angularls')
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('cssls')
+vim.lsp.enable('cssmodules')
+vim.lsp.enable('html')
+vim.lsp.enable('docker_compose_language_service')
+vim.lsp.enable('yamlls')
+vim.lsp.enable('ruby_lsp')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('bashls')
+vim.lsp.enable('ccls')
 vim.lsp.enable('nimls')
-
-local function file_exists(name)
-	local f = io.open(name, "r")
-	if f ~= nil then
-		io.close(f)
-		return true
-	else
-		return false
-	end
-end
-
-if file_exists(".prettierrc") or file_exists(".prettierignore") then
-	-- Prettier setup
-	vim.g['prettier#exec_cmd_async'] = 1
-	vim.g['prettier#autoformat'] = 1
-	vim.g['prettier#config#trailing_comma'] = 'all'
-	vim.cmd "au BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.html,*.css,*.yaml Prettier"
-end
