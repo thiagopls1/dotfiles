@@ -29,20 +29,14 @@ button:hover {
 /* you can set a style on hover for any module like this */
 #pulseaudio:hover {
 	background-color: @surface2;
-	transition-property: background-color;
-	transition-duration: .5s;
 }
 
 #network:hover {
 	background-color: @surface2;
-	transition-property: background-color;
-	transition-duration: .5s;
 }
 
 #clock:hover {
 	background-color: @surface2;
-	transition-property: background-color;
-	transition-duration: .5s;
 }
 
 #workspaces button {
@@ -193,7 +187,6 @@ label:focus {
 .needs-atention:hover {
 	background-color: @surface2;
 	box-shadow: inset 0 -3px #ffffff;
-	transition-duration: .5s;
 }
 
 #custom-power {
@@ -206,8 +199,6 @@ label:focus {
 
 #custom-power:hover {
 	background-color: @surface2;
-	transition-property: background-color;
-	transition-duration: .5s;
 }
 
 #custom-distro {
@@ -243,4 +234,17 @@ label:focus {
 	padding: 0 15px 0 5px;
 	background-color: @base;
 	color: @teal;
+}
+
+#custom-notification {
+	padding: 0 15px;
+	border-radius: 10px;
+	background-color: @base;
+	color: @lavender;
+	margin-right: 8px;
+}
+
+#custom-notification:hover {
+	background-color: @surface2;
+	transition-property: background-color;
 }
