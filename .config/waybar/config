@@ -6,6 +6,7 @@
   "modules-left": [
     "custom/distro",
     "cpu",
+    "custom/gpu-usage",
     "memory",
     "disk",
     "mpris",
@@ -142,5 +143,11 @@
     "status-icons": {
       "paused": "⏸"
     }
+  },
+  "custom/gpu-usage": {
+    "format": "{icon} {percentage}%",
+    "exec": "gpu-usage-waybar",
+    "return-type": "json",
+    "format-icons": "󰇄",
   }
 }
