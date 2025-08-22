@@ -194,7 +194,7 @@ scrollbar trough {
 
 /* dnd */
 .widget-dnd {
-	margin-top: 5px;
+	margin: 5px 0;
 	border-radius: 8px;
 	font-size: 1.1rem;
 }
