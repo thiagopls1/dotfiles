@@ -248,3 +248,7 @@ label:focus {
 	background-color: @surface2;
 	transition-property: background-color;
 }
+
+tooltip {
+	background-color: @base;
+}
