@@ -135,7 +135,7 @@
 		"format": "{player_icon} {artist} - {title}",
 		"tooltip-format": "{player_icon} {artist} - {title}  {length}",
 		"format-paused": "{status_icon} {artist} - {title}",
-		"max-length": 33,
+		"max-length": 20,
 		"player-icons": {
 			"default": "⏸ {player}",
 			"mpv": "🎵",
