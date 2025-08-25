@@ -83,13 +83,6 @@ vim.lsp.config('docker_compose_language_service', {
 	on_attach = on_attach,
 })
 
--- lspconf.eslint.setup {
--- 	options = {
--- 		overrideConfigFile = ".eslintrc.json"
--- 	},
--- 	on_attach = on_attach,
--- }
-
 vim.lsp.config('yamlls', {
 	settings = {
 		yaml = {
