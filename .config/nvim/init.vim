@@ -54,7 +54,6 @@ call plug#end()
 
 
 lua << EOF
-require	"nvim-highlight-colors".setup{}
 require	"Comment".setup{}
 require	"rainbow-delimiters.setup".setup{}
 require	"live-server".setup{}
