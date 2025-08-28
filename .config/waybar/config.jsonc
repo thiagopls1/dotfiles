@@ -53,16 +53,13 @@
 		"on-click": "gnome-calendar"
 	},
 	"cpu": {
-		"format": " {usage}%",
-		"tooltip": false
+		"format": " {usage}%"
 	},
 	"memory": {
-		"format": " {percentage}%",
-		"tooltip": false
+		"format": " {percentage}%"
 	},
 	"disk": {
-		"format": " {percentage_used}%",
-		"tooltip": false
+		"format": " {percentage_used}%"
 	},
 	"temperature": {
 		"critical-threshold": 80,
