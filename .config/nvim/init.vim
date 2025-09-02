@@ -48,6 +48,7 @@ Plug 'antosha417/nvim-lsp-file-operations'
 Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --production' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'windwp/nvim-ts-autotag'
+Plug 'smjonas/inc-rename.nvim'
 " Plug 'folke/snacks.nvim'
 
 call plug#end()
