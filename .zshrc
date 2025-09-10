@@ -85,9 +85,6 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-# bun completions
-[ -s "/home/thiago_lins/.bun/_bun" ] && source "/home/thiago_lins/.bun/_bun"
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
@@ -97,10 +94,6 @@ export PATH="$PATH:/usr/bin/nvim"
 
 # Spicetify
 export PATH=$PATH:/home/thiago_lins/.spicetify
-
-# Gem
-export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
-export PATH="$PATH:$GEM_HOME/bin"
 
 # Nvm
 export NVM_DIR="$HOME/.nvm"
@@ -122,10 +115,4 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 # Brew
 export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin/brew"
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-neofetch
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
+fastfetch
