@@ -36,7 +36,6 @@ SPACESHIP_PROMPT_ORDER=(
   dir           # Current directory section
   host          # Hostname section
   git           # Git section (git_branch + git_status)
-  hg            # Mercurial section (hg_branch  + hg_status)
 	node
 	python
 	venv
@@ -52,6 +51,7 @@ SPACESHIP_PROMPT_ORDER=(
   exit_code     # Exit code section
   char          # Prompt character
 )
+
 SPACESHIP_USER_SHOW=always
 SPACESHIP_PROMPT_ADD_NEWLINE=false
 SPACESHIP_CHAR_SYMBOL="❯"
@@ -85,39 +85,52 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# PATHS
 
-# Nvim
-export PATH="$PATH:/usr/bin/nvim"
-
-# Spicetify
-export PATH=$PATH:/home/thiago_lins/.spicetify
-
-# Nvm
-export NVM_DIR="$HOME/.nvm"
-
-# Rust
-export PATH=$PATH:$HOME/.cargo/bin
-
-# Nim
-export PATH=$PATH:$HOME/.nimble/bin
-
-# Dotnet
-export PATH=$PATH:$HOME/.dotnet/tools
-
-# Android
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/emulator
-
-# Brew
-export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin/brew"
-
-export NVM_DIR="$HOME/.nvm"
-if [ -f "$NVM/nvm.sh" ]; then
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# Bun
+BUN_DIR="$HOME/.bun"
+if [ -d $BUN_DIR ]; then
+	export PATH="$PATH:$BUN_DIR/bin"
 fi
 
+# Spicetify
+if [ -d "$HOME/.spicetify" ]; then
+	export PATH=$PATH:$HOME/.spicetify
+fi
+
+# Rust
+if [ -d "$HOME/.cargo" ]; then
+	export PATH=$PATH:$HOME/.cargo/bin
+fi
+
+# Nim
+if [ -d "$HOME/.nimble" ]; then
+	export PATH=$PATH:$HOME/.nimble/bin
+fi
+
+# Dotnet
+if [ -d "$HOME/.dotnet" ]; then
+	export PATH=$PATH:$HOME/.dotnet/tools
+fi
+
+# Android
+ANDROID_HOME=$HOME/Android/Sdk
+if [ -d $ANDROID_HOME ]; then
+	export PATH=$PATH:$ANDROID_HOME/platform-tools
+	export PATH=$PATH:$ANDROID_HOME/emulator
+fi
+
+# Brew
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+	export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin/brew"
+fi
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+if [ -d "$NVM_DIR/nvm.sh" ]; then
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
+# After config execution
 fastfetch
