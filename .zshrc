@@ -115,4 +115,9 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 # Brew
 export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin/brew"
 
+export NVM_DIR="$HOME/.nvm"
+if [ -f "$NVM/nvm.sh" ]; then
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+fi
+
 fastfetch
