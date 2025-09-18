@@ -1,6 +1,13 @@
 #!/usr/bin/bash
-export USER_REPO="thiagopls1/dotfiles"
-git clone --bare git@github.com:$USER_REPO.git $HOME/.dotfiles
+
+if [ -z $(which git 2> /dev/null)]; then
+	echo "ERROR: Git is not installed."
+	exit 1
+fi
+
+USER_REPO="thiagopls1/dotfiles"
+REPO_URL="https://github.com/$USER_REPO.git"
+git clone --bare $REPO_URL $HOME/.dotfiles
 # define config alias locally since the dotfiles
 # aren't installed on the system yet
 echo "Creating alias for git dotfiles..."
@@ -8,7 +15,7 @@ git config --global alias.df '!git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 echo "Done. Alias is set as 'git dotfiles'"
 
 # Checkout dotfiles from repo
-git dotfiles checkout
+git df checkout
 
 # Check if `git dotfiles checkout` executed without errors
 if [ $? = 0 ]; then
@@ -20,5 +27,5 @@ else
 	mv $HOME/.dotfiles $HOME/.dotfiles-backup;
 fi
 
-git dotfiles checkout
-git dotfiles config status.showUntrackedFiles no
+git df checkout
+git df config status.showUntrackedFiles no
