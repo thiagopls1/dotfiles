@@ -58,7 +58,8 @@ vim.lsp.config('lua_ls', {
 	settings = {
 		Lua = {
 			diagnostics = {
-				globals = { "vim", "bufnr" }
+				globals = { "vim", "bufnr" },
+				disable = { "lowercase-global" }
 			},
 		},
 	},
