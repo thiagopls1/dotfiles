@@ -43,7 +43,6 @@ SPACESHIP_PROMPT_ORDER=(
 	rust
 	lua
 	ruby
-	python
   exec_time     # Execution time
   line_sep      # Line break
   # vi_mode       # Vi-mode indicator
