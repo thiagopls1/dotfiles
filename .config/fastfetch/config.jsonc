@@ -35,6 +35,12 @@
 			"keyColor": "34"
 		},
 		{
+			"type": "command",
+			"key": " PLU",
+			"text": "$HOME/scripts/get_pkgmgr_last_update_date.sh",
+			"keyColor": "34"
+		},
+		{
 			"type": "cpu",
 			"key": " CPU",
 			"keyColor": "35",
