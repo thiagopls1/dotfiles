@@ -12,49 +12,49 @@
 	"modules": [
 		{
 			"type": "title",
-			"key": " "
+			"key": "  "
 		},
 		{
 			"type": "os",
-			"key": " OS",
+			"key": "  OS",
 			"keyColor": "31"
 		},
 		{
 			"type": "kernel",
-			"key": " VER",
+			"key": "  VER",
 			"keyColor": "32"
 		},
 		{
 			"type": "uptime",
-			"key": " UP",
+			"key": "  UP",
 			"keyColor": "33"
 		},
 		{
 			"type": "packages",
-			"key": " PKG",
+			"key": "  PKG",
 			"keyColor": "34"
 		},
 		{
 			"type": "command",
-			"key": " PLU",
+			"key": "  PLU",
 			"text": "$HOME/scripts/get_pkgmgr_last_update_date.sh",
 			"keyColor": "34"
 		},
 		{
 			"type": "cpu",
-			"key": " CPU",
+			"key": "  CPU",
 			"keyColor": "35",
 			"format": "{name}"
 		},
 		{
 			"type": "gpu",
-			"key": "󰘚 GPU",
+			"key": "  GPU",
 			"keyColor": "36",
 			"format": "{name}"
 		},
 		{
 			"type": "memory",
-			"key": "󰍛 MEM",
+			"key": "  MEM",
 			"keyColor": "37"
 		},
 		{
