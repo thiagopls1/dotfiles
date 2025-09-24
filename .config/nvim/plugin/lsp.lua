@@ -160,6 +160,7 @@ vim.lsp.config('ccls', {
 		clang = {
 			excludeArgs = { "-frounding-math" },
 		},
+		workspace_required = false
 	}
 })
 
