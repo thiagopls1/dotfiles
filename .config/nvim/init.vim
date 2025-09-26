@@ -36,6 +36,7 @@ Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'mxsdev/nvim-dap-vscode-js', { 'do': 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out' }
+Plug 'goropikari/nvim-dap-cpp', { 'do': 'make setup' }
 Plug 'akinsho/git-conflict.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'
@@ -49,7 +50,7 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install --frozen-lockfile --productio
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
-" Plug 'folke/snacks.nvim'
+Plug 'Civitasv/cmake-tools.nvim'
 
 call plug#end()
 
