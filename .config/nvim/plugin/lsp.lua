@@ -52,6 +52,7 @@ vim.lsp.config('ts_ls', {
 
 vim.lsp.config('angularls', {
 	on_attach = on_attach,
+	capabilities = capabilities,
 })
 
 vim.lsp.config('lua_ls', {
@@ -64,6 +65,7 @@ vim.lsp.config('lua_ls', {
 		},
 	},
 	on_attach = on_attach,
+	capabilities = capabilities,
 })
 
 vim.lsp.config('cssls', {
