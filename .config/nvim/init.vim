@@ -20,10 +20,13 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'barrett-ruth/live-server.nvim'
 Plug 'nvim-lua/plenary.nvim'
+
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
+Plug 'AckslD/nvim-neoclip.lua'
+
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
@@ -90,6 +93,9 @@ vim.api.nvim_create_user_command("Redir", function(ctx)
 	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
 	vim.opt_local.modified = false
 end, { nargs = "+", complete = "command" })
+
+local home_dir = os.getenv("HOME")
+package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
 EOF
 
 vnoremap <leader>y "+y

@@ -1,3 +1,6 @@
+local nvim_tree_api = require "nvim-tree.api"
+local dapui = require "dapui"
+
 require "nvim-tree".setup({
 	sort = {
 		sorter = "case_sensitive",
@@ -23,6 +26,10 @@ local function opts(desc)
 	return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 end
 
-local nvim_tree_api = require "nvim-tree.api"
+local function toggle_nvim_tree()
+	nvim_tree_api.tree.toggle()
+	dapui.close()
+end
+
 --vim.keymap.set("n", "<C-h>", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
-vim.keymap.set("n", "<leader>e", nvim_tree_api.tree.toggle, opts("Open"))
+vim.keymap.set("n", "<leader>e", toggle_nvim_tree, opts("Open"))
