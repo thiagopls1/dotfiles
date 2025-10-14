@@ -6,4 +6,4 @@ vim.lsp.config('nimls', {
 	capabilities = capabilities,
 })
 
-vim.lsp.enable('nimls')
+-- vim.lsp.enable('nimls')

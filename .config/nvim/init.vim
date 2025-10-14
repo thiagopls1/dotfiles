@@ -102,3 +102,5 @@ vnoremap <leader>y "+y
 
 colorscheme catppuccin
 set number
+set listchars+=eol:↲
+set list
