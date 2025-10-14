@@ -131,5 +131,9 @@ if [ -d $NVM_DIR ]; then
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fi
 
+if [ -z $(which fuck 2>/dev/null) ]; then
+	eval $(thefuck --alias)
+fi
+
 # After config execution
 fastfetch
