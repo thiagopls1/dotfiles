@@ -34,12 +34,15 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'windwp/nvim-autopairs'
 " Plug 'romgrk/barbar.nvim'
 Plug 'nanozuki/tabby.nvim'
+
 Plug 'mfussenegger/nvim-dap'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'mxsdev/nvim-dap-vscode-js', { 'do': 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out' }
 Plug 'goropikari/nvim-dap-cpp', { 'do': 'make setup' }
+Plug 'nicholasmata/nvim-dap-cs'
+
 Plug 'akinsho/git-conflict.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'

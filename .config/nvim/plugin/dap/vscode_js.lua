@@ -1,4 +1,4 @@
-require "dap-vscode-js".setup({
+require("dap-vscode-js").setup({
 	adapters = { 'pwa-node', 'pwa-chrome', 'node-terminal', 'pwa-extensionHost' }
 })
 
