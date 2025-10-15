@@ -32,7 +32,6 @@ Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'windwp/nvim-autopairs'
-" Plug 'romgrk/barbar.nvim'
 Plug 'nanozuki/tabby.nvim'
 
 Plug 'mfussenegger/nvim-dap'
@@ -60,12 +59,10 @@ Plug 'Civitasv/cmake-tools.nvim'
 
 call plug#end()
 
-
 lua << EOF
 require	"Comment".setup{}
 require	"rainbow-delimiters.setup".setup{}
 require	"live-server".setup{}
-require	"nvim-autopairs".setup{}
 
 require "catppuccin".setup{
         flavour = "macchiato",
@@ -88,8 +85,6 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
-vim.diagnostic.config({ virtual_text = true }) 
-
 vim.api.nvim_create_user_command("Redir", function(ctx)
 	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
 	vim.cmd('new')
@@ -97,8 +92,13 @@ vim.api.nvim_create_user_command("Redir", function(ctx)
 	vim.opt_local.modified = false
 end, { nargs = "+", complete = "command" })
 
+-- Add nvim config files to package
 local home_dir = os.getenv("HOME")
 package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
+
+-- KeyBindings
+vim.keymap.set('n', '<leader>t', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
+
 EOF
 
 vnoremap <leader>y "+y

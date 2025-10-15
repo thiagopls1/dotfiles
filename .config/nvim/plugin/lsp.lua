@@ -2,6 +2,14 @@ local lspconf = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+-- Diagnostics
+vim.diagnostic.config({ virtual_text = true })
+
+-- LSP Rename
+require("inc_rename").setup()
+vim.keymap.set("n", "<leader>R", ":IncRename ")
+vim.keymap.set("v", "<leader>R", ":IncRename ")
+
 -- LSP Format setup
 local lsp_format = require("lsp-format")
 lsp_format.setup()

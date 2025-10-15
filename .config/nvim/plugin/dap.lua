@@ -25,15 +25,10 @@ end
 
 -- On debug finish
 dap.listeners.before.event_terminated["dapui_config"] = function()
-	-- dapui.close()
 end
 
 -- On debug exit
 dap.listeners.before.event_exited["dapui_config"] = function()
-	-- dapui.close()
-	-- if nvim_tree_was_visible then
-	-- 	nvim_tree_api.tree.open()
-	-- end
 end
 
 -- DAP Colors

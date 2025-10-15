@@ -4,9 +4,9 @@ local actions = require "telescope.actions"
 
 require("neoclip").setup()
 
-telescope.load_extension "emoji"
+telescope.load_extension("emoji")
 
-telescope.setup {
+telescope.setup({
 	extensions = {
 		fzf = {
 			fuzzy = true,
@@ -18,6 +18,7 @@ telescope.setup {
 	pickers = {
 		find_files = {
 			file_ignore_patterns = {
+				".git",
 				"node_modules",
 				"__pycache__",
 				".pytest_cache",
@@ -39,7 +40,7 @@ telescope.setup {
 			}
 		}
 	}
-}
+})
 
 vim.keymap.set("n", "<leader>p", builtin.find_files, { desc = "Telescope find files" })
 vim.keymap.set("n", "<leader>r", builtin.lsp_references, { desc = "Telescope peek references" })

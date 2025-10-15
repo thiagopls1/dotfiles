@@ -1,3 +1,4 @@
+-- Default Keybindings
 -- co - ours
 -- ct - theirs
 -- cb - both
@@ -5,4 +6,4 @@
 -- ]x - previous
 -- [x - next
 
-require'git-conflict'.setup {}
+require 'git-conflict'.setup {}

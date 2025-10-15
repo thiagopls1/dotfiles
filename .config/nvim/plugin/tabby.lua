@@ -7,7 +7,7 @@ local theme = {
 	tail = 'TabLine',
 }
 
-require "tabby".setup {
+require("tabby").setup({
 	line = function(line)
 		return {
 			{
@@ -46,18 +46,15 @@ require "tabby".setup {
 		}
 	end,
 	-- option = {}, -- setup modules' option,
-}
+})
 
----- KEYBINDINGS
+-- KEYBINDINGS
 local tabby_opts = { noremap = true, silent = true }
 local nvim_map = vim.api.nvim_set_keymap
----- Move to previous/next
+
 nvim_map('n', '<A-Left>', '<Cmd>-tabnext<CR>', tabby_opts)
 nvim_map('n', '<A-Right>', '<Cmd>+tabnext<CR>', tabby_opts)
----- Re-order to previous/next
 nvim_map('n', '<A-PageUp>', '<Cmd>-tabmove<CR>', tabby_opts)
 nvim_map('n', '<A-PageDown>', '<Cmd>+tabmove<CR>', tabby_opts)
----- Close tab
 nvim_map('n', '<A-w>', '<Cmd>tabclose<CR>', tabby_opts)
----- New tab
 nvim_map('n', '<A-t>', '<Cmd>tabnew<CR>', tabby_opts)
