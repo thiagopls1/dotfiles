@@ -2,6 +2,7 @@ au Filetype * setl ts=2 sts=2 sw=2
 
 set nowrap
 set formatoptions-=t
+set number
 
 call plug#begin()
 
@@ -98,7 +99,6 @@ package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
 
 -- KeyBindings
 vim.keymap.set('n', '<leader>t', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
-
 EOF
 
 vnoremap <leader>y "+y
