@@ -4,7 +4,7 @@
 format = "$username in $all"
 
 # Insere uma linha branca entre os prompts do shell
-add_newline = true
+add_newline = false
 
 # Substitui o símbolo '❯' no prompt por  '➜'
 [character] # O nome do módulo que estamos configurando é  'character'
