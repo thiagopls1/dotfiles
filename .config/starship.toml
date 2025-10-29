@@ -21,10 +21,8 @@ $haskell\
 $python\
 $dotnet\
 [](fg:green bg:sapphire)\
-$conda\
-[](fg:sapphire bg:lavender)\
 $time\
-[ ](fg:lavender)\
+[ ](fg:sapphire)\
 $cmd_duration\
 $line_break\
 $character"""
@@ -67,7 +65,7 @@ format = '[ $user]($style)'
 style = "bg:peach fg:crust"
 format = "[ $path ]($style)"
 truncation_length = 3
-truncation_symbol = "…/"
+truncation_symbol = ""
 
 [directory.substitutions]
 "Documents" = "󰈙 "
@@ -128,12 +126,12 @@ format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 [python]
 symbol = ""
 style = "bg:green"
-format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
+format = '[[ $symbol( $version)( \($virtualenv\)) ](fg:crust bg:green)]($style)'
 
 [dotnet]
 symbol = ""
 style = "bg:green"
-format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
+format = '[[ $symbol( $version)( \($virtualenv\)) ](fg:crust bg:green)]($style)'
 
 
 [docker_context]
@@ -150,8 +148,8 @@ ignore_base = false
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:crust bg:lavender)]($style)'
+style = "bg:sapphire"
+format = '[[  $time ](fg:crust bg:sapphire)]($style)'
 
 [character]
 disabled = false
