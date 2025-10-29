@@ -10,12 +10,7 @@ require("inc_rename").setup()
 vim.keymap.set("n", "<leader>R", ":IncRename ")
 vim.keymap.set("v", "<leader>R", ":IncRename ")
 
--- LSP Format setup
-local lsp_format = require("lsp-format")
-lsp_format.setup()
-
-local on_attach = function(client, bufnr)
-	lsp_format.on_attach(client, bufnr)
+local on_attach = function(client, _)
 	client.server_capabilities.semanticTokensProvider = nil
 	client.server_capabilities.documentHighlightProvider = false
 end
