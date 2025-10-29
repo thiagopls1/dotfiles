@@ -8,6 +8,7 @@ vim.lsp.config('yamlls', {
 					"/azure-pipeline*.y*l",
 					"/*.azure*",
 					"Azure-Pipelines/**/*.y*l",
+					"azure-pipelines/**/*.y*l",
 					"Pipelines/*.y*l",
 				},
 				-- ["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-action.json"] = {
