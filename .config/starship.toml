@@ -1,0 +1,21 @@
+# Obtém o preenchimento do editor baseado no esquema de configuração
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = "$username in $all"
+
+# Insere uma linha branca entre os prompts do shell
+add_newline = true
+
+# Substitui o símbolo '❯' no prompt por  '➜'
+[character] # O nome do módulo que estamos configurando é  'character'
+success_symbol = '[❯](bold green)' # O 'success_symbol' é definido para  '➜' com a cor 'bold green'
+
+# Desabilita o módulo package, escondendo completamente ele do prompt
+[package]
+disabled = true
+
+[username]
+show_always = true
+style_user = "bold yellow"
+style_root = "bold red"
+format = "[$user]($style)"

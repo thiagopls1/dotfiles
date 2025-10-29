@@ -23,7 +23,12 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 # ZSH Plugins & Theme
 #ZSH=/usr/share/oh-my-zsh/
 ZSH=~"/.oh-my-zsh"
-ZSH_THEME="spaceship"
+
+# Theme Loading
+ZSH_THEME=""
+eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship.toml
+
 plugins=(git git-auto-fetch)
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
