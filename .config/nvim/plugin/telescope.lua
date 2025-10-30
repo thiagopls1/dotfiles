@@ -31,6 +31,7 @@ telescope.setup({
 				"obj",
 			},
 			hidden = true,
+			no_ignore = true,
 		},
 		buffers = {
 			mappings = {
