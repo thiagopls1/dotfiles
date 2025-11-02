@@ -1,6 +1,6 @@
-local telescope = require "telescope"
-local builtin = require "telescope.builtin"
-local actions = require "telescope.actions"
+local telescope = require("telescope")
+local builtin = require("telescope.builtin")
+local actions = require("telescope.actions")
 
 require("neoclip").setup()
 
@@ -12,13 +12,14 @@ telescope.setup({
 			fuzzy = true,
 			override_generic_sorter = true,
 			override_file_sorter = true,
-			case_mode = "smart_case"
-		}
+			case_mode = "smart_case",
+		},
 	},
 	pickers = {
 		find_files = {
 			file_ignore_patterns = {
 				".git",
+				".ccls%-cache",
 				"node_modules",
 				"__pycache__",
 				".pytest_cache",
@@ -37,10 +38,10 @@ telescope.setup({
 			mappings = {
 				i = {
 					["<c-s-d>"] = actions.delete_buffer,
-				}
-			}
-		}
-	}
+				},
+			},
+		},
+	},
 })
 
 vim.keymap.set("n", "<leader>p", builtin.find_files, { desc = "Telescope find files" })
