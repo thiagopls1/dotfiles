@@ -124,7 +124,7 @@
 		"tooltip": false
 	},
 	"custom/distro": {
-		"format": "󰣇 ",
+		"format": "󰣇",
 		"on-click": "$HOME/.config/rofi/scripts/powermenu.sh",
 		"tooltip": false
 	},
