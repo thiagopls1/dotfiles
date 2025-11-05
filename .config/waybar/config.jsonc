@@ -4,7 +4,6 @@
 	"margin-right": 5,
 	"height": 35,
 	"modules-left": [
-		"custom/distro",
 		"cpu",
 		"custom/gpu-usage",
 		"memory",
@@ -21,7 +20,7 @@
 		"pulseaudio",
 		"network",
 		"clock",
-		"custom/power"
+		"custom/distro"
 	],
 	"hyprland/workspaces": {
 		"format": "{icon}",
@@ -49,7 +48,7 @@
 	},
 	"clock": {
 		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-		"format": "{:%d/%m/%Y %H:%M}",
+		"format": "{:%a, %d/%m/%Y %H:%M}",
 		"on-click": "gnome-calendar"
 	},
 	"cpu": {
@@ -125,7 +124,8 @@
 		"tooltip": false
 	},
 	"custom/distro": {
-		"format": "󰣇",
+		"format": "󰣇 ",
+		"on-click": "$HOME/.config/rofi/scripts/powermenu.sh",
 		"tooltip": false
 	},
 	"mpris": {
