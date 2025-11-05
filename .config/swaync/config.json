@@ -22,7 +22,7 @@
 	"fit-to-screen": false,
 	"relative-timestamps": true,
 	"control-center-width": 450,
-	"control-center-height": 500,
+	"control-center-height": 450,
 	"notification-window-width": 450,
 	"keyboard-shortcuts": true,
 	"notification-grouping": true,
