@@ -23,7 +23,6 @@ button {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
 	background: inherit;
-	box-shadow: inset 0 -3px #ffffff;
 }
 
 /* you can set a style on hover for any module like this */
@@ -42,7 +41,8 @@ button:hover {
 #workspaces button {
 	padding: 0 5px;
 	background-color: transparent;
-	color: #ffffff;
+	color: @text;
+	font-weight: bold;
 }
 
 
@@ -50,18 +50,20 @@ button:hover {
 	background: rgba(0, 0, 0, 0.2);
 }
 
+#workspaces button.active {
+	color: @pink;
+}
+
 #workspaces button.focused {
 	background-color: @lavender;
-	box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.urgent {
-	background-color: @red;
+	color: @red;
 }
 
 #mode {
 	background-color: #64727D;
-	box-shadow: inset 0 -3px #ffffff;
 }
 
 #clock,
