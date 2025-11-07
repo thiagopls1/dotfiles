@@ -1,0 +1,13 @@
+(
+    version: 3,
+    windows: (
+        scale: 8.5,
+        items_per_row: 6,
+        overview: None,
+        switch: (
+            modifier: "alt",
+            filter_by: [],
+            switch_workspaces: false,
+        ),
+    ),
+)

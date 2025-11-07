@@ -1,0 +1,42 @@
+:root {
+	--border-color-active: #f5c2e7;
+
+	--bg-color: #1e1e2e;
+	--bg-color-hover: #313244;
+
+	--border-radius: 12px;
+	--border-size: 3px;
+	--border-style: solid;
+
+	--text-color: #cdd6f4;
+
+	--window-padding: 2px;
+}
+
+.window {}
+
+
+.monitor {}
+
+.workspace {}
+
+.client {}
+
+.client-image {}
+
+
+.launcher {}
+
+.launcher-input {}
+
+.launcher-results {}
+
+.launcher-item {}
+
+.launcher-exec {}
+
+.launcher-key {}
+
+.launcher-plugins {}
+
+.launcher-plugin {}
