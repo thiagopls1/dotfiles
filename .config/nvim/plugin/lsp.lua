@@ -16,17 +16,9 @@ local on_attach = function(client, _)
 end
 
 -- LSP File Operations setup
-lspconf.util.default_config = vim.tbl_extend(
-	'force',
-	lspconf.util.default_config,
-	{
-		capabilities = vim.tbl_deep_extend(
-			"force",
-			capabilities,
-			require("lsp-file-operations").default_capabilities()
-		)
-	}
-)
+lspconf.util.default_config = vim.tbl_extend("force", lspconf.util.default_config, {
+	capabilities = vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities()),
+})
 
 require("lsp-file-operations").setup()
 

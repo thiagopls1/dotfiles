@@ -1,7 +1,7 @@
-local nvim_tree_api = require "nvim-tree.api"
-local dapui = require "dapui"
+local nvim_tree_api = require("nvim-tree.api")
+local dapui = require("dapui")
 
-require "nvim-tree".setup({
+require("nvim-tree").setup({
 	sort = {
 		sorter = "case_sensitive",
 	},
@@ -18,7 +18,7 @@ require "nvim-tree".setup({
 	update_focused_file = {
 		enable = true,
 		update_root = true,
-	}
+	},
 })
 
 -- Bindings

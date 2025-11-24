@@ -1,6 +1,6 @@
-local db = require "dashboard"
+local db = require("dashboard")
 
-db.setup {
+db.setup({
 	theme = "hyper",
 	config = {
 		week_header = {
@@ -14,7 +14,7 @@ db.setup {
 				desc = "󰊳 Update",
 				group = "@property",
 				action = "PlugUpdate",
-				key = "u"
+				key = "u",
 			},
 			{
 				icon = " ",
@@ -23,7 +23,7 @@ db.setup {
 				group = "Label",
 				action = "Telescope find_files",
 				key = "f",
-			}
+			},
 			-- {
 			--   desc = " Apps",
 			--   group = "DiagnosticHint",
@@ -38,4 +38,4 @@ db.setup {
 			-- },
 		},
 	},
-}
+})

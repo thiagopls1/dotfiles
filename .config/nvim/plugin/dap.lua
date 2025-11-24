@@ -1,10 +1,10 @@
-require "dapui".setup {}
+require("dapui").setup({})
 
-local nvim_tree_api = require "nvim-tree.api"
+local nvim_tree_api = require("nvim-tree.api")
 local nvim_tree_was_visible = nil
 
 -- DAP & DAPUI Config
-local dap, dapui = require "dap", require "dapui"
+local dap, dapui = require("dap"), require("dapui")
 
 local function dapui_toggle()
 	if nvim_tree_api.tree.is_visible() then
@@ -24,28 +24,25 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
 end
 
 -- On debug finish
-dap.listeners.before.event_terminated["dapui_config"] = function()
-end
+dap.listeners.before.event_terminated["dapui_config"] = function() end
 
 -- On debug exit
-dap.listeners.before.event_exited["dapui_config"] = function()
-end
+dap.listeners.before.event_exited["dapui_config"] = function() end
 
 -- DAP Colors
-vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939', bg = '#202230' })
-vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef', bg = '#202230' })
-vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379', bg = '#202230' })
+vim.api.nvim_set_hl(0, "DapBreakpoint", { ctermbg = 0, fg = "#993939", bg = "#202230" })
+vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef", bg = "#202230" })
+vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, fg = "#98c379", bg = "#202230" })
 
 -- DAP Signs
 vim.fn.sign_define("DapBreakpoint", {
-	text = 'o',
-	texthl = 'DapBreakpoint',
-	linehl = 'DapBreakpoint',
-	numhl =
-	'DapBreakpoint'
+	text = "o",
+	texthl = "DapBreakpoint",
+	linehl = "DapBreakpoint",
+	numhl = "DapBreakpoint",
 })
 
-vim.fn.sign_define("DapStopped", { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
+vim.fn.sign_define("DapStopped", { text = "", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
 
 -- DAP Keybindings
 vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue/Start DAP session" })

@@ -6,4 +6,4 @@
 -- ]x - previous
 -- [x - next
 
-require 'git-conflict'.setup {}
+require("git-conflict").setup({})
