@@ -102,5 +102,9 @@ vim.keymap.set('n', '<leader>t', '<Cmd>terminal<CR>', { silent = true, desc = 'O
 EOF
 
 vnoremap <leader>y "+y
+nnoremap <C-Left> <C-w>h
+nnoremap <C-Down> <C-w>j
+nnoremap <C-Up> <C-w>k
+nnoremap <C-Right> <C-w>l
 
 colorscheme catppuccin
