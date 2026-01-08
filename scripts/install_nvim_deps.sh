@@ -16,10 +16,26 @@
 #     fi
 # done
 
-if ! command -v nvim 2>&1 >/dev/null
-then
-  echo "nvim not could not be found. Installing..."
-	sudo pacman -S nvim
+NODE_PACKAGES=(
+	
+)
+PACMAN_PACKAGES=(
+	"tree-sitter"
+	"tree-sitter-cli"
+	"ripgrep"
+	"ruby-lsp"
+	"bash-language-server"
+	"lua-language-server"
+	"yaml-language-server"
+	"typescript-language-server"
+	"pyright"
+	"rust-analyzer"
+	"ccls"
+)
+
+if [ -z $(which nvim 2>/dev/null) ]; then
+	read -p "nvim not could not be found. Install? [Y/n] " USER_CONFIRM
+	PACMAN_PACKAGES+=("nvim")
 fi
 
 
@@ -34,9 +50,8 @@ echo "Installing Telescope dependencies..."
 sudo pacman -S ripgrep
 
 # Node dependencies
-if ! command -v node 2>&1 >/dev/null
-then
-  echo "node could not be found. Installing..."
+if [ -z which node 2> /dev/null ]; then
+	read -p "node not could not be found. Install? [Y/n] " USER_CONFIRM
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 	nvm install node
 	nvm use node
@@ -54,9 +69,8 @@ npm install -g \
 
 sudo pacman -S lua-language-server
 
-if ! command -v gem 2>&1 >/dev/null
-then
-  echo "gem could not be found. Installing..."
+if [ -z which gem 2> /dev/null ]; then
+	read -p "gem not could not be found. Install? [Y/n] " USER_CONFIRM
 	sudo pacman -S ruby
 	gem install ruby-lsp
 fi
