@@ -6,6 +6,10 @@ alias ll='ls -lh'
 alias icat="kitten icat"
 alias dvrc=$HOME/scripts/convert_davinci.sh
 
+# Exports
+
+export EDITOR=nvim
+
 # Performance Tweaks
 
 DISABLE_AUTO_UPDATE="true"
