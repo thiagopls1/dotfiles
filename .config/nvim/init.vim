@@ -20,10 +20,9 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'HiPhish/rainbow-delimiters.nvim'
-Plug 'barrett-ruth/live-server.nvim'
 Plug 'nvim-lua/plenary.nvim'
 
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
@@ -53,7 +52,7 @@ Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
@@ -63,7 +62,6 @@ call plug#end()
 lua << EOF
 require	"Comment".setup{}
 require	"rainbow-delimiters.setup".setup{}
-require	"live-server".setup{}
 
 require "catppuccin".setup{
         flavour = "macchiato",
