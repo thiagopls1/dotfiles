@@ -1,4 +1,4 @@
-require("nvim-treesitter").setup({
+require("nvim-treesitter.configs").setup({
 	sync_install = true,
 	highlight = {
 		enable = true,

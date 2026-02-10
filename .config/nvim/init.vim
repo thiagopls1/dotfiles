@@ -22,7 +22,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'nvim-lua/plenary.nvim'
 
-Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
@@ -52,7 +52,7 @@ Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
-Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'tag': 'master', 'do': ':TSUpdate'}
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
@@ -66,13 +66,6 @@ require	"rainbow-delimiters.setup".setup{}
 require "catppuccin".setup{
         flavour = "macchiato",
         transparent_background = true
-}
-
-require "lualine".setup {
-  options = { 
-		theme = "ayu_mirage", 
-		globalstatus = true 
-	}
 }
 
 require"presence".setup{
