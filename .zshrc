@@ -46,7 +46,7 @@ ZSH_THEME=""
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-plugins=(git git-auto-fetch autoswitch_virtualenv)
+plugins=(git git-auto-fetch)
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
@@ -78,6 +78,8 @@ zinit wait lucid for \
     zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
     zsh-users/zsh-completions
+
+zinit light MichaelAquilina/zsh-autoswitch-virtualenv
 
 ### End of Zinit's installer chunk
 
