@@ -36,17 +36,20 @@ telescope.setup({
 		},
 		buffers = {
 			mappings = {
+				n = {
+					["tD"] = actions.delete_buffer,
+				},
 				i = {
-					["<c-s-d>"] = actions.delete_buffer,
+					["<c-D>"] = actions.delete_buffer,
 				},
 			},
 		},
 	},
 })
 
-vim.keymap.set("n", "<leader>p", builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set("n", "<leader>r", builtin.lsp_references, { desc = "Telescope peek references" })
-vim.keymap.set("n", "<leader>f", builtin.live_grep, { desc = "Search in files" })
-vim.keymap.set("n", "<leader>B", builtin.buffers, { desc = "Buffers" })
-vim.keymap.set("n", "<leader>.", "<Cmd>Telescope emoji<CR>", { desc = "Telesope emojis" })
-vim.keymap.set("n", "<leader>P", "<Cmd>Telescope neoclip<CR>", { desc = "Telesope emojis" })
+vim.keymap.set("n", "tf", builtin.find_files, { desc = "Telescope find files" })
+vim.keymap.set("n", "tr", builtin.lsp_references, { desc = "Telescope peek references" })
+vim.keymap.set("n", "tg", builtin.live_grep, { desc = "Search in files" })
+vim.keymap.set("n", "tB", builtin.buffers, { desc = "Buffers" })
+vim.keymap.set("n", "tE", "<Cmd>Telescope emoji<CR>", { desc = "Telesope emojis" })
+vim.keymap.set("n", "tv", "<Cmd>Telescope neoclip<CR>", { desc = "Telesope emojis" })
