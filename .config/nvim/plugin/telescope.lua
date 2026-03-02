@@ -18,7 +18,7 @@ telescope.setup({
 	pickers = {
 		find_files = {
 			file_ignore_patterns = {
-				".git",
+				"^.git$",
 				".ccls%-cache",
 				"node_modules",
 				"__pycache__",
