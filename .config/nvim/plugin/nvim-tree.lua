@@ -6,7 +6,17 @@ require("nvim-tree").setup({
 		sorter = "case_sensitive",
 	},
 	view = {
-		width = 30,
+		float = {
+			enable = true,
+			open_win_config = {
+				border = "rounded",
+				relative = "editor",
+				row = 0,
+				col = 0,
+				width = 30,
+				height = (vim.opt.lines:get() - vim.opt.cmdheight:get()) - 3,
+			},
+		},
 	},
 	renderer = {
 		group_empty = true,
