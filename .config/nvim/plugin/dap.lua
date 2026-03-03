@@ -54,4 +54,4 @@ vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into" })
 vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out" })
 -- SHIFT + F8
 vim.keymap.set("n", "<F20>", dap.disconnect, { desc = "Disconnect" })
-vim.keymap.set("n", "<leader>b", dapui_toggle, { desc = "Toggle Dap UI" })
+vim.keymap.set("n", "mb", dapui_toggle, { desc = "Toggle Dap UI" })

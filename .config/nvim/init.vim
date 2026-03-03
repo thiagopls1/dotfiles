@@ -89,7 +89,7 @@ local home_dir = os.getenv("HOME")
 package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
 
 -- KeyBindings
-vim.keymap.set('n', '<leader>t', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
+vim.keymap.set('n', 'mt', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
 EOF
 
 vnoremap <leader>y "+y

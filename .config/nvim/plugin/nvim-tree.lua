@@ -42,4 +42,4 @@ local function toggle_nvim_tree()
 end
 
 --vim.keymap.set("n", "<C-h>", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
-vim.keymap.set("n", "ze", toggle_nvim_tree, opts("Open"))
+vim.keymap.set("n", "me", toggle_nvim_tree, opts("Open"))
