@@ -1,7 +1,22 @@
 local nvim_tree_api = require("nvim-tree.api")
 local dapui = require("dapui")
 
+local function opts(desc)
+	return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+end
+
+local function custom_on_attach(bufnr)
+	local api = require("nvim-tree.api")
+
+	-- default mappings
+	api.config.mappings.default_on_attach(bufnr)
+
+	-- custom mappings
+	vim.keymap.set("n", "<esc>", nvim_tree_api.tree.close, opts("Close"))
+end
+
 require("nvim-tree").setup({
+	on_attach = custom_on_attach,
 	sort = {
 		sorter = "case_sensitive",
 	},
@@ -31,15 +46,10 @@ require("nvim-tree").setup({
 	},
 })
 
--- Bindings
-local function opts(desc)
-	return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-end
-
 local function toggle_nvim_tree()
 	nvim_tree_api.tree.toggle()
 	dapui.close()
 end
 
---vim.keymap.set("n", "<C-h>", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
+-- Bindings
 vim.keymap.set("n", "me", toggle_nvim_tree, opts("Open"))
