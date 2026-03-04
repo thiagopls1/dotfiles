@@ -7,8 +7,8 @@ vim.diagnostic.config({ virtual_text = true })
 
 -- LSP Rename
 require("inc_rename").setup()
-vim.keymap.set("n", "<leader>R", ":IncRename ")
-vim.keymap.set("v", "<leader>R", ":IncRename ")
+vim.keymap.set("n", "zr", ":IncRename ")
+vim.keymap.set("v", "zr", ":IncRename ")
 
 local on_attach = function(client, _)
 	client.server_capabilities.semanticTokensProvider = nil
