@@ -19,7 +19,7 @@
         ],
         "position": "top_center",
         "screenshotAnnotationTool": "",
-        "showCategories": false,
+        "showCategories": true,
         "showIconBackground": false,
         "sortByMostUsed": true,
         "terminalCommand": "alacritty -e",
@@ -86,7 +86,7 @@
                     "fontWeight": "bold",
                     "groupedBorderOpacity": 1,
                     "hideUnoccupied": false,
-                    "iconScale": 0.6,
+                    "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "name",
                     "occupiedColor": "secondary",
@@ -163,11 +163,12 @@
                 },
                 {
                     "blacklist": [
+                        "*spotify*"
                     ],
                     "chevronColor": "error",
                     "colorizeIcons": false,
                     "drawerEnabled": false,
-                    "hidePassive": true,
+                    "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
                     ]
