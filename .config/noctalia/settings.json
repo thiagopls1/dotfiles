@@ -99,17 +99,7 @@
             ],
             "left": [
                 {
-                    "iconColor": "none",
-                    "id": "Settings"
-                },
-                {
-                    "clockColor": "none",
-                    "customFont": "",
-                    "formatHorizontal": "ddd dd MMMM, HH:mm:ss",
-                    "formatVertical": "HH mm - dd MM",
-                    "id": "Clock",
-                    "tooltipFormat": "",
-                    "useCustomFont": false
+                    "id": "plugin:privacy-indicator"
                 },
                 {
                     "compactMode": true,
@@ -134,18 +124,6 @@
                     "usePadding": false
                 },
                 {
-                    "colorizeIcons": false,
-                    "hideMode": "hidden",
-                    "id": "ActiveWindow",
-                    "maxWidth": 145,
-                    "scrollingMode": "hover",
-                    "showIcon": true,
-                    "textColor": "error",
-                    "useFixedWidth": false
-                }
-            ],
-            "right": [
-                {
                     "compactMode": false,
                     "hideMode": "hidden",
                     "hideWhenIdle": false,
@@ -162,6 +140,18 @@
                     "visualizerType": "linear"
                 },
                 {
+                    "colorizeIcons": false,
+                    "hideMode": "hidden",
+                    "id": "ActiveWindow",
+                    "maxWidth": 145,
+                    "scrollingMode": "hover",
+                    "showIcon": true,
+                    "textColor": "error",
+                    "useFixedWidth": false
+                }
+            ],
+            "right": [
+                {
                     "blacklist": [
                         "*spotify*"
                     ],
@@ -172,6 +162,15 @@
                     "id": "Tray",
                     "pinned": [
                     ]
+                },
+                {
+                    "clockColor": "none",
+                    "customFont": "",
+                    "formatHorizontal": "ddd dd MMMM, HH:mm:ss",
+                    "formatVertical": "HH mm - dd MM",
+                    "id": "Clock",
+                    "tooltipFormat": "",
+                    "useCustomFont": false
                 },
                 {
                     "hideWhenZero": false,
@@ -205,11 +204,14 @@
                     "textColor": "none"
                 },
                 {
+                    "id": "plugin:kde-connect"
+                },
+                {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "tertiary",
                     "customIconPath": "",
                     "enableColorization": true,
-                    "icon": "menu",
+                    "icon": "layout-dashboard",
                     "id": "ControlCenter",
                     "useDistroLogo": false
                 }
@@ -264,7 +266,7 @@
                 "id": "audio-card"
             },
             {
-                "enabled": false,
+                "enabled": true,
                 "id": "brightness-card"
             },
             {
@@ -326,7 +328,7 @@
                         "showBackground": true,
                         "showButtons": true,
                         "showVisualizer": true,
-                        "visualizerType": "linear",
+                        "visualizerType": "wave",
                         "x": 20,
                         "y": 940
                     },
@@ -625,7 +627,7 @@
         "batteryWarningThreshold": 20,
         "cpuCriticalThreshold": 90,
         "cpuWarningThreshold": 80,
-        "criticalColor": "",
+        "criticalColor": "#f38ba8",
         "diskAvailCriticalThreshold": 10,
         "diskAvailWarningThreshold": 20,
         "diskCriticalThreshold": 90,
@@ -641,7 +643,7 @@
         "tempCriticalThreshold": 90,
         "tempWarningThreshold": 80,
         "useCustomColors": false,
-        "warningColor": ""
+        "warningColor": "#94e2d5"
     },
     "templates": {
         "activeTemplates": [
