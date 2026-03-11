@@ -173,7 +173,7 @@
                     ]
                 },
                 {
-                    "clockColor": "none",
+                    "clockColor": "tertiary",
                     "customFont": "",
                     "formatHorizontal": "ddd dd MMMM, HH:mm:ss",
                     "formatVertical": "HH mm - dd MM",
@@ -378,7 +378,7 @@
         "inactiveIndicators": false,
         "indicatorColor": "primary",
         "indicatorOpacity": 0.6,
-        "indicatorThickness": 6,
+        "indicatorThickness": 3,
         "launcherIconColor": "none",
         "launcherPosition": "end",
         "monitors": [
@@ -529,7 +529,7 @@
         "enableBatteryToast": true,
         "enableKeyboardLayoutToast": true,
         "enableMarkdown": false,
-        "enableMediaToast": true,
+        "enableMediaToast": false,
         "enabled": true,
         "location": "top_right",
         "lowUrgencyDuration": 3,
