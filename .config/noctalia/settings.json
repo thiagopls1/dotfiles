@@ -473,12 +473,12 @@
         "enabled": true,
         "fadeDuration": 5,
         "lockCommand": "",
-        "lockTimeout": 660,
+        "lockTimeout": 600,
         "resumeLockCommand": "",
         "resumeScreenOffCommand": "",
         "resumeSuspendCommand": "",
         "screenOffCommand": "",
-        "screenOffTimeout": 600,
+        "screenOffTimeout": 615,
         "suspendCommand": "",
         "suspendTimeout": 1800
     },
@@ -511,11 +511,11 @@
     "nightLight": {
         "autoSchedule": false,
         "dayTemp": "6500",
-        "enabled": false,
+        "enabled": true,
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
-        "nightTemp": "1505"
+        "nightTemp": "2560"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": false,
