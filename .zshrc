@@ -50,7 +50,11 @@ plugins=(git git-auto-fetch)
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
-  mkdir $ZSH_CACHE_DIR
+    mkdir $ZSH_CACHE_DIR
+fi
+
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
 fi
 
 source $ZSH/oh-my-zsh.sh
