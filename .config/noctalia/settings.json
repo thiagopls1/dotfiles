@@ -99,6 +99,15 @@
             ],
             "left": [
                 {
+                    "defaultSettings": {
+                        "activeColor": "primary",
+                        "enableToast": true,
+                        "hideInactive": false,
+                        "iconSpacing": 4,
+                        "inactiveColor": "none",
+                        "micFilterRegex": "",
+                        "removeMargins": false
+                    },
                     "id": "plugin:privacy-indicator"
                 },
                 {
@@ -175,10 +184,10 @@
                 {
                     "hideWhenZero": false,
                     "hideWhenZeroUnread": false,
-                    "iconColor": "none",
+                    "iconColor": "tertiary",
                     "id": "NotificationHistory",
                     "showUnreadBadge": true,
-                    "unreadBadgeColor": "primary"
+                    "unreadBadgeColor": "tertiary"
                 },
                 {
                     "deviceNativePath": "__default__",
@@ -204,16 +213,18 @@
                     "textColor": "none"
                 },
                 {
+                    "defaultSettings": {
+                    },
                     "id": "plugin:kde-connect"
                 },
                 {
                     "colorizeDistroLogo": false,
-                    "colorizeSystemIcon": "tertiary",
-                    "customIconPath": "",
+                    "colorizeSystemIcon": "error",
+                    "customIconPath": "/home/thiago_lins/Pictures/Imagens Salvas/arch-linux.png",
                     "enableColorization": true,
                     "icon": "layout-dashboard",
                     "id": "ControlCenter",
-                    "useDistroLogo": false
+                    "useDistroLogo": true
                 }
             ]
         }
@@ -494,11 +505,11 @@
     "nightLight": {
         "autoSchedule": false,
         "dayTemp": "6500",
-        "enabled": true,
+        "enabled": false,
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
-        "nightTemp": "2600"
+        "nightTemp": "1505"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": false,
