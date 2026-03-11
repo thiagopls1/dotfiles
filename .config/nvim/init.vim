@@ -56,6 +56,7 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'tag': 'master', 'do': ':TSUpdate'}
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
+Plug 'rcarriga/nvim-notify'
 
 call plug#end()
 
