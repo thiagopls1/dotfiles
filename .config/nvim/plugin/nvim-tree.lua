@@ -28,7 +28,7 @@ require("nvim-tree").setup({
 				relative = "editor",
 				row = 0,
 				col = 0,
-				width = 30,
+				width = 35,
 				height = (vim.opt.lines:get() - vim.opt.cmdheight:get()) - 3,
 			},
 		},
