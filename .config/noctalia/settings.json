@@ -55,7 +55,7 @@
         "hideOnOverview": false,
         "marginHorizontal": 5,
         "marginVertical": 5,
-        "middleClickAction": "none",
+        "middleClickAction": "settings",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
         "monitors": [
@@ -67,7 +67,7 @@
         "reverseScroll": false,
         "rightClickAction": "controlCenter",
         "rightClickCommand": "",
-        "rightClickFollowMouse": true,
+        "rightClickFollowMouse": false,
         "screenOverrides": [
         ],
         "showCapsule": true,
@@ -78,7 +78,7 @@
         "widgets": {
             "center": [
                 {
-                    "characterCount": 1,
+                    "characterCount": 2,
                     "colorizeIcons": false,
                     "emptyColor": "none",
                     "enableScrollWheel": true,
@@ -152,7 +152,7 @@
                 },
                 {
                     "colorizeIcons": false,
-                    "hideMode": "hidden",
+                    "hideMode": "transparent",
                     "id": "ActiveWindow",
                     "maxWidth": 145,
                     "scrollingMode": "hover",
@@ -166,13 +166,21 @@
                     "blacklist": [
                         "*spotify*"
                     ],
-                    "chevronColor": "error",
+                    "chevronColor": "secondary",
                     "colorizeIcons": false,
                     "drawerEnabled": false,
                     "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
+                        "ZapZap",
+                        "Easy Effects",
+                        "Discord"
                     ]
+                },
+                {
+                    "defaultSettings": {
+                    },
+                    "id": "plugin:kde-connect"
                 },
                 {
                     "clockColor": "tertiary",
@@ -203,6 +211,12 @@
                 {
                     "displayMode": "onhover",
                     "iconColor": "primary",
+                    "id": "Network",
+                    "textColor": "primary"
+                },
+                {
+                    "displayMode": "onhover",
+                    "iconColor": "primary",
                     "id": "Volume",
                     "middleClickCommand": "pwvucontrol || pavucontrol",
                     "textColor": "primary"
@@ -212,11 +226,6 @@
                     "iconColor": "primary",
                     "id": "Bluetooth",
                     "textColor": "primary"
-                },
-                {
-                    "defaultSettings": {
-                    },
-                    "id": "plugin:kde-connect"
                 },
                 {
                     "colorizeDistroLogo": false,
