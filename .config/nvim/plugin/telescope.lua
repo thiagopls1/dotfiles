@@ -53,4 +53,5 @@ vim.keymap.set("n", "tr", builtin.lsp_references, { desc = "Telescope peek refer
 vim.keymap.set("n", "tg", builtin.live_grep, { desc = "Search in files" })
 vim.keymap.set("n", "tb", builtin.buffers, { desc = "Buffers" })
 vim.keymap.set("n", "te", "<Cmd>Telescope emoji<CR>", { desc = "Telesope emojis" })
-vim.keymap.set("n", "tv", "<Cmd>Telescope neoclip<CR>", { desc = "Telesope clipboard history" })
+vim.keymap.set("n", "tv", "<Cmd>Telescope neoclip<CR>", { desc = "Telescope clipboard history" })
+vim.keymap.set("n", "tn", "<Cmd>Telescope notify<CR>", { desc = "Telescope notifications history" })
