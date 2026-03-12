@@ -47,6 +47,7 @@
         "contentPadding": 5,
         "density": "comfortable",
         "displayMode": "always_visible",
+        "enableExclusionZoneInset": true,
         "floating": true,
         "fontScale": 1.1,
         "frameRadius": 12,
@@ -85,13 +86,14 @@
                     "followFocusedScreen": false,
                     "fontWeight": "bold",
                     "groupedBorderOpacity": 1,
-                    "hideUnoccupied": false,
+                    "hideUnoccupied": true,
                     "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "name",
                     "occupiedColor": "secondary",
                     "pillSize": 0.6,
                     "showApplications": true,
+                    "showApplicationsHover": false,
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": false,
                     "unfocusedIconsOpacity": 1
@@ -504,7 +506,7 @@
     "nightLight": {
         "autoSchedule": false,
         "dayTemp": "6500",
-        "enabled": false,
+        "enabled": true,
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
@@ -547,7 +549,7 @@
         }
     },
     "osd": {
-        "autoHideMs": 2500,
+        "autoHideMs": 1500,
         "backgroundOpacity": 1,
         "enabled": true,
         "enabledTypes": [
@@ -556,7 +558,7 @@
             2,
             3
         ],
-        "location": "bottom",
+        "location": "top_right",
         "monitors": [
         ],
         "overlayLayer": true
@@ -666,7 +668,7 @@
         "fontDefaultScale": 1,
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 1,
+        "panelBackgroundOpacity": 0.93,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
