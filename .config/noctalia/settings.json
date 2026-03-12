@@ -17,7 +17,7 @@
         "overviewLayer": true,
         "pinnedApps": [
         ],
-        "position": "top_center",
+        "position": "center",
         "screenshotAnnotationTool": "",
         "showCategories": true,
         "showIconBackground": false,
@@ -52,8 +52,8 @@
         "frameRadius": 12,
         "frameThickness": 8,
         "hideOnOverview": false,
-        "marginHorizontal": 4,
-        "marginVertical": 4,
+        "marginHorizontal": 5,
+        "marginVertical": 5,
         "middleClickAction": "none",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
@@ -210,13 +210,6 @@
                     "iconColor": "primary",
                     "id": "Bluetooth",
                     "textColor": "primary"
-                },
-                {
-                    "applyToAllMonitors": false,
-                    "displayMode": "onhover",
-                    "iconColor": "secondary",
-                    "id": "Brightness",
-                    "textColor": "none"
                 },
                 {
                     "defaultSettings": {
@@ -410,7 +403,7 @@
         "enableLockScreenMediaControls": false,
         "enableShadows": true,
         "forceBlackScreenCorners": false,
-        "iRadiusRatio": 1,
+        "iRadiusRatio": 0.5,
         "keybinds": {
             "keyDown": [
                 "Down"
@@ -471,7 +464,7 @@
     "idle": {
         "customCommands": "[]",
         "enabled": true,
-        "fadeDuration": 5,
+        "fadeDuration": 10,
         "lockCommand": "",
         "lockTimeout": 600,
         "resumeLockCommand": "",
@@ -511,7 +504,7 @@
     "nightLight": {
         "autoSchedule": false,
         "dayTemp": "6500",
-        "enabled": true,
+        "enabled": false,
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
@@ -673,13 +666,13 @@
         "fontDefaultScale": 1,
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 0.93,
+        "panelBackgroundOpacity": 1,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
         "settingsPanelSideBarCardStyle": false,
         "tooltipsEnabled": false,
-        "translucentWidgets": false
+        "translucentWidgets": true
     },
     "wallpaper": {
         "automationEnabled": false,
