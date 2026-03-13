@@ -31,7 +31,7 @@
         ],
         "preferredPlayer": "",
         "spectrumFrameRate": 60,
-        "visualizerType": "linear",
+        "visualizerType": "mirrored",
         "volumeFeedback": true,
         "volumeFeedbackSoundFile": "",
         "volumeOverdrive": false,
@@ -53,8 +53,8 @@
         "frameRadius": 12,
         "frameThickness": 8,
         "hideOnOverview": false,
-        "marginHorizontal": 5,
-        "marginVertical": 5,
+        "marginHorizontal": 3,
+        "marginVertical": 3,
         "middleClickAction": "settings",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
@@ -136,10 +136,10 @@
                 },
                 {
                     "compactMode": false,
-                    "hideMode": "hidden",
+                    "hideMode": "visible",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
-                    "maxWidth": 145,
+                    "maxWidth": 140,
                     "panelShowAlbumArt": true,
                     "scrollingMode": "hover",
                     "showAlbumArt": true,
@@ -149,6 +149,12 @@
                     "textColor": "tertiary",
                     "useFixedWidth": false,
                     "visualizerType": "linear"
+                },
+                {
+                    "colorName": "tertiary",
+                    "hideWhenIdle": false,
+                    "id": "AudioVisualizer",
+                    "width": 75
                 },
                 {
                     "colorizeIcons": false,
@@ -164,7 +170,6 @@
             "right": [
                 {
                     "blacklist": [
-                        "*spotify*"
                     ],
                     "chevronColor": "secondary",
                     "colorizeIcons": false,
@@ -359,6 +364,19 @@
                         "scale": 1.113155499228941,
                         "showBackground": true,
                         "x": 20,
+                        "y": 820
+                    },
+                    {
+                        "clockColor": "none",
+                        "clockStyle": "analog",
+                        "customFont": "",
+                        "format": "HH:mm\\nd MMMM yyyy",
+                        "id": "Clock",
+                        "roundedCorners": true,
+                        "scale": 0.6115516263247339,
+                        "showBackground": true,
+                        "useCustomFont": false,
+                        "x": 340,
                         "y": 820
                     }
                 ]
@@ -706,7 +724,7 @@
         "showHiddenFiles": true,
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
-        "sortOrder": "date_asc",
+        "sortOrder": "name_desc",
         "transitionDuration": 1500,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": "random",
