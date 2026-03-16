@@ -1,6 +1,6 @@
-local on_attach, capabilities = require "plugin.lsp"
+local on_attach, capabilities = require("plugin.lsp")
 
-vim.lsp.config('yamlls', {
+vim.lsp.config("yamlls", {
 	settings = {
 		yaml = {
 			schemas = {
@@ -16,15 +16,17 @@ vim.lsp.config('yamlls', {
 				-- },
 				["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-workflow.json"] = {
 					".github/**/*.y*l",
-				}
+				},
+				["https://raw.githubusercontent.com/compose-spec/compose-spec/refs/heads/main/schema/compose-spec.json"] = {
+					"*-compose.y*l",
+				},
 			},
 			format = {
-				enable = true
-			}
+				enable = true,
+			},
 		},
 	},
 	on_attach = on_attach,
 })
 
-
-vim.lsp.enable('yamlls')
+vim.lsp.enable("yamlls")
