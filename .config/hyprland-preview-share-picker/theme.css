@@ -33,7 +33,7 @@
 .window {
 	background-color: var(--base);
 	color: var(--text);
-	font-family: 'Inter', 'SF Pro', 'Segoe UI', sans-serif;
+	font-family: 'Fira Code Nerd Font';
 	border: 1px solid var(--surface0);
 	border-radius: var(--radius);
 }
