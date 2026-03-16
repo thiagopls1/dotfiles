@@ -11,9 +11,9 @@ vim.lsp.config("yamlls", {
 					"azure-pipelines/**/*.y*l",
 					"Pipelines/*.y*l",
 				},
-				-- ["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-action.json"] = {
-				-- 	".github/**/*.y*l",
-				-- },
+				["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-action.json"] = {
+					".github/**/*.y*l",
+				},
 				["https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-workflow.json"] = {
 					".github/**/*.y*l",
 				},
