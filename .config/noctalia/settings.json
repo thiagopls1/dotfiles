@@ -131,7 +131,7 @@
                     "showMemoryUsage": true,
                     "showNetworkStats": false,
                     "showSwapUsage": false,
-                    "textColor": "tertiary",
+                    "textColor": "primary",
                     "useMonospaceFont": true,
                     "usePadding": false
                 },
@@ -147,7 +147,7 @@
                     "showArtistFirst": true,
                     "showProgressRing": true,
                     "showVisualizer": true,
-                    "textColor": "tertiary",
+                    "textColor": "primary",
                     "useFixedWidth": false,
                     "visualizerType": "wave"
                 },
@@ -169,7 +169,7 @@
                     ],
                     "chevronColor": "secondary",
                     "colorizeIcons": false,
-                    "drawerEnabled": false,
+                    "drawerEnabled": true,
                     "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
@@ -221,12 +221,12 @@
                 },
                 {
                     "deviceNativePath": "__default__",
-                    "displayMode": "graphic-clean",
-                    "hideIfIdle": false,
+                    "displayMode": "icon-hover",
+                    "hideIfIdle": true,
                     "hideIfNotDetected": true,
                     "id": "Battery",
-                    "showNoctaliaPerformance": false,
-                    "showPowerProfiles": false
+                    "showNoctaliaPerformance": true,
+                    "showPowerProfiles": true
                 },
                 {
                     "colorizeDistroLogo": false,
@@ -714,6 +714,11 @@
         "fillMode": "crop",
         "hideWallpaperFilenames": true,
         "monitorDirectories": [
+            {
+                "directory": "/home/thiago_lins/Pictures/Wallpapers",
+                "name": "DP-3",
+                "wallpaper": ""
+            }
         ],
         "overviewBlur": 0.4,
         "overviewEnabled": false,
