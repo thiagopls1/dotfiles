@@ -32,7 +32,7 @@
         ],
         "preferredPlayer": "",
         "spectrumFrameRate": 60,
-        "visualizerType": "wave",
+        "visualizerType": "mirrored",
         "volumeFeedback": true,
         "volumeFeedbackSoundFile": "",
         "volumeOverdrive": false,
@@ -93,7 +93,7 @@
                     "labelMode": "name",
                     "occupiedColor": "secondary",
                     "pillSize": 0.6,
-                    "showApplications": true,
+                    "showApplications": false,
                     "showApplicationsHover": false,
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": false,
@@ -137,7 +137,7 @@
                 },
                 {
                     "compactMode": false,
-                    "hideMode": "visible",
+                    "hideMode": "hidden",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
                     "maxWidth": 140,
@@ -146,16 +146,10 @@
                     "showAlbumArt": true,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "textColor": "tertiary",
                     "useFixedWidth": false,
-                    "visualizerType": "linear"
-                },
-                {
-                    "colorName": "tertiary",
-                    "hideWhenIdle": false,
-                    "id": "AudioVisualizer",
-                    "width": 75
+                    "visualizerType": "wave"
                 },
                 {
                     "colorizeIcons": false,
@@ -207,15 +201,6 @@
                     "unreadBadgeColor": "tertiary"
                 },
                 {
-                    "deviceNativePath": "__default__",
-                    "displayMode": "graphic-clean",
-                    "hideIfIdle": false,
-                    "hideIfNotDetected": true,
-                    "id": "Battery",
-                    "showNoctaliaPerformance": false,
-                    "showPowerProfiles": false
-                },
-                {
                     "displayMode": "onhover",
                     "iconColor": "primary",
                     "id": "Network",
@@ -235,8 +220,17 @@
                     "textColor": "primary"
                 },
                 {
+                    "deviceNativePath": "__default__",
+                    "displayMode": "graphic-clean",
+                    "hideIfIdle": false,
+                    "hideIfNotDetected": true,
+                    "id": "Battery",
+                    "showNoctaliaPerformance": false,
+                    "showPowerProfiles": false
+                },
+                {
                     "colorizeDistroLogo": false,
-                    "colorizeSystemIcon": "error",
+                    "colorizeSystemIcon": "none",
                     "customIconPath": "/home/thiago_lins/Pictures/Imagens Salvas/arch-linux.png",
                     "enableColorization": true,
                     "icon": "layout-dashboard",
@@ -412,7 +406,7 @@
         "onlySameOutput": true,
         "pinnedApps": [
         ],
-        "pinnedStatic": false,
+        "pinnedStatic": true,
         "position": "bottom",
         "showDockIndicator": true,
         "showLauncherIcon": true,
