@@ -1,0 +1,6 @@
+[General]
+theme=catppuccin-mocha-pink
+
+[Applications]
+Default=ZapZap
+catppuccin-mocha-pink=kshutdown, kvantum
