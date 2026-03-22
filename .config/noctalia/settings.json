@@ -174,7 +174,8 @@
                     "id": "Tray",
                     "pinned": [
                         "ZapZap",
-                        "Discord"
+                        "Discord",
+                        "Easy Effects"
                     ]
                 },
                 {
@@ -185,7 +186,7 @@
                 {
                     "clockColor": "tertiary",
                     "customFont": "",
-                    "formatHorizontal": "ddd dd MMMM, HH:mm:ss",
+                    "formatHorizontal": "ddd dd 'de' MMMM, HH:mm",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "tooltipFormat": "",
@@ -694,7 +695,7 @@
         "fontDefaultScale": 1,
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 0.93,
+        "panelBackgroundOpacity": 0.9500000000000001,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
@@ -711,7 +712,7 @@
         ],
         "fillColor": "#000000",
         "fillMode": "crop",
-        "hideWallpaperFilenames": true,
+        "hideWallpaperFilenames": false,
         "monitorDirectories": [
             {
                 "directory": "/home/thiago_lins/Pictures/Wallpapers",
@@ -728,7 +729,7 @@
         "showHiddenFiles": true,
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
-        "sortOrder": "name_desc",
+        "sortOrder": "name",
         "transitionDuration": 1500,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": [
@@ -741,7 +742,7 @@
         ],
         "useSolidColor": false,
         "useWallhaven": false,
-        "viewMode": "recursive",
+        "viewMode": "browse",
         "wallhavenApiKey": "",
         "wallhavenCategories": "111",
         "wallhavenOrder": "desc",
