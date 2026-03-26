@@ -178,11 +178,6 @@
                     ]
                 },
                 {
-                    "defaultSettings": {
-                    },
-                    "id": "plugin:kde-connect"
-                },
-                {
                     "clockColor": "tertiary",
                     "customFont": "",
                     "formatHorizontal": "ddd dd 'de' MMMM, HH:mm",
@@ -193,7 +188,7 @@
                 },
                 {
                     "hideWhenZero": false,
-                    "hideWhenZeroUnread": false,
+                    "hideWhenZeroUnread": true,
                     "iconColor": "tertiary",
                     "id": "NotificationHistory",
                     "showUnreadBadge": true,
@@ -213,12 +208,6 @@
                     "textColor": "primary"
                 },
                 {
-                    "displayMode": "onhover",
-                    "iconColor": "primary",
-                    "id": "Bluetooth",
-                    "textColor": "primary"
-                },
-                {
                     "deviceNativePath": "__default__",
                     "displayMode": "icon-hover",
                     "hideIfIdle": true,
@@ -226,6 +215,11 @@
                     "id": "Battery",
                     "showNoctaliaPerformance": true,
                     "showPowerProfiles": true
+                },
+                {
+                    "defaultSettings": {
+                    },
+                    "id": "plugin:kde-connect"
                 },
                 {
                     "colorizeDistroLogo": false,
@@ -534,7 +528,7 @@
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
-        "nightTemp": "2560"
+        "nightTemp": "2041"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": false,
