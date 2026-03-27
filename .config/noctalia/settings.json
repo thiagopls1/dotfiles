@@ -208,6 +208,12 @@
                     "textColor": "primary"
                 },
                 {
+                    "displayMode": "onhover",
+                    "iconColor": "primary",
+                    "id": "Bluetooth",
+                    "textColor": "primary"
+                },
+                {
                     "deviceNativePath": "__default__",
                     "displayMode": "icon-hover",
                     "hideIfIdle": true,
@@ -528,7 +534,7 @@
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "23:00",
-        "nightTemp": "2041"
+        "nightTemp": "2060"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": false,
