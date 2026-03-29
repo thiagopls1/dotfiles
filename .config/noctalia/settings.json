@@ -93,11 +93,14 @@
                     "labelMode": "name",
                     "occupiedColor": "none",
                     "pillSize": 0.6,
-                    "showApplications": true,
+                    "showApplications": false,
                     "showApplicationsHover": true,
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": false,
                     "unfocusedIconsOpacity": 1
+                },
+                {
+                    "id": "plugin:weekly-calendar"
                 }
             ],
             "left": [
@@ -187,22 +190,22 @@
                     "useCustomFont": false
                 },
                 {
-                    "displayMode": "onhover",
+                    "displayMode": "alwaysHide",
                     "iconColor": "primary",
                     "id": "Network",
                     "textColor": "primary"
                 },
                 {
-                    "displayMode": "onhover",
+                    "displayMode": "alwaysHide",
                     "iconColor": "primary",
-                    "id": "Volume",
-                    "middleClickCommand": "pwvucontrol || pavucontrol",
+                    "id": "Bluetooth",
                     "textColor": "primary"
                 },
                 {
-                    "displayMode": "onhover",
+                    "displayMode": "alwaysHide",
                     "iconColor": "primary",
-                    "id": "Bluetooth",
+                    "id": "Volume",
+                    "middleClickCommand": "pwvucontrol || pavucontrol",
                     "textColor": "primary"
                 },
                 {
@@ -325,7 +328,7 @@
         }
     },
     "desktopWidgets": {
-        "enabled": true,
+        "enabled": false,
         "gridSnap": true,
         "gridSnapScale": false,
         "monitorWidgets": [
@@ -365,15 +368,6 @@
                         "useCustomFont": false,
                         "x": 340,
                         "y": 820
-                    },
-                    {
-                        "defaultSettings": {
-                            "startOnMonday": true
-                        },
-                        "id": "plugin:calendar-widget",
-                        "showBackground": true,
-                        "x": 1660,
-                        "y": 780
                     }
                 ]
             }
@@ -395,12 +389,12 @@
         "groupIndicatorStyle": "dots",
         "inactiveIndicators": false,
         "indicatorColor": "primary",
-        "indicatorOpacity": 0.6,
+        "indicatorOpacity": 1,
         "indicatorThickness": 3,
-        "launcherIcon": "",
+        "launcherIcon": "rocket",
         "launcherIconColor": "none",
         "launcherPosition": "end",
-        "launcherUseDistroLogo": true,
+        "launcherUseDistroLogo": false,
         "monitors": [
         ],
         "onlySameOutput": true,
