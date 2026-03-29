@@ -91,7 +91,7 @@
                     "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "name",
-                    "occupiedColor": "secondary",
+                    "occupiedColor": "none",
                     "pillSize": 0.6,
                     "showApplications": true,
                     "showApplicationsHover": true,
@@ -180,19 +180,11 @@
                 {
                     "clockColor": "tertiary",
                     "customFont": "",
-                    "formatHorizontal": "ddd dd 'de' MMMM, HH:mm",
+                    "formatHorizontal": "ddd dd 'de' MMMM HH:mm",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "tooltipFormat": "",
                     "useCustomFont": false
-                },
-                {
-                    "hideWhenZero": false,
-                    "hideWhenZeroUnread": true,
-                    "iconColor": "tertiary",
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true,
-                    "unreadBadgeColor": "tertiary"
                 },
                 {
                     "displayMode": "onhover",
@@ -373,6 +365,15 @@
                         "useCustomFont": false,
                         "x": 340,
                         "y": 820
+                    },
+                    {
+                        "defaultSettings": {
+                            "startOnMonday": true
+                        },
+                        "id": "plugin:calendar-widget",
+                        "showBackground": true,
+                        "x": 1660,
+                        "y": 780
                     }
                 ]
             }
