@@ -11,7 +11,7 @@ DraggableDesktopWidget {
     property var pluginApi: null
 
     readonly property bool startOnMonday: pluginApi?.pluginSettings?.startOnMonday ?? true
-    
+
     // --- Sizing ---
     readonly property real _width: Math.round(250 * widgetScale)
     readonly property real _height: Math.round(285 * widgetScale)
@@ -20,30 +20,33 @@ DraggableDesktopWidget {
 
     // --- Date Logic ---
     property date currentDate: new Date()
-    
+    // We use these as "Primitive Anchors"
+    property int liveDay: new Date().getDate()
+    property int liveMonth: new Date().getMonth()
+    property int liveYear: new Date().getFullYear()
+
     function refreshDate() {
         let now = new Date();
-        if (now.getDate() !== currentDate.getDate() || 
-            now.getMonth() !== currentDate.getMonth() || 
-            now.getFullYear() !== currentDate.getFullYear()) {
-            currentDate = now;
-        }
+        currentDate = now;
+        // Updating these primitives is the "hammer" that forces QML to redraw
+        liveDay = now.getDate();
+        liveMonth = now.getMonth();
+        liveYear = now.getFullYear();
     }
 
-    // Refresh immediately on wake/visibility change
     onVisibleChanged: if (visible) refreshDate()
 
     Timer {
-        interval: 60000 
+        interval: 60000
         running: true
         repeat: true
         onTriggered: root.refreshDate()
     }
 
-    readonly property var days: startOnMonday 
-        ? ["M", "T", "W", "T", "F", "S", "S"] 
-        : ["S", "M", "T", "W", "T", "F", "S"]
-    
+    readonly property var days: startOnMonday
+    ? ["M", "T", "W", "T", "F", "S", "S"]
+    : ["S", "M", "T", "W", "T", "F", "S"]
+
     readonly property int firstDayOffset: {
         let firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         if (startOnMonday) {
@@ -54,18 +57,11 @@ DraggableDesktopWidget {
     }
 
     readonly property int daysInMonth: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
-    
-    function isToday(dayNum) {
-        let now = new Date();
-        return dayNum === now.getDate() && 
-               currentDate.getMonth() === now.getMonth() && 
-               currentDate.getFullYear() === now.getFullYear();
-    }
 
     // --- UI Layout ---
     Rectangle {
         anchors.fill: parent
-        color: Color.mSurface 
+        color: Color.mSurface
         opacity: 0.85
         radius: Style.radiusM
         border.color: Color.mOutlineVariant
@@ -78,7 +74,7 @@ DraggableDesktopWidget {
 
             NText {
                 text: currentDate.toLocaleDateString(Qt.locale(), "MMMM yyyy").toUpperCase()
-                color: Color.mPrimary 
+                color: Color.mPrimary
                 font.bold: true
                 font.letterSpacing: 1.2
                 font.pointSize: Style.fontSizeM
@@ -113,16 +109,23 @@ DraggableDesktopWidget {
                     model: root.daysInMonth
                     Rectangle {
                         readonly property int dayNum: index + 1
-                        readonly property bool highlight: root.isToday(dayNum)
+
+                        readonly property bool isActuallyToday:
+                        dayNum === root.liveDay &&
+                        root.currentDate.getMonth() === root.liveMonth &&
+                        root.currentDate.getFullYear() === root.liveYear
+
                         Layout.preferredWidth: 28 * widgetScale
                         Layout.preferredHeight: 28 * widgetScale
-                        color: highlight ? Color.mPrimary : "transparent"
+
+                        color: isActuallyToday ? Color.mPrimary : "transparent"
                         radius: Style.radiusS
+
                         NText {
                             anchors.centerIn: parent
                             text: dayNum
-                            color: highlight ? Color.mOnPrimary : Color.mOnSurface
-                            font.bold: highlight
+                            color: isActuallyToday ? Color.mOnPrimary : Color.mOnSurface
+                            font.bold: isActuallyToday
                             font.pointSize: Style.fontSizeS
                         }
                     }

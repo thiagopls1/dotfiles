@@ -91,7 +91,7 @@
                     "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "name",
-                    "occupiedColor": "none",
+                    "occupiedColor": "secondary",
                     "pillSize": 0.6,
                     "showApplications": false,
                     "showApplicationsHover": true,
@@ -528,8 +528,8 @@
         "enabled": true,
         "forced": false,
         "manualSunrise": "07:30",
-        "manualSunset": "23:00",
-        "nightTemp": "2060"
+        "manualSunset": "22:00",
+        "nightTemp": "2570"
     },
     "noctaliaPerformance": {
         "disableDesktopWidgets": false,
@@ -577,7 +577,7 @@
             2,
             3
         ],
-        "location": "top_right",
+        "location": "bottom",
         "monitors": [
         ],
         "overlayLayer": true
