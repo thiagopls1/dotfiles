@@ -7,7 +7,6 @@ alias icat="kitten icat"
 alias dvrc=$HOME/scripts/convert_davinci.sh
 
 # Exports
-
 export EDITOR=nvim
 
 # Performance Tweaks
@@ -122,20 +121,11 @@ if [ -d $ANDROID_HOME ]; then
 	export PATH=$PATH:$ANDROID_HOME/emulator
 fi
 
-# Brew
-if [ -d "/home/linuxbrew/.linuxbrew" ]; then
-	export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin/brew"
-fi
-
 # NVM
 export NVM_DIR="$HOME/.nvm"
 if [ -d $NVM_DIR ]; then
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-fi
-
-if [[ ! -z $(which fuck 2>/dev/null) ]]; then
-	eval $(thefuck --alias)
 fi
 
 # After config execution
