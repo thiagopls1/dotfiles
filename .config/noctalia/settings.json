@@ -161,6 +161,7 @@
                     "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showIcon": true,
+                    "showText": true,
                     "textColor": "error",
                     "useFixedWidth": false
                 }
@@ -265,6 +266,7 @@
         "monitorForColors": "",
         "predefinedScheme": "Catppuccin",
         "schedulingMode": "off",
+        "syncGsettings": true,
         "useWallpaperColors": false
     },
     "controlCenter": {
@@ -329,45 +331,23 @@
     },
     "desktopWidgets": {
         "enabled": false,
-        "gridSnap": true,
+        "gridSnap": false,
         "gridSnapScale": false,
         "monitorWidgets": [
             {
                 "name": "DP-3",
                 "widgets": [
                     {
-                        "hideMode": "visible",
-                        "id": "MediaPlayer",
+                        "colorName": "tertiary",
+                        "height": 500,
+                        "hideWhenIdle": false,
+                        "id": "AudioVisualizer",
                         "roundedCorners": true,
-                        "scale": 1.4751610255660852,
-                        "showAlbumArt": true,
-                        "showBackground": true,
-                        "showButtons": true,
-                        "showVisualizer": true,
-                        "visualizerType": "wave",
-                        "x": 20,
-                        "y": 940
-                    },
-                    {
-                        "id": "Weather",
-                        "roundedCorners": true,
-                        "scale": 1.113155499228941,
-                        "showBackground": true,
-                        "x": 20,
-                        "y": 820
-                    },
-                    {
-                        "clockColor": "none",
-                        "clockStyle": "analog",
-                        "customFont": "",
-                        "format": "HH:mm\\nd MMMM yyyy",
-                        "id": "Clock",
-                        "roundedCorners": true,
-                        "scale": 0.6115516263247339,
-                        "showBackground": true,
-                        "useCustomFont": false,
-                        "x": 340,
-                        "y": 820
+                        "showBackground": false,
+                        "visualizerType": "linear",
+                        "width": 1900,
+                        "x": 10,
+                        "y": 578
                     }
                 ]
             }
@@ -469,6 +449,7 @@
         "showHibernateOnLockScreen": false,
         "showScreenCorners": false,
         "showSessionButtonsOnLockScreen": true,
+        "smoothScrollEnabled": true,
         "telemetryEnabled": false
     },
     "hooks": {
@@ -485,7 +466,7 @@
     },
     "idle": {
         "customCommands": "[]",
-        "enabled": true,
+        "enabled": false,
         "fadeDuration": 10,
         "lockCommand": "",
         "lockTimeout": 600,
@@ -499,6 +480,7 @@
     },
     "location": {
         "analogClockInCalendar": false,
+        "autoLocate": false,
         "firstDayOfWeek": -1,
         "hideWeatherCityName": false,
         "hideWeatherTimezone": true,
@@ -509,10 +491,10 @@
         "use12hourFormat": false,
         "useFahrenheit": false,
         "weatherEnabled": true,
-        "weatherShowEffects": true
+        "weatherShowEffects": true,
+        "weatherTaliaMascotAlways": false
     },
     "network": {
-        "airplaneModeEnabled": false,
         "bluetoothAutoConnect": true,
         "bluetoothDetailsViewMode": "grid",
         "bluetoothHideUnnamedDevices": false,
@@ -665,7 +647,7 @@
         "diskCriticalThreshold": 90,
         "diskWarningThreshold": 80,
         "enableDgpuMonitoring": true,
-        "externalMonitor": "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor",
+        "externalMonitor": "kitty btop",
         "gpuCriticalThreshold": 90,
         "gpuWarningThreshold": 80,
         "memCriticalThreshold": 90,
@@ -706,6 +688,7 @@
         "fillColor": "#000000",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
+        "linkLightAndDarkWallpapers": true,
         "monitorDirectories": [
             {
                 "directory": "/home/thiago_lins/Pictures/Wallpapers",
