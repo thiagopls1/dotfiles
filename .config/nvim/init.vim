@@ -65,8 +65,8 @@ require	"Comment".setup{}
 require	"rainbow-delimiters.setup".setup{}
 
 require "catppuccin".setup{
-        flavour = "macchiato",
-        transparent_background = true
+	flavour = "macchiato",
+	transparent_background = true,
 }
 
 require"presence".setup{
