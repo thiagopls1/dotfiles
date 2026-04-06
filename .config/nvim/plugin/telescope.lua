@@ -20,6 +20,8 @@ telescope.setup({
 			file_ignore_patterns = {
 				"^.git$",
 				".ccls%-cache",
+				".zig%-cache",
+				".zig%-out",
 				"node_modules",
 				"__pycache__",
 				".pytest_cache",
