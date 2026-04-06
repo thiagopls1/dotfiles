@@ -93,6 +93,6 @@ package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
 vim.keymap.set('n', 'mt', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
 EOF
 
-vnoremap <leader>y "+y
+vnoremap zy "+y
 
 colorscheme catppuccin
