@@ -98,9 +98,6 @@
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": false,
                     "unfocusedIconsOpacity": 1
-                },
-                {
-                    "id": "plugin:weekly-calendar"
                 }
             ],
             "left": [
@@ -149,7 +146,7 @@
                     "showAlbumArt": true,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": true,
+                    "showVisualizer": false,
                     "textColor": "primary",
                     "useFixedWidth": false,
                     "visualizerType": "wave"
@@ -173,7 +170,7 @@
                     ],
                     "chevronColor": "secondary",
                     "colorizeIcons": false,
-                    "drawerEnabled": true,
+                    "drawerEnabled": false,
                     "hidePassive": false,
                     "id": "Tray",
                     "pinned": [
@@ -245,7 +242,7 @@
     "calendar": {
         "cards": [
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "weather-card"
             },
             {
@@ -337,18 +334,6 @@
             {
                 "name": "DP-3",
                 "widgets": [
-                    {
-                        "colorName": "tertiary",
-                        "height": 500,
-                        "hideWhenIdle": false,
-                        "id": "AudioVisualizer",
-                        "roundedCorners": true,
-                        "showBackground": false,
-                        "visualizerType": "linear",
-                        "width": 1900,
-                        "x": 10,
-                        "y": 578
-                    }
                 ]
             }
         ],
