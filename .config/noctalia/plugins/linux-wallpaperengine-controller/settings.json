@@ -1,0 +1,38 @@
+{
+  "wallpapersFolder": "",
+  "assetsDir": "~/.steam/steam/steamapps/common/wallpaper_engine/assets",
+  "defaultScaling": "fill",
+  "defaultFps": 30,
+  "defaultVolume": 100,
+  "defaultMuted": true,
+  "defaultAudioReactiveEffects": true,
+  "defaultDisableMouse": false,
+  "defaultDisableParallax": false,
+  "defaultNoFullscreenPause": false,
+  "defaultFullscreenPauseOnlyActive": false,
+  "autoApplyOnStartup": true,
+  "panelLastSelectedPath": "",
+  "screens": {
+    "DP-3": {
+      "path": "/home/thiago_lins/.local/share/Steam/steamapps/workshop/content/431960/2798213583",
+      "scaling": "fill",
+      "volume": 100,
+      "muted": true,
+      "audioReactiveEffects": true,
+      "disableMouse": false,
+      "disableParallax": false
+    }
+  },
+  "lastKnownGoodScreens": {
+    "DP-3": {
+      "path": "/home/thiago_lins/.local/share/Steam/steamapps/workshop/content/431960/2798213583",
+      "scaling": "fill",
+      "volume": 100,
+      "muted": true,
+      "audioReactiveEffects": true,
+      "disableMouse": false,
+      "disableParallax": false
+    }
+  },
+  "runtimeRecoveryPending": false
+}

@@ -1,0 +1,163 @@
+{
+  "widget": {
+    "tooltip": {
+      "checking": "Checking linux-wallpaperengine",
+      "unavailable": "linux-wallpaperengine is not installed",
+      "running": "Wallpaper engine is applying settings",
+      "ready": "Open wallpaper engine panel"
+    }
+  },
+  "menu": {
+    "reload": "Reload wallpaper engine",
+    "stop": "Stop wallpaper engine",
+    "settings": "Plugin settings"
+  },
+  "main": {
+    "status": {
+      "unavailable": "Engine unavailable",
+      "ready": "Ready",
+      "starting": "Starting engine",
+      "stopped": "Stopped",
+      "crashed": "Engine exited unexpectedly"
+    },
+    "error": {
+      "notInstalled": "linux-wallpaperengine was not found in PATH. Please check whether it is installed correctly.",
+      "assetsMissing": "Wallpaper Engine assets were not found. Configure the assets directory in settings.",
+      "noBackground": "No wallpaper path is configured.",
+      "opengl": "OpenGL initialization failed. Check driver and compositor compatibility.",
+      "autoRecovered": "Auto recovered to the last available layout"
+    }
+  },
+  "panel": {
+    "title": "Linux-WallpaperEngine Settings",
+    "sectionInfo": "Information",
+    "sectionAudio": "Audio & Display",
+    "sectionFeatures": "Features",
+    "installHint": "Install example: yay -S linux-wallpaperengine-git",
+    "errorBannerTitle": "Runtime error detected",
+    "errorShowDetails": "View details",
+    "errorHideDetails": "Hide details",
+    "errorDismiss": "Dismiss",
+    "screen": {
+      "label": "Target screen",
+      "description": "Select the monitor to apply the current wallpaper"
+    },
+    "reload": "Reload",
+    "stop": "Stop",
+    "folderInvalid": "Wallpaper source directory is invalid or inaccessible.",
+    "scanning": "Scanning wallpapers...",
+    "searchPlaceholder": "Search wallpapers...",
+    "searchClear": "Clear search",
+    "filterButton": "Filter",
+    "filterButtonSummary": "Filter · {type}",
+    "sortButton": "Sort",
+    "sortButtonSummary": "Sort · {direction} {sort}",
+    "applyAllDisplays": "Apply to all displays",
+    "perDisplayMode": "Multi-display",
+    "switchToAllDisplays": "Apply on all displays",
+    "switchToPerDisplay": "Apply separately per display",
+    "closePanel": "Close panel",
+    "confirmApply": "Confirm apply",
+    "cancelSelection": "Cancel",
+    "pendingHint": "Selected but not applied yet. You can adjust settings before confirming.",
+    "wallpaperScaling": "Scaling",
+    "wallpaperVolume": "Volume",
+    "wallpaperMuted": "Mute",
+    "wallpaperAudioReactive": "Audio reactive",
+    "wallpaperDisableMouse": "Disable mouse interaction",
+    "wallpaperDisableParallax": "Disable parallax effect",
+    "resetWallpaperSettings": "Reset to global defaults",
+    "infoType": "Type",
+    "infoId": "ID",
+    "infoResolution": "Resolution",
+    "infoSize": "Size",
+    "scalingFill": "Fill",
+    "scalingFit": "Fit",
+    "scalingStretch": "Stretch",
+    "scalingDefault": "Default",
+    "targetAllDisplays": "Target: All displays",
+    "targetSingleDisplay": "Target: {screen}",
+    "filterAll": "All",
+    "filterTypeAll": "All",
+    "filterTypeScene": "Scene",
+    "filterTypeVideo": "Video",
+    "filterTypeWeb": "Web",
+    "filterTypeApplication": "Application",
+    "filterResAll": "Resolution: All",
+    "filterResUnknown": "Resolution: Unknown",
+    "filterStatic": "Static",
+    "filterDynamic": "Dynamic",
+    "sortName": "Name",
+    "sortDateAdded": "Added time",
+    "sortSize": "Size",
+    "sortRecent": "Recent",
+    "sortAscendingToggle": "Toggle Asc/Desc",
+    "sortAscendingToggleWithDirection": "{direction} Toggle Asc/Desc",
+    "sortId": "ID",
+    "typeScene": "Scene",
+    "typeVideo": "Video",
+    "typeWeb": "Web",
+    "typeApplication": "Application",
+    "resolutionUnknown": "Unknown",
+    "dynamicBadge": "Dynamic",
+    "count": "Wallpaper count: {count}",
+    "apply": "Apply",
+    "empty": "No folders found in source directory"
+  },
+  "settings": {
+    "category": {
+      "performanceTitle": "Performance",
+      "compatibilityTitle": "Compatibility",
+      "audioTitle": "Audio",
+      "displayTitle": "Display"
+    },
+    "wallpapersFolder": {
+      "label": "Wallpaper source directory",
+      "description": "Directory containing wallpaper project folders",
+      "placeholder": "~/.local/share/Steam/steamapps/workshop/content/431960",
+      "scan": "Auto-detect Steam workshop directory"
+    },
+    "assetsDir": {
+      "label": "Wallpaper Engine assets directory",
+      "description": "Optional: assets path used by linux-wallpaperengine",
+      "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "defaultScaling": {
+      "label": "Default scaling",
+      "description": "Default scaling mode when no custom value is set"
+    },
+    "defaultFps": {
+      "label": "Default FPS",
+      "description": "Default frame rate limit for wallpapers",
+      "placeholder": "30"
+    },
+    "defaultNoFullscreenPause": {
+      "label": "Prevent fullscreen pause",
+      "description": "Prevent pausing while fullscreen apps are running"
+    },
+    "defaultFullscreenPauseOnlyActive": {
+      "label": "Pause only active fullscreen",
+      "description": "(Wayland only) Pause only when a fullscreen window is active"
+    },
+    "defaultVolume": {
+      "label": "Default wallpaper volume"
+    },
+    "defaultMuted": {
+      "label": "Mute wallpaper by default",
+      "description": "Start wallpapers in mute mode by default"
+    },
+    "defaultAudioReactiveEffects": {
+      "label": "Audio reactive effects"
+    },
+    "defaultDisableMouse": {
+      "label": "Disable mouse interaction"
+    },
+    "defaultDisableParallax": {
+      "label": "Disable parallax effect"
+    },
+    "autoApplyOnStartup": {
+      "label": "Auto apply on startup",
+      "description": "If at least one screen has a configured wallpaper, run the engine automatically on startup"
+    }
+  }
+}

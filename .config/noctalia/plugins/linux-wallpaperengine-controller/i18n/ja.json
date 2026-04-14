@@ -1,0 +1,163 @@
+{
+  "widget": {
+    "tooltip": {
+      "checking": "linux-wallpaperengine を確認中",
+      "unavailable": "linux-wallpaperengine がインストールされていません",
+      "running": "壁紙エンジンが設定を適用中です",
+      "ready": "壁紙エンジンパネルを開く"
+    }
+  },
+  "menu": {
+    "reload": "壁紙エンジンを再読み込み",
+    "stop": "壁紙エンジンを停止",
+    "settings": "プラグイン設定"
+  },
+  "main": {
+    "status": {
+      "unavailable": "エンジンは利用できません",
+      "ready": "準備完了",
+      "starting": "エンジンを起動中",
+      "stopped": "停止しました",
+      "crashed": "エンジンが異常終了しました"
+    },
+    "error": {
+      "notInstalled": "PATH に linux-wallpaperengine が見つかりません。正しくインストールされているか確認してください。",
+      "assetsMissing": "Wallpaper Engine の assets が見つかりません。設定で assets ディレクトリを指定してください。",
+      "noBackground": "壁紙パスが設定されていません。",
+      "opengl": "OpenGL の初期化に失敗しました。ドライバーとコンポジタの互換性を確認してください。",
+      "autoRecovered": "前回利用可能だったレイアウトに自動復旧しました"
+    }
+  },
+  "panel": {
+    "title": "Linux-WallpaperEngine 設定",
+    "sectionInfo": "情報",
+    "sectionAudio": "オーディオとディスプレイ",
+    "sectionFeatures": "機能",
+    "installHint": "インストール例: yay -S linux-wallpaperengine-git",
+    "errorBannerTitle": "ランタイムエラーを検出",
+    "errorShowDetails": "詳細を表示",
+    "errorHideDetails": "詳細を隠す",
+    "errorDismiss": "閉じる",
+    "screen": {
+      "label": "対象スクリーン",
+      "description": "現在の壁紙を適用するモニターを選択"
+    },
+    "reload": "再読み込み",
+    "stop": "停止",
+    "folderInvalid": "壁紙ソースディレクトリが無効、またはアクセスできません。",
+    "scanning": "壁紙をスキャン中...",
+    "searchPlaceholder": "壁紙を検索...",
+    "searchClear": "検索をクリア",
+    "filterButton": "フィルター",
+    "filterButtonSummary": "フィルター · {type}",
+    "sortButton": "並び替え",
+    "sortButtonSummary": "並び替え · {direction}{sort}",
+    "applyAllDisplays": "すべてのディスプレイに適用",
+    "perDisplayMode": "マルチディスプレイ",
+    "switchToAllDisplays": "すべてのディスプレイに適用",
+    "switchToPerDisplay": "ディスプレイごとに適用",
+    "closePanel": "パネルを閉じる",
+    "confirmApply": "適用を確認",
+    "cancelSelection": "キャンセル",
+    "pendingHint": "選択済みですが未適用です。設定を調整してから確定できます。",
+    "wallpaperScaling": "拡大縮小",
+    "wallpaperVolume": "音量",
+    "wallpaperMuted": "ミュート",
+    "wallpaperAudioReactive": "オーディオ反応",
+    "wallpaperDisableMouse": "マウス操作を無効化",
+    "wallpaperDisableParallax": "パララックス効果を無効化",
+    "resetWallpaperSettings": "グローバル既定値にリセット",
+    "infoType": "タイプ",
+    "infoId": "ID",
+    "infoResolution": "解像度",
+    "infoSize": "サイズ",
+    "scalingFill": "フィル",
+    "scalingFit": "フィット",
+    "scalingStretch": "ストレッチ",
+    "scalingDefault": "既定",
+    "targetAllDisplays": "対象: すべてのディスプレイ",
+    "targetSingleDisplay": "対象: {screen}",
+    "filterAll": "すべて",
+    "filterTypeAll": "すべて",
+    "filterTypeScene": "シーン",
+    "filterTypeVideo": "動画",
+    "filterTypeWeb": "ウェブ",
+    "filterTypeApplication": "アプリケーション",
+    "filterResAll": "解像度: すべて",
+    "filterResUnknown": "解像度: 不明",
+    "filterStatic": "静的",
+    "filterDynamic": "動的",
+    "sortName": "名前",
+    "sortDateAdded": "追加時間",
+    "sortSize": "サイズ",
+    "sortRecent": "最近",
+    "sortAscendingToggle": "昇順/降順を切替",
+    "sortAscendingToggleWithDirection": "{direction} 昇順/降順を切替",
+    "sortId": "ID",
+    "typeScene": "シーン",
+    "typeVideo": "動画",
+    "typeWeb": "ウェブ",
+    "typeApplication": "アプリケーション",
+    "resolutionUnknown": "不明",
+    "dynamicBadge": "動的",
+    "count": "壁紙数: {count}",
+    "apply": "適用",
+    "empty": "ソースディレクトリにフォルダーが見つかりません"
+  },
+  "settings": {
+    "category": {
+      "performanceTitle": "パフォーマンス",
+      "compatibilityTitle": "互換性",
+      "audioTitle": "音声",
+      "displayTitle": "表示"
+    },
+"wallpapersFolder": {
+      "label": "壁紙ソースディレクトリ",
+      "description": "壁紙プロジェクトフォルダーを含むディレクトリ",
+      "placeholder": "~/.local/share/Steam/steamapps/workshop/content/431960",
+      "scan": "Steam ワークショップディレクトリを自動検出"
+    },
+    "assetsDir": {
+      "label": "Wallpaper Engine 資産ディレクトリ",
+      "description": "任意: linux-wallpaperengine が使用する assets パス",
+      "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "defaultScaling": {
+      "label": "既定の拡大縮小",
+      "description": "カスタム値が未設定のときに使う既定モード"
+    },
+    "defaultFps": {
+      "label": "既定 FPS",
+      "description": "壁紙で使う既定のフレームレート上限",
+      "placeholder": "30"
+    },
+    "defaultNoFullscreenPause": {
+      "label": "フルスクリーン時の一時停止を防止",
+      "description": "フルスクリーンアプリ実行中に一時停止しない"
+    },
+    "defaultFullscreenPauseOnlyActive": {
+      "label": "アクティブなフルスクリーン時のみ一時停止",
+      "description": "（Wayland のみ）フルスクリーンウィンドウがアクティブなときのみ一時停止"
+    },
+    "defaultVolume": {
+      "label": "壁紙の既定音量"
+    },
+    "defaultMuted": {
+      "label": "壁紙を既定でミュート",
+      "description": "壁紙を既定でミュート起動"
+    },
+    "defaultAudioReactiveEffects": {
+      "label": "オーディオ反応効果"
+    },
+    "defaultDisableMouse": {
+      "label": "マウス操作を無効化"
+    },
+    "defaultDisableParallax": {
+      "label": "パララックス効果を無効化"
+    },
+    "autoApplyOnStartup": {
+      "label": "起動時に自動適用",
+      "description": "少なくとも 1 つのスクリーンに壁紙が設定されている場合、起動時にエンジンを自動実行"
+    }
+  }
+}

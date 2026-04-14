@@ -146,7 +146,7 @@
                     "showAlbumArt": true,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "textColor": "primary",
                     "useFixedWidth": false,
                     "visualizerType": "wave"

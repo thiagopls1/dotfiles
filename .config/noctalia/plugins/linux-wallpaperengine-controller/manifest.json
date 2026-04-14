@@ -1,0 +1,44 @@
+{
+  "id": "linux-wallpaperengine-controller",
+  "name": "Linux WallpaperEngine Controller",
+  "version": "1.0.6",
+  "minNoctaliaVersion": "4.6.6",
+  "author": "PaloMiku",
+  "license": "MIT",
+  "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+  "description": "Control linux-wallpaperengine from Noctalia with per-screen wallpaper selection.",
+  "tags": [
+    "Bar",
+    "Panel",
+    "Theming"
+  ],
+  "entryPoints": {
+    "main": "Main.qml",
+    "barWidget": "BarWidget.qml",
+    "panel": "Panel.qml",
+    "settings": "Settings.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "wallpapersFolder": "~/.local/share/Steam/steamapps/workshop/content/431960",
+      "assetsDir": "",
+      "defaultScaling": "fill",
+      "defaultFps": 30,
+      "defaultVolume": 100,
+      "defaultMuted": true,
+      "defaultAudioReactiveEffects": true,
+      "defaultDisableMouse": false,
+      "defaultDisableParallax": false,
+      "defaultNoFullscreenPause": false,
+      "defaultFullscreenPauseOnlyActive": false,
+      "autoApplyOnStartup": true,
+      "panelLastSelectedPath": "",
+      "screens": {},
+      "lastKnownGoodScreens": {},
+      "runtimeRecoveryPending": false
+    }
+  }
+}
