@@ -223,6 +223,7 @@
                 {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "none",
+                    "colorizeSystemText": "none",
                     "customIconPath": "/home/thiago_lins/Pictures/Imagens Salvas/arch-linux.png",
                     "enableColorization": true,
                     "icon": "layout-dashboard",

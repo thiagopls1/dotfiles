@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import QtMultimedia
 import Quickshell
@@ -32,27 +33,39 @@ Item {
   property string selectedPath: ""
   property string pendingPath: ""
   property string selectedScaling: "fill"
+  property string selectedClamp: "clamp"
   property int selectedVolume: 100
   property bool selectedMuted: true
   property bool selectedAudioReactiveEffects: true
   property bool selectedDisableMouse: false
   property bool selectedDisableParallax: false
   property bool scanningWallpapers: false
+  property bool loadingWallpaperProperties: false
+  property bool scanningCompatibility: false
+  property bool pendingCompatibilityScan: false
   property bool folderAccessible: true
 
   property string searchText: ""
   property string selectedType: "all"
+  property string selectedResolution: "all"
   property string sortMode: "name"
   property bool sortAscending: true
+  property int currentPage: 0
+  property int pageSize: 24
   readonly property bool singleScreenMode: Quickshell.screens.length <= 1
   property bool applyAllDisplays: !singleScreenMode && root._applyAllDisplays
-  property bool _applyAllDisplays: false
+  property bool _applyAllDisplays: true
+  property bool applyTargetExpanded: false
   property bool filterDropdownOpen: false
+  property bool resolutionDropdownOpen: false
   property bool sortDropdownOpen: false
   property bool errorDetailsExpanded: false
   property real filterDropdownX: 0
   property real filterDropdownY: 0
   property real filterDropdownWidth: 220 * Style.uiScaleRatio
+  property real resolutionDropdownX: 0
+  property real resolutionDropdownY: 0
+  property real resolutionDropdownWidth: 220 * Style.uiScaleRatio
   property real sortDropdownX: 0
   property real sortDropdownY: 0
   property real sortDropdownWidth: 220 * Style.uiScaleRatio
@@ -60,7 +73,50 @@ Item {
   property var screenModel: []
   property var wallpaperItems: []
   property var visibleWallpapers: []
+  property var pagedWallpapers: []
+  property var wallpaperPropertyLoadFailedByPath: ({})
+  property var wallpaperPropertyDefinitions: []
+  property var wallpaperPropertyValues: ({})
+  property string wallpaperPropertyError: ""
+  property string wallpaperPropertyRequestPath: ""
   readonly property bool hasRuntimeError: !!(mainInstance?.lastError && mainInstance.lastError.length > 0)
+  readonly property bool extraPropertiesEditorEnabled: cfg.enableExtraPropertiesEditor ?? defaults.enableExtraPropertiesEditor ?? true
+  readonly property string engineStatusBadgeText: {
+    if (mainInstance?.checkingEngine ?? false) {
+      return pluginApi?.tr("panel.statusChecking");
+    }
+    if (!(mainInstance?.engineAvailable ?? false)) {
+      return pluginApi?.tr("panel.statusUnavailable");
+    }
+    if (mainInstance?.engineRunning ?? false) {
+      return pluginApi?.tr("panel.statusRunning");
+    }
+    if (mainInstance?.hasAnyConfiguredWallpaper && mainInstance.hasAnyConfiguredWallpaper()) {
+      return pluginApi?.tr("panel.statusReady");
+    }
+    return pluginApi?.tr("panel.statusStopped");
+  }
+  readonly property color engineStatusBadgeFg: {
+    if (mainInstance?.checkingEngine ?? false) {
+      return Color.mSecondary;
+    }
+    if (!(mainInstance?.engineAvailable ?? false)) {
+      return Color.mError;
+    }
+    if (mainInstance?.engineRunning ?? false) {
+      return Color.mPrimary;
+    }
+    if (mainInstance?.hasAnyConfiguredWallpaper && mainInstance.hasAnyConfiguredWallpaper()) {
+      return Color.mTertiary;
+    }
+    return Color.mOnSurfaceVariant;
+  }
+  readonly property color engineStatusBadgeBg: Qt.alpha(engineStatusBadgeFg, 0.16)
+  readonly property int pageCount: Math.max(1, Math.ceil(visibleWallpapers.length / Math.max(pageSize, 1)))
+  readonly property bool paginationVisible: visibleWallpapers.length > pageSize
+  readonly property int currentPageDisplay: visibleWallpapers.length === 0 ? 0 : currentPage + 1
+  readonly property int currentPageStartIndex: visibleWallpapers.length === 0 ? 0 : currentPage * pageSize + 1
+  readonly property int currentPageEndIndex: Math.min((currentPage + 1) * pageSize, visibleWallpapers.length)
   readonly property var selectedWallpaperData: {
     const target = String(pendingPath || "");
     if (target.length === 0) {
@@ -77,6 +133,14 @@ Item {
   function basename(path) {
     const parts = String(path || "").split("/");
     return parts.length > 0 ? parts[parts.length - 1] : "";
+  }
+
+  function workshopUrlForWallpaper(item) {
+    const wallpaperId = String(item?.id || "").trim();
+    if (!/^\d+$/.test(wallpaperId)) {
+      return "";
+    }
+    return "https://steamcommunity.com/sharedfiles/filedetails/?id=" + wallpaperId;
   }
 
   function fileExt(path) {
@@ -135,8 +199,498 @@ Item {
     return pluginApi?.tr("panel.sortName");
   }
 
+  function resolutionBadgeIcon(value) {
+    const resolution = String(value || "").toLowerCase().trim();
+    if (resolution.length === 0 || resolution === "unknown") {
+      return "";
+    }
+
+    const match = resolution.match(/(\d+)\s*[x×]\s*(\d+)/);
+    if (!match) {
+      return "";
+    }
+
+    const width = Number(match[1]);
+    const height = Number(match[2]);
+    if (isNaN(width) || isNaN(height)) {
+      return "";
+    }
+
+    const longestEdge = Math.max(width, height);
+    if (longestEdge >= 7680) {
+      return "badge-8k";
+    }
+    if (longestEdge >= 3840) {
+      return "badge-4k";
+    }
+    return "";
+  }
+
+  function resolutionBadgeLabel(value) {
+    const icon = resolutionBadgeIcon(value);
+    if (icon === "badge-8k") {
+      return "8K";
+    }
+    if (icon === "badge-4k") {
+      return "4K";
+    }
+    return "";
+  }
+
+  function resolutionFilterKey(value) {
+    const resolution = String(value || "").toLowerCase().trim();
+    if (resolution.length === 0 || resolution === "unknown") {
+      return "unknown";
+    }
+
+    const match = resolution.match(/(\d+)\s*[x×]\s*(\d+)/);
+    if (!match) {
+      return "unknown";
+    }
+
+    const width = Number(match[1]);
+    const height = Number(match[2]);
+    if (isNaN(width) || isNaN(height)) {
+      return "unknown";
+    }
+
+    const longestEdge = Math.max(width, height);
+    if (longestEdge >= 7680) {
+      return "8k";
+    }
+    if (longestEdge >= 3840) {
+      return "4k";
+    }
+    return "other";
+  }
+
+  function resolutionFilterLabel(value) {
+    if (value === "8k") return pluginApi?.tr("panel.filterRes8k");
+    if (value === "4k") return pluginApi?.tr("panel.filterRes4k");
+    if (value === "unknown") return pluginApi?.tr("panel.filterResUnknown");
+    return pluginApi?.tr("panel.filterResAll");
+  }
+
+  function wallpaperIdFromPath(path) {
+    const raw = String(path || "").trim();
+    if (raw.length === 0) {
+      return "";
+    }
+    const parts = raw.split("/");
+    return parts.length > 0 ? String(parts[parts.length - 1] || "") : "";
+  }
+
+  function stripHtml(rawText) {
+    return String(rawText || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;?/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function cleanedPropertyLabel(rawText, fallbackKey) {
+    const stripped = stripHtml(rawText)
+      .replace(/^[\-–—•·*_#\s]+/, "")
+      .replace(/^[^\p{L}\p{N}]+/u, "")
+      .trim();
+    if (stripped.length > 0) {
+      return normalizePropertyLabel(stripped);
+    }
+    return normalizePropertyLabel(String(fallbackKey || ""));
+  }
+
+  function normalizePropertyLabel(value) {
+    const raw = String(value || "").trim();
+    if (raw.length === 0) {
+      return "";
+    }
+
+    const looksLikeKey = /^[a-z0-9_]+$/i.test(raw) && raw.indexOf("_") >= 0;
+    if (!looksLikeKey) {
+      return raw;
+    }
+
+    const normalizedKey = raw
+      .replace(/^ui_browse_properties_/i, "")
+      .replace(/^ui_/i, "")
+      .replace(/^properties_/i, "");
+
+    const propertyLabelKey = {
+      "scheme_color": "panel.propertyLabelThemeColor"
+    }[normalizedKey.toLowerCase()];
+
+    if (propertyLabelKey) {
+      return pluginApi?.tr(propertyLabelKey);
+    }
+
+    return normalizedKey
+      .split("_")
+      .filter(part => part.length > 0)
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  function isNoisePropertyKey(value) {
+    const key = String(value || "").toLowerCase().trim();
+    if (key.length === 0) {
+      return true;
+    }
+    return key.indexOf("imgsrc") === 0
+      || key.indexOf("brahref") === 0
+      || key.indexOf("centerbrahref") === 0
+      || key.indexOf("bigweixin") === 0
+      || key.indexOf("viewer_4") >= 0
+      || key.indexOf("photogz") >= 0
+      || key.indexOf("mqpic") >= 0
+      || key.indexOf("width") >= 0 && key.indexOf("height") >= 0;
+  }
+
+  function isNoisePropertyLabel(value) {
+    const label = String(value || "").toLowerCase().trim();
+    if (label.length === 0) {
+      return true;
+    }
+    return label.indexOf("imgsrc") >= 0
+      || label.indexOf("photogz") >= 0
+      || label.indexOf("mqpic") >= 0
+      || label.indexOf("viewer_4") >= 0;
+  }
+
+  function parsePropertyValue(rawValue, type) {
+    const trimmed = String(rawValue || "").trim();
+    if (type === "boolean") {
+      return trimmed === "1";
+    }
+    if (type === "slider") {
+      const parsed = Number(trimmed);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    if (type === "combo") {
+      return String(trimmed);
+    }
+    if (type === "textinput") {
+      return trimmed.replace(/^"|"$/g, "");
+    }
+    if (type === "color") {
+      const parts = trimmed.split(",").map(part => Number(String(part).trim()));
+      if (parts.length >= 3 && parts.every(part => !isNaN(part))) {
+        const maxChannel = Math.max(parts[0], parts[1], parts[2]);
+        if (maxChannel > 1) {
+          return Qt.rgba(parts[0] / 255, parts[1] / 255, parts[2] / 255, 1);
+        }
+        return Qt.rgba(parts[0], parts[1], parts[2], 1);
+      }
+      return Qt.rgba(1, 1, 1, 1);
+    }
+    return trimmed;
+  }
+
+  function serializePropertyValue(value, type) {
+    if (type === "boolean") {
+      return value ? "1" : "0";
+    }
+    if (type === "slider") {
+      return String(value);
+    }
+    if (type === "combo") {
+      return String(value);
+    }
+    if (type === "textinput") {
+      return String(value);
+    }
+    if (type === "color") {
+      const color = value;
+      const r = Math.round((color?.r ?? 1) * 255);
+      const g = Math.round((color?.g ?? 1) * 255);
+      const b = Math.round((color?.b ?? 1) * 255);
+      return String(r) + "," + String(g) + "," + String(b);
+    }
+    return String(value);
+  }
+
+  function propertyValueFor(definition) {
+    const key = String(definition?.key || "");
+    if (key.length === 0) {
+      return "";
+    }
+    const raw = wallpaperPropertyValues || ({});
+    if (raw[key] !== undefined) {
+      return raw[key];
+    }
+    return definition.defaultValue;
+  }
+
+  function comboChoicesFor(definition) {
+    const rawChoices = definition?.choices || [];
+    const normalized = [];
+    for (const choice of rawChoices) {
+      const key = String(choice?.key ?? choice?.value ?? "").trim();
+      const name = String(choice?.name ?? choice?.label ?? choice?.text ?? key).trim();
+      if (key.length === 0) {
+        continue;
+      }
+      normalized.push({ key: key, name: name.length > 0 ? name : key });
+    }
+    return normalized;
+  }
+
+  function ensureColorValue(value) {
+    if (value === undefined || value === null || value === "") {
+      return Qt.rgba(1, 1, 1, 1);
+    }
+    if (typeof value === "string") {
+      return parsePropertyValue(value, "color");
+    }
+    if (value.r !== undefined && value.g !== undefined && value.b !== undefined) {
+      return Qt.rgba(value.r, value.g, value.b, value.a !== undefined ? value.a : 1);
+    }
+    return Qt.rgba(1, 1, 1, 1);
+  }
+
+  function numberOr(value, fallback) {
+    const parsed = Number(value);
+    return isNaN(parsed) ? fallback : parsed;
+  }
+
+  function formatSliderValue(value, step) {
+    const numericValue = numberOr(value, 0);
+    const numericStep = Math.max(numberOr(step, 1), 0.001);
+    let decimals = 0;
+    if (numericStep < 1) {
+      const stepText = String(numericStep);
+      if (stepText.indexOf("e-") >= 0) {
+        decimals = Number(stepText.split("e-")[1]) || 0;
+      } else if (stepText.indexOf(".") >= 0) {
+        decimals = stepText.split(".")[1].length;
+      }
+    }
+    return numericValue.toFixed(Math.min(decimals, 6));
+  }
+
+  function setPropertyValue(key, value) {
+    const current = wallpaperPropertyValues || ({});
+    const next = Object.assign({}, current);
+    next[String(key)] = value;
+    wallpaperPropertyValues = next;
+  }
+
+  function parseWallpaperPropertiesOutput(rawText) {
+    const lines = String(rawText || "").split(/\r?\n/);
+    const definitions = [];
+    let current = null;
+    let parsingValues = false;
+
+    function commitCurrent() {
+      if (!current) {
+        return;
+      }
+      if (["boolean", "slider", "combo", "textinput", "color", "text"].indexOf(current.type) === -1) {
+        current = null;
+        parsingValues = false;
+        return;
+      }
+      current.label = cleanedPropertyLabel(current.label, current.key);
+      if (current.type === "text") {
+        if (current.label.length === 0 || isNoisePropertyLabel(current.label)) {
+          current = null;
+          parsingValues = false;
+          return;
+        }
+        definitions.push({
+          key: current.key,
+          type: "text",
+          label: current.label,
+          defaultValue: ""
+        });
+        current = null;
+        parsingValues = false;
+        return;
+      }
+      if (isNoisePropertyKey(current.key) || isNoisePropertyLabel(current.label)) {
+        current = null;
+        parsingValues = false;
+        return;
+      }
+      definitions.push(current);
+      current = null;
+      parsingValues = false;
+    }
+
+    for (const rawLine of lines) {
+      const line = String(rawLine || "");
+      const trimmed = line.trim();
+      if (trimmed.length === 0) {
+        commitCurrent();
+        continue;
+      }
+
+      if (trimmed.indexOf("Unknown object type found:") === 0
+          || trimmed.indexOf("ScriptEngine [evaluate]:") === 0
+          || trimmed.indexOf("Text objects are not supported yet") === 0
+          || trimmed.indexOf("Applying override value for ") === 0) {
+        continue;
+      }
+
+      const headerMatch = trimmed.match(/^([^\s].*?)\s+-\s+(slider|boolean|combo|textinput|color|text|scene texture)$/i);
+      if (headerMatch) {
+        commitCurrent();
+        current = {
+          key: headerMatch[1].trim(),
+          type: headerMatch[2].toLowerCase(),
+          label: undefined,
+          min: undefined,
+          max: undefined,
+          step: undefined,
+          defaultValue: "",
+          choices: []
+        };
+        parsingValues = false;
+        continue;
+      }
+
+      if (!current) {
+        continue;
+      }
+
+      if (trimmed.indexOf("Text:") === 0) {
+        current.label = trimmed.substring(5).trim();
+        parsingValues = false;
+        continue;
+      }
+      if (trimmed.indexOf("Min:") === 0) {
+        const parsed = Number(trimmed.substring(4).trim());
+        current.min = isNaN(parsed) ? undefined : parsed;
+        parsingValues = false;
+        continue;
+      }
+      if (trimmed.indexOf("Max:") === 0) {
+        const parsed = Number(trimmed.substring(4).trim());
+        current.max = isNaN(parsed) ? undefined : parsed;
+        parsingValues = false;
+        continue;
+      }
+      if (trimmed.indexOf("Step:") === 0) {
+        const parsed = Number(trimmed.substring(5).trim());
+        current.step = isNaN(parsed) ? undefined : parsed;
+        parsingValues = false;
+        continue;
+      }
+      if (trimmed.indexOf("Value:") === 0) {
+        current.defaultValue = parsePropertyValue(trimmed.substring(6).trim(), current.type);
+        parsingValues = false;
+        continue;
+      }
+      if (trimmed === "Values:") {
+        parsingValues = true;
+        continue;
+      }
+
+      if (parsingValues && current.type === "combo") {
+        const valueMatch = trimmed.match(/^(.*?)\s*=\s*(.*)$/);
+        if (valueMatch) {
+          const choiceKey = valueMatch[1].trim();
+          const choiceName = valueMatch[2].trim();
+          current.choices.push({
+            key: choiceKey,
+            name: choiceName,
+            label: choiceName,
+            value: choiceKey,
+            text: choiceName
+          });
+        }
+      }
+    }
+
+    commitCurrent();
+    return definitions;
+  }
+
+  function loadWallpaperProperties(path) {
+    const wallpaperPath = String(path || "").trim();
+    wallpaperPropertyDefinitions = [];
+    wallpaperPropertyValues = ({});
+    wallpaperPropertyError = "";
+    wallpaperPropertyRequestPath = wallpaperPath;
+
+    if (!extraPropertiesEditorEnabled || wallpaperPath.length === 0 || !(mainInstance?.engineAvailable ?? false)) {
+      loadingWallpaperProperties = false;
+      return;
+    }
+
+    loadingWallpaperProperties = true;
+    wallpaperPropertyProcess.command = ["linux-wallpaperengine", wallpaperPath, "--list-properties"];
+    wallpaperPropertyProcess.running = true;
+  }
+
+  function setWallpaperPropertyLoadFailed(path, failed) {
+    const wallpaperPath = String(path || "").trim();
+    if (wallpaperPath.length === 0) {
+      return;
+    }
+
+    const nextState = Object.assign({}, wallpaperPropertyLoadFailedByPath);
+    if (failed) {
+      nextState[wallpaperPath] = true;
+    } else {
+      delete nextState[wallpaperPath];
+    }
+    wallpaperPropertyLoadFailedByPath = nextState;
+  }
+
+  function startCompatibilityScan() {
+    const folderPath = String(resolvedWallpapersFolder || "").trim();
+    if (folderPath.length === 0 || !(mainInstance?.engineAvailable ?? false)) {
+      pendingCompatibilityScan = false;
+      return;
+    }
+
+    const pluginDir = pluginApi?.pluginDir || "";
+    const scriptPath = pluginDir + "/scripts/scan-properties-compatibility.sh";
+
+    pendingCompatibilityScan = false;
+    scanningCompatibility = true;
+    compatibilityScanProcess.command = ["bash", scriptPath, folderPath];
+    compatibilityScanProcess.running = true;
+  }
+
+  function applyCompatibilityScanOutput(rawText) {
+    const nextState = {};
+    const lines = String(rawText || "").split(/\r?\n/);
+    let totalCount = 0;
+
+    for (const rawLine of lines) {
+      const line = String(rawLine || "").trim();
+      if (line.length === 0) {
+        continue;
+      }
+
+      const parts = line.split("\t");
+      const path = String(parts[0] || "").trim();
+      const failed = String(parts[1] || "0").trim() === "1";
+      if (path.length === 0) {
+        continue;
+      }
+
+      totalCount += 1;
+
+      if (failed) {
+        nextState[path] = true;
+      }
+    }
+
+    wallpaperPropertyLoadFailedByPath = nextState;
+    return {
+      totalCount: totalCount,
+      failedCount: Object.keys(nextState).length
+    };
+  }
+
   function closeDropdowns() {
     filterDropdownOpen = false;
+    resolutionDropdownOpen = false;
     sortDropdownOpen = false;
   }
 
@@ -145,6 +699,7 @@ Item {
     filterDropdownX = pos.x;
     filterDropdownY = pos.y;
     filterDropdownWidth = filterButton.width;
+    resolutionDropdownOpen = false;
     sortDropdownOpen = false;
     filterDropdownOpen = true;
   }
@@ -155,12 +710,30 @@ Item {
     sortDropdownY = pos.y;
     sortDropdownWidth = sortButton.width;
     filterDropdownOpen = false;
+    resolutionDropdownOpen = false;
     sortDropdownOpen = true;
+  }
+
+  function openResolutionDropdown() {
+    const pos = resolutionButton.mapToItem(root, 0, resolutionButton.height + Style.marginXS);
+    resolutionDropdownX = pos.x;
+    resolutionDropdownY = pos.y;
+    resolutionDropdownWidth = resolutionButton.width;
+    filterDropdownOpen = false;
+    sortDropdownOpen = false;
+    resolutionDropdownOpen = true;
   }
 
   function applyFilterAction(action) {
     if (String(action).indexOf("type:") === 0) {
       selectedType = String(action).substring(5);
+    }
+    closeDropdowns();
+  }
+
+  function applyResolutionFilterAction(action) {
+    if (String(action).indexOf("res:") === 0) {
+      selectedResolution = String(action).substring(4);
     }
     closeDropdowns();
   }
@@ -204,31 +777,33 @@ Item {
 
   function resetPendingToGlobalDefaults() {
     selectedScaling = String(defaults.defaultScaling || "fill");
-    selectedVolume = Math.max(0, Math.min(100, Number(defaults.defaultVolume ?? 100)));
-    selectedMuted = !!(defaults.defaultMuted ?? true);
-    selectedAudioReactiveEffects = !!(defaults.defaultAudioReactiveEffects ?? true);
-    selectedDisableMouse = !!(defaults.defaultDisableMouse ?? false);
-    selectedDisableParallax = !!(defaults.defaultDisableParallax ?? false);
+    syncGlobalRuntimeOptions();
+  }
+
+  function syncGlobalRuntimeOptions() {
+    selectedClamp = String(cfg.defaultClamp ?? defaults.defaultClamp ?? "clamp");
+    selectedVolume = Math.max(0, Math.min(100, Number(cfg.defaultVolume ?? defaults.defaultVolume ?? 100)));
+    selectedMuted = !!(cfg.defaultMuted ?? defaults.defaultMuted ?? true);
+    selectedAudioReactiveEffects = !!(cfg.defaultAudioReactiveEffects ?? defaults.defaultAudioReactiveEffects ?? true);
+    selectedDisableMouse = !!(cfg.defaultDisableMouse ?? defaults.defaultDisableMouse ?? false);
+    selectedDisableParallax = !!(cfg.defaultDisableParallax ?? defaults.defaultDisableParallax ?? false);
   }
 
   function syncSelectionOptionsFromScreen() {
-    if (root.singleScreenMode) {
-      resetPendingToGlobalDefaults();
-      return;
+    syncGlobalRuntimeOptions();
+
+    const fallbackScreenName = root.singleScreenMode ? (Quickshell.screens[0]?.name || selectedScreenName) : selectedScreenName;
+    if (root.singleScreenMode && selectedScreenName.length === 0 && fallbackScreenName.length > 0) {
+      selectedScreenName = fallbackScreenName;
     }
 
-    const screenCfg = mainInstance?.getScreenConfig(selectedScreenName);
+    const screenCfg = mainInstance?.getScreenConfig(fallbackScreenName);
     if (!screenCfg) {
-      resetPendingToGlobalDefaults();
+      selectedScaling = String(defaults.defaultScaling || "fill");
       return;
     }
 
     selectedScaling = String(screenCfg.scaling || defaults.defaultScaling || "fill");
-    selectedVolume = Math.max(0, Math.min(100, Number(screenCfg.volume ?? defaults.defaultVolume ?? 100)));
-    selectedMuted = !!(screenCfg.muted ?? defaults.defaultMuted ?? true);
-    selectedAudioReactiveEffects = !!(screenCfg.audioReactiveEffects ?? defaults.defaultAudioReactiveEffects ?? true);
-    selectedDisableMouse = !!(screenCfg.disableMouse ?? defaults.defaultDisableMouse ?? false);
-    selectedDisableParallax = !!(screenCfg.disableParallax ?? defaults.defaultDisableParallax ?? false);
   }
 
   function applyPendingSelection() {
@@ -237,12 +812,22 @@ Item {
       return;
     }
 
-    const options = { "scaling": selectedScaling };
+    const options = { "scaling": selectedScaling, "clamp": selectedClamp };
     options.volume = selectedVolume;
     options.muted = selectedMuted;
     options.audioReactiveEffects = selectedAudioReactiveEffects;
+    options.noAutomute = !!(cfg.defaultNoAutomute ?? defaults.defaultNoAutomute ?? false);
     options.disableMouse = selectedDisableMouse;
     options.disableParallax = selectedDisableParallax;
+    const customProperties = {};
+    for (const definition of wallpaperPropertyDefinitions) {
+      const propertyKey = String(definition?.key || "");
+      if (propertyKey.length === 0) {
+        continue;
+      }
+      customProperties[propertyKey] = serializePropertyValue(propertyValueFor(definition), definition.type);
+    }
+    options.customProperties = customProperties;
     selectedPath = path;
 
     if (applyAllDisplays) {
@@ -271,6 +856,10 @@ Item {
       items = items.filter(item => String(item.type || "unknown").toLowerCase() === selectedType);
     }
 
+    if (selectedResolution !== "all") {
+      items = items.filter(item => resolutionFilterKey(item.resolution) === selectedResolution);
+    }
+
     if (query.length > 0) {
       items = items.filter(item => {
         return String(item.name || "").toLowerCase().indexOf(query) >= 0
@@ -293,7 +882,42 @@ Item {
     }
 
     visibleWallpapers = items;
-    Logger.d("LWEController", "Visible wallpapers refreshed", "count=", visibleWallpapers.length, "type=", selectedType, "sort=", sortMode, "ascending=", sortAscending, "query=", query);
+    Logger.d("LWEController", "Visible wallpapers refreshed", "count=", visibleWallpapers.length, "type=", selectedType, "resolution=", selectedResolution, "sort=", sortMode, "ascending=", sortAscending, "query=", query);
+  }
+
+  function refreshPagedWallpapers() {
+    const safePageSize = Math.max(1, Number(pageSize) || 1);
+    const totalPages = Math.max(1, Math.ceil(visibleWallpapers.length / safePageSize));
+    const nextPage = Math.max(0, Math.min(currentPage, totalPages - 1));
+
+    if (nextPage !== currentPage) {
+      currentPage = nextPage;
+      return;
+    }
+
+    const startIndex = nextPage * safePageSize;
+    pagedWallpapers = visibleWallpapers.slice(startIndex, startIndex + safePageSize);
+  }
+
+  function resetPagination() {
+    if (currentPage !== 0) {
+      currentPage = 0;
+      return;
+    }
+
+    refreshPagedWallpapers();
+  }
+
+  function goToPreviousPage() {
+    if (currentPage > 0) {
+      currentPage -= 1;
+    }
+  }
+
+  function goToNextPage() {
+    if (currentPage < pageCount - 1) {
+      currentPage += 1;
+    }
   }
 
   function reconcilePendingSelection() {
@@ -362,11 +986,34 @@ Item {
     refreshVisibleWallpapers();
     reconcilePendingSelection();
   }
-  onSearchTextChanged: refreshVisibleWallpapers()
-  onSelectedTypeChanged: refreshVisibleWallpapers()
-  onSortModeChanged: refreshVisibleWallpapers()
-  onSortAscendingChanged: refreshVisibleWallpapers()
+  onVisibleWallpapersChanged: refreshPagedWallpapers()
+  onCurrentPageChanged: refreshPagedWallpapers()
+  onPageSizeChanged: refreshPagedWallpapers()
+  onSearchTextChanged: {
+    refreshVisibleWallpapers();
+    resetPagination();
+  }
+  onSelectedTypeChanged: {
+    refreshVisibleWallpapers();
+    resetPagination();
+  }
+  onSelectedResolutionChanged: {
+    refreshVisibleWallpapers();
+    resetPagination();
+  }
+  onSortModeChanged: {
+    refreshVisibleWallpapers();
+    resetPagination();
+  }
+  onSortAscendingChanged: {
+    refreshVisibleWallpapers();
+    resetPagination();
+  }
   onSelectedScreenNameChanged: syncSelectionOptionsFromScreen()
+  onPendingPathChanged: {
+    persistPanelMemory();
+    loadWallpaperProperties(pendingPath);
+  }
   onWallpapersFolderChanged: {
     if (!root.pluginApi) {
       return;
@@ -380,6 +1027,7 @@ Item {
     loadPanelMemory();
     syncSelectionOptionsFromScreen();
     scanWallpapers();
+    loadWallpaperProperties(pendingPath);
   }
 
   Component.onDestruction: {
@@ -389,6 +1037,9 @@ Item {
   onWidthChanged: {
     if (filterDropdownOpen) {
       openFilterDropdown();
+    }
+    if (resolutionDropdownOpen) {
+      openResolutionDropdown();
     }
     if (sortDropdownOpen) {
       openSortDropdown();
@@ -415,231 +1066,323 @@ Item {
       anchors.margins: Style.marginL
       spacing: Style.marginM
 
-        Rectangle {
-          Layout.fillWidth: true
-          Layout.preferredHeight: (root.applyAllDisplays || root.singleScreenMode)
-            ? (56 * Style.uiScaleRatio + 56 * Style.uiScaleRatio + Style.marginS * 4)
-            : (56 * Style.uiScaleRatio + 52 * Style.uiScaleRatio + 56 * Style.uiScaleRatio + Style.marginS * 5)
-          Layout.minimumHeight: Layout.preferredHeight
-          radius: Style.radiusL
-          color: Color.mSurface
-          border.width: Style.borderS
-          border.color: Qt.alpha(Color.mOutline, 0.22)
+      Rectangle {
+        Layout.fillWidth: true
+        Layout.preferredHeight: headerColumn.implicitHeight + Style.marginS * 2
+        Layout.minimumHeight: Layout.preferredHeight
+        radius: Style.radiusL
+        color: Qt.alpha(Color.mSurfaceVariant, 0.35)
+        border.width: Style.borderS
+        border.color: Qt.alpha(Color.mOutline, 0.35)
 
-          ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: Style.marginS
-            spacing: Style.marginS
+        ColumnLayout {
+          id: headerColumn
+          anchors.fill: parent
+          anchors.margins: Style.marginS
+          spacing: Style.marginS
 
-            RowLayout {
-              Layout.fillWidth: true
+          RowLayout {
+            Layout.fillWidth: true
 
-              NIcon {
-                icon: "wallpaper-selector"
-                pointSize: Style.fontSizeL
-                color: Color.mOnSurface
-              }
+            NIcon {
+              icon: "wallpaper-selector"
+              pointSize: Style.fontSizeL
+              color: Color.mOnSurface
+            }
+
+            NText {
+              text: pluginApi?.tr("panel.title")
+              font.pointSize: Style.fontSizeL
+              font.weight: Font.Bold
+              color: Color.mOnSurface
+            }
+
+            Rectangle {
+              radius: Style.radiusXS
+              color: root.engineStatusBadgeBg
+              implicitWidth: statusBadgeText.implicitWidth + Style.marginS * 2
+              implicitHeight: statusBadgeText.implicitHeight + Style.marginXS * 2
 
               NText {
-                text: pluginApi?.tr("panel.title")
-                font.pointSize: Style.fontSizeL
-                font.weight: Font.Bold
-                color: Color.mOnSurface
+                id: statusBadgeText
+                anchors.centerIn: parent
+                text: root.engineStatusBadgeText
+                color: root.engineStatusBadgeFg
+                font.pointSize: Style.fontSizeXS
+                font.weight: Font.Medium
               }
+            }
 
-              Item { Layout.fillWidth: true }
+            Item { Layout.fillWidth: true }
 
-              NIconButton {
-                enabled: mainInstance?.engineAvailable ?? false
-                icon: "refresh"
-                tooltipText: pluginApi?.tr("panel.reload")
-                onClicked: {
-                  root.scanWallpapers();
-                  if (mainInstance?.hasAnyConfiguredWallpaper()) {
-                    mainInstance?.reload();
-                  } else {
-                    mainInstance.lastError = "";
-                  }
-                }
-              }
-
-              NIconButton {
-                enabled: mainInstance?.engineAvailable ?? false
-                icon: "player-stop"
-                tooltipText: pluginApi?.tr("panel.stop")
-                onClicked: mainInstance?.stopAll()
-              }
-
-              NIconButton {
-                enabled: (mainInstance?.engineAvailable ?? false) && !root.singleScreenMode
-                icon: "device-desktop"
-                tooltipText: root.applyAllDisplays
-                  ? pluginApi?.tr("panel.switchToPerDisplay")
-                  : pluginApi?.tr("panel.switchToAllDisplays")
-                onClicked: root._applyAllDisplays = !root._applyAllDisplays
-              }
-
-              NIconButton {
-                icon: "settings"
-                tooltipText: pluginApi?.tr("menu.settings")
-                onClicked: {
-                  const screen = pluginApi?.panelOpenScreen;
-                  BarService.openPluginSettings(screen, pluginApi?.manifest);
-                  if (pluginApi) {
-                    pluginApi.togglePanel(screen);
-                  }
-                }
-              }
-
-              NIconButton {
-                icon: "x"
-                tooltipText: pluginApi?.tr("panel.closePanel")
-                onClicked: {
-                  const screen = pluginApi?.panelOpenScreen;
-                  if (pluginApi) {
-                    pluginApi.togglePanel(screen);
-                  }
+            NIconButton {
+              enabled: (mainInstance?.engineAvailable ?? false) && !root.scanningCompatibility
+              icon: root.scanningCompatibility ? "loader" : "shield-search"
+              colorFg: Color.mOnSurface
+              tooltipText: root.scanningCompatibility
+                ? pluginApi?.tr("panel.compatibilityQuickCheckRunning")
+                : pluginApi?.tr("panel.compatibilityQuickCheck")
+              onClicked: {
+                if (!root.scanningCompatibility) {
+                  root.pendingCompatibilityScan = true;
                 }
               }
             }
 
-            RowLayout {
-              Layout.fillWidth: true
-              Layout.preferredHeight: 52 * Style.uiScaleRatio
-              visible: !root.applyAllDisplays && !root.singleScreenMode
-
-              Repeater {
-                model: root.screenModel
-
-                NButton {
-                  required property var modelData
-                  Layout.fillWidth: true
-                  enabled: mainInstance?.engineAvailable ?? false
-                  icon: root.selectedScreenName === modelData.key ? "check" : "device-desktop"
-                  text: modelData.name
-                  onClicked: root.selectedScreenName = modelData.key
+            NIconButton {
+              enabled: mainInstance?.engineAvailable ?? false
+              icon: "refresh"
+              colorFg: Color.mOnSurface
+              tooltipText: pluginApi?.tr("panel.reload")
+              onClicked: {
+                root.scanWallpapers();
+                if (mainInstance?.hasAnyConfiguredWallpaper()) {
+                  mainInstance?.reload(true);
+                } else {
+                  mainInstance.lastError = "";
                 }
               }
             }
 
-            RowLayout {
-              Layout.fillWidth: true
-              Layout.preferredHeight: 48 * Style.uiScaleRatio
+            NIconButton {
+              enabled: mainInstance?.engineAvailable ?? false
+              icon: mainInstance?.engineRunning ? "player-stop" : "player-play"
+              colorFg: Color.mOnSurface
+              tooltipText: mainInstance?.engineRunning ? pluginApi?.tr("panel.stop") : pluginApi?.tr("panel.start")
+              onClicked: {
+                if (mainInstance?.engineRunning) {
+                  mainInstance?.stopAll(true);
+                } else {
+                  mainInstance?.reload(true);
+                }
+              }
+            }
 
-              NTextInput {
-                id: searchInput
+            NIconButton {
+              icon: "settings"
+              colorFg: Color.mOnSurface
+              tooltipText: pluginApi?.tr("menu.settings")
+              onClicked: {
+                const screen = pluginApi?.panelOpenScreen;
+                BarService.openPluginSettings(screen, pluginApi?.manifest);
+                if (pluginApi) {
+                  pluginApi.togglePanel(screen);
+                }
+              }
+            }
+
+            NIconButton {
+              icon: "x"
+              colorFg: Color.mOnSurface
+              tooltipText: pluginApi?.tr("panel.closePanel")
+              onClicked: {
+                const screen = pluginApi?.panelOpenScreen;
+                if (pluginApi) {
+                  pluginApi.togglePanel(screen);
+                }
+              }
+            }
+          }
+
+          NBox {
+            visible: root.pendingCompatibilityScan
+            Layout.fillWidth: true
+            Layout.preferredHeight: compatibilityConfirmRow.implicitHeight + Style.marginM * 2
+
+            RowLayout {
+              id: compatibilityConfirmRow
+              anchors.fill: parent
+              anchors.margins: Style.marginM
+              spacing: Style.marginM
+
+              NText {
                 Layout.fillWidth: true
-                placeholderText: pluginApi?.tr("panel.searchPlaceholder")
-                text: root.searchText
-                onTextChanged: root.searchText = text
+                text: pluginApi?.tr("panel.compatibilityQuickCheckConfirm")
+                pointSize: Style.fontSizeS
+                color: Color.mOnSurface
+                wrapMode: Text.WordWrap
               }
 
-              NIconButton {
-                Layout.alignment: Qt.AlignVCenter
-                visible: root.searchText.length > 0
-                icon: "x"
-                tooltipText: pluginApi?.tr("panel.searchClear")
-                onClicked: root.searchText = ""
+              NButton {
+                text: pluginApi?.tr("panel.confirm")
+                enabled: !root.scanningCompatibility
+                onClicked: root.startCompatibilityScan()
               }
 
-              Rectangle {
-                id: filterButton
-                Layout.preferredWidth: 172 * Style.uiScaleRatio
-                Layout.maximumWidth: 184 * Style.uiScaleRatio
-                Layout.preferredHeight: 42 * Style.uiScaleRatio
-                radius: Style.radiusL
-                color: Qt.alpha(Color.mSurfaceVariant, 0.42)
-                border.width: Style.borderS
-                border.color: Qt.alpha(Color.mOutline, 0.45)
+              NButton {
+                text: pluginApi?.tr("panel.cancel")
+                enabled: !root.scanningCompatibility
+                onClicked: root.pendingCompatibilityScan = false
+              }
+            }
+          }
 
-                RowLayout {
-                  anchors.fill: parent
-                  anchors.leftMargin: Style.marginS
-                  anchors.rightMargin: Style.marginS
-                  spacing: Style.marginXXS
+          RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 48 * Style.uiScaleRatio
 
-                  NIcon {
-                    icon: "adjustments-horizontal"
-                    pointSize: Style.fontSizeM
-                    color: Color.mOnSurface
-                  }
+            NTextInput {
+              id: searchInput
+              Layout.fillWidth: true
+              placeholderText: pluginApi?.tr("panel.searchPlaceholder")
+              text: root.searchText
+              onTextChanged: root.searchText = text
+            }
 
-                  NText {
-                    Layout.fillWidth: true
-                    text: pluginApi?.tr("panel.filterButtonSummary", { type: root.typeLabel(root.selectedType) })
-                    color: Color.mOnSurface
-                    elide: Text.ElideRight
-                  }
+            NIconButton {
+              Layout.alignment: Qt.AlignVCenter
+              visible: root.searchText.length > 0
+              icon: "x"
+              tooltipText: pluginApi?.tr("panel.searchClear")
+              onClicked: root.searchText = ""
+            }
 
-                  NIcon {
-                    icon: "chevron-down"
-                    pointSize: Style.fontSizeM
-                    color: Color.mOnSurfaceVariant
-                  }
+            Rectangle {
+              id: resolutionButton
+              Layout.preferredWidth: 172 * Style.uiScaleRatio
+              Layout.maximumWidth: 184 * Style.uiScaleRatio
+              Layout.preferredHeight: 42 * Style.uiScaleRatio
+              radius: Style.radiusL
+              color: Qt.alpha(Color.mSurfaceVariant, 0.42)
+              border.width: Style.borderS
+              border.color: Qt.alpha(Color.mOutline, 0.45)
+
+              RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: Style.marginS
+                anchors.rightMargin: Style.marginS
+                spacing: Style.marginXXS
+
+                NIcon {
+                  icon: "badge-hd"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurface
                 }
 
-                MouseArea {
-                  anchors.fill: parent
-                  onClicked: {
-                    if (filterDropdownOpen) {
-                      root.closeDropdowns();
-                    } else {
-                      root.openFilterDropdown();
-                    }
-                  }
+                NText {
+                  Layout.fillWidth: true
+                  text: root.resolutionFilterLabel(root.selectedResolution)
+                  color: Color.mOnSurface
+                  elide: Text.ElideRight
+                }
+
+                NIcon {
+                  icon: "chevron-down"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurfaceVariant
                 }
               }
 
-              Rectangle {
-                id: sortButton
-                Layout.preferredWidth: 172 * Style.uiScaleRatio
-                Layout.maximumWidth: 184 * Style.uiScaleRatio
-                Layout.preferredHeight: 42 * Style.uiScaleRatio
-                radius: Style.radiusL
-                color: Qt.alpha(Color.mSurfaceVariant, 0.42)
-                border.width: Style.borderS
-                border.color: Qt.alpha(Color.mOutline, 0.45)
-
-                RowLayout {
-                  anchors.fill: parent
-                  anchors.leftMargin: Style.marginS
-                  anchors.rightMargin: Style.marginS
-                  spacing: Style.marginXXS
-
-                  NIcon {
-                    icon: "arrows-sort"
-                    pointSize: Style.fontSizeM
-                    color: Color.mOnSurface
-                  }
-
-                  NText {
-                    Layout.fillWidth: true
-                    text: pluginApi?.tr("panel.sortButtonSummary", {
-                      direction: root.sortAscending ? "\u2191" : "\u2193",
-                      sort: root.sortLabel(root.sortMode)
-                    })
-                    color: Color.mOnSurface
-                    elide: Text.ElideRight
-                  }
-
-                  NIcon {
-                    icon: "chevron-down"
-                    pointSize: Style.fontSizeM
-                    color: Color.mOnSurfaceVariant
-                  }
-                }
-
-                MouseArea {
-                  anchors.fill: parent
-                  onClicked: {
-                    if (sortDropdownOpen) {
-                      root.closeDropdowns();
-                    } else {
-                      root.openSortDropdown();
-                    }
+              MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                  if (resolutionDropdownOpen) {
+                    root.closeDropdowns();
+                  } else {
+                    root.openResolutionDropdown();
                   }
                 }
               }
+            }
+
+            Rectangle {
+              id: filterButton
+              Layout.preferredWidth: 172 * Style.uiScaleRatio
+              Layout.maximumWidth: 184 * Style.uiScaleRatio
+              Layout.preferredHeight: 42 * Style.uiScaleRatio
+              radius: Style.radiusL
+              color: Qt.alpha(Color.mSurfaceVariant, 0.42)
+              border.width: Style.borderS
+              border.color: Qt.alpha(Color.mOutline, 0.45)
+
+              RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: Style.marginS
+                anchors.rightMargin: Style.marginS
+                spacing: Style.marginXXS
+
+                NIcon {
+                  icon: "adjustments-horizontal"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurface
+                }
+
+                NText {
+                  Layout.fillWidth: true
+                  text: pluginApi?.tr("panel.filterButtonSummary", { type: root.typeLabel(root.selectedType) })
+                  color: Color.mOnSurface
+                  elide: Text.ElideRight
+                }
+
+                NIcon {
+                  icon: "chevron-down"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurfaceVariant
+                }
+              }
+
+              MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                  if (filterDropdownOpen) {
+                    root.closeDropdowns();
+                  } else {
+                    root.openFilterDropdown();
+                  }
+                }
+              }
+            }
+
+            Rectangle {
+              id: sortButton
+              Layout.preferredWidth: 172 * Style.uiScaleRatio
+              Layout.maximumWidth: 184 * Style.uiScaleRatio
+              Layout.preferredHeight: 42 * Style.uiScaleRatio
+              radius: Style.radiusL
+              color: Qt.alpha(Color.mSurfaceVariant, 0.42)
+              border.width: Style.borderS
+              border.color: Qt.alpha(Color.mOutline, 0.45)
+
+              RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: Style.marginS
+                anchors.rightMargin: Style.marginS
+                spacing: Style.marginXXS
+
+                NIcon {
+                  icon: "arrows-sort"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurface
+                }
+
+                NText {
+                  Layout.fillWidth: true
+                  text: pluginApi?.tr("panel.sortButtonSummary", {
+                    direction: root.sortAscending ? "\u2191" : "\u2193",
+                    sort: root.sortLabel(root.sortMode)
+                  })
+                  color: Color.mOnSurface
+                  elide: Text.ElideRight
+                }
+
+                NIcon {
+                  icon: "chevron-down"
+                  pointSize: Style.fontSizeM
+                  color: Color.mOnSurfaceVariant
+                }
+              }
+
+              MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                  if (sortDropdownOpen) {
+                    root.closeDropdowns();
+                  } else {
+                    root.openSortDropdown();
+                  }
+                }
+              }
+            }
             }
           }
         }
@@ -743,9 +1486,9 @@ Item {
           Layout.fillWidth: true
           Layout.fillHeight: true
           radius: Style.radiusL
-          color: Color.mSurface
+          color: Qt.alpha(Color.mSurfaceVariant, 0.35)
           border.width: Style.borderS
-          border.color: Qt.alpha(Color.mOutline, 0.2)
+          border.color: Qt.alpha(Color.mOutline, 0.35)
 
           ColumnLayout {
             anchors.fill: parent
@@ -758,21 +1501,26 @@ Item {
               Layout.topMargin: Style.marginXS
               spacing: Style.marginM
 
-              GridView {
-                id: gridView
+              ColumnLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                property real minCardWidth: 244 * Style.uiScaleRatio
-                property real cardGap: Style.marginS
-                property int columnCount: Math.max(1, Math.floor((width + cardGap) / (minCardWidth + cardGap)))
-                cellWidth: (width - ((columnCount - 1) * cardGap)) / columnCount
-                cellHeight: 208 * Style.uiScaleRatio
-                boundsBehavior: Flickable.StopAtBounds
-                clip: true
+                spacing: Style.marginS
 
-                model: root.visibleWallpapers
+                NGridView {
+                  id: gridView
+                  Layout.fillWidth: true
+                  Layout.fillHeight: true
+                  property real minCardWidth: 244 * Style.uiScaleRatio
+                  property real cardGap: Style.marginS
+                  property int columnCount: Math.max(1, Math.floor((availableWidth + cardGap) / (minCardWidth + cardGap)))
+                  cellWidth: (availableWidth - ((columnCount - 1) * cardGap)) / columnCount
+                  cellHeight: 208 * Style.uiScaleRatio
+                  boundsBehavior: Flickable.StopAtBounds
+                  clip: true
 
-                delegate: Rectangle {
+                  model: root.pagedWallpapers
+
+                  delegate: Rectangle {
                   id: tileCard
                   required property var modelData
                   width: gridView.cellWidth
@@ -847,51 +1595,122 @@ Item {
                       }
                     }
 
-                    RowLayout {
-                      Layout.fillWidth: true
-                      spacing: Style.marginXS
+                     RowLayout {
+                       Layout.fillWidth: true
+                       spacing: Style.marginXS
+
+                       NText {
+                         Layout.fillWidth: true
+                         text: modelData.name
+                         color: Color.mOnSurface
+                         elide: Text.ElideRight
+                         font.weight: Font.Medium
+                       }
+
+                    NIcon {
+                      visible: root.selectedPath === modelData.path
+                      icon: "check"
+                      pointSize: Style.fontSizeL
+                      color: Color.mPrimary
+                    }
+                  }
+
+                  RowLayout {
+                    Layout.fillWidth: true
+                    spacing: Style.marginXS
+
+                    Rectangle {
+                      color: Qt.alpha(Color.mSecondary, 0.18)
+                      radius: Style.radiusXS
+                      implicitWidth: typeBadgeText.implicitWidth + Style.marginS * 2
+                      implicitHeight: typeBadgeText.implicitHeight + Style.marginXS * 2
 
                       NText {
-                        Layout.fillWidth: true
-                        text: modelData.name
-                        color: Color.mOnSurface
-                        elide: Text.ElideRight
+                        id: typeBadgeText
+                        anchors.centerIn: parent
+                        text: root.typeLabel(modelData.type)
+                        color: Color.mSecondary
+                        font.pointSize: Style.fontSizeXS
                         font.weight: Font.Medium
                       }
+                    }
+
+                    Rectangle {
+                      color: modelData.dynamic ? Qt.alpha(Color.mTertiary, 0.18) : Qt.alpha(Color.mOutline, 0.18)
+                      radius: Style.radiusXS
+                      implicitWidth: motionBadgeText.implicitWidth + Style.marginS * 2
+                      implicitHeight: motionBadgeText.implicitHeight + Style.marginXS * 2
 
                       NText {
-                        visible: modelData.dynamic
-                        text: pluginApi?.tr("panel.dynamicBadge")
-                        color: Color.mPrimary
-                        font.pointSize: Style.fontSizeS
-                      }
-
-                      NIcon {
-                        visible: root.selectedPath === modelData.path
-                        icon: "check"
-                        pointSize: Style.fontSizeL
-                        color: Color.mPrimary
+                        id: motionBadgeText
+                        anchors.centerIn: parent
+                        text: modelData.dynamic
+                          ? pluginApi?.tr("panel.dynamicBadge")
+                          : pluginApi?.tr("panel.staticBadge")
+                        color: modelData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant
+                        font.pointSize: Style.fontSizeXS
+                        font.weight: Font.Medium
                       }
                     }
 
-                    RowLayout {
-                      Layout.fillWidth: true
-                      spacing: Style.marginXS
+                    Item { Layout.fillWidth: true }
 
-                      NText {
-                        Layout.fillWidth: true
-                        text: modelData.id
-                        color: Color.mOnSurfaceVariant
-                        elide: Text.ElideMiddle
-                        font.pointSize: Style.fontSizeS
-                      }
+                    Rectangle {
+                      visible: root.resolutionBadgeIcon(modelData.resolution).length > 0
+                      color: Qt.alpha(Color.mSurfaceVariant, 0.24)
+                      radius: Style.radiusXS
+                      implicitWidth: resolutionBadgeRow.implicitWidth + Style.marginS * 2
+                      implicitHeight: resolutionBadgeRow.implicitHeight + Style.marginXS * 2
 
-                      NText {
-                        text: root.typeLabel(modelData.type)
-                        color: Color.mOnSurfaceVariant
-                        font.pointSize: Style.fontSizeS
+                      RowLayout {
+                        id: resolutionBadgeRow
+                        anchors.centerIn: parent
+                        spacing: Style.marginXS
+
+                        NIcon {
+                          id: resolutionBadgeIconItem
+                          icon: root.resolutionBadgeIcon(modelData.resolution)
+                          pointSize: Style.fontSizeM
+                          color: Color.mOnSurfaceVariant
+                        }
+
+                        NText {
+                          text: root.resolutionBadgeLabel(modelData.resolution)
+                          color: Color.mOnSurfaceVariant
+                          font.pointSize: Style.fontSizeXS
+                          font.weight: Font.Medium
+                        }
                       }
                     }
+
+                    Rectangle {
+                      visible: root.wallpaperPropertyLoadFailedByPath[String(modelData.path || "")] === true
+                      color: Qt.alpha(Color.mError, 0.16)
+                      radius: Style.radiusXS
+                      implicitWidth: propertyFailedBadgeRow.implicitWidth + Style.marginS * 2
+                      implicitHeight: propertyFailedBadgeRow.implicitHeight + Style.marginXS * 2
+
+                      RowLayout {
+                        id: propertyFailedBadgeRow
+                        anchors.centerIn: parent
+                        spacing: Style.marginXS
+
+                        NIcon {
+                          icon: "alert-triangle"
+                          pointSize: Style.fontSizeM
+                          color: Color.mError
+                        }
+
+                        NText {
+                          text: pluginApi?.tr("panel.propertiesFailedBadge")
+                          color: Color.mError
+                          font.pointSize: Style.fontSizeXS
+                          font.weight: Font.Medium
+                        }
+                      }
+                    }
+
+                  }
                   }
 
                   MouseArea {
@@ -903,27 +1722,81 @@ Item {
                   }
                 }
 
-                Rectangle {
-                  visible: root.visibleWallpapers.length === 0 && !root.scanningWallpapers
-                  anchors.centerIn: parent
-                  color: "transparent"
-                  width: 300 * Style.uiScaleRatio
-                  height: 140 * Style.uiScaleRatio
-
-                  ColumnLayout {
+                  Rectangle {
+                    visible: root.visibleWallpapers.length === 0 && !root.scanningWallpapers
                     anchors.centerIn: parent
+                    color: "transparent"
+                    width: 300 * Style.uiScaleRatio
+                    height: 140 * Style.uiScaleRatio
+
+                    ColumnLayout {
+                      anchors.centerIn: parent
+                      spacing: Style.marginS
+
+                      NIcon {
+                        Layout.alignment: Qt.AlignHCenter
+                        icon: "photo"
+                        pointSize: Style.fontSizeXL
+                        color: Color.mOnSurfaceVariant
+                      }
+
+                      NText {
+                        text: root.wallpaperItems.length === 0
+                          ? pluginApi?.tr("panel.emptyAll")
+                          : pluginApi?.tr("panel.emptyFiltered")
+                        color: Color.mOnSurfaceVariant
+                      }
+                    }
+                  }
+                }
+
+                Rectangle {
+                  Layout.fillWidth: true
+                  visible: root.paginationVisible
+                  implicitHeight: paginationRow.implicitHeight + Style.marginS * 2
+                  radius: Style.radiusM
+                  color: Qt.alpha(Color.mSurface, 0.78)
+                  border.width: Style.borderS
+                  border.color: Qt.alpha(Color.mOutline, 0.3)
+
+                  RowLayout {
+                    id: paginationRow
+                    anchors.fill: parent
+                    anchors.margins: Style.marginS
                     spacing: Style.marginS
 
-                    NIcon {
-                      Layout.alignment: Qt.AlignHCenter
-                      icon: "photo"
-                      pointSize: Style.fontSizeXL
-                      color: Color.mOnSurfaceVariant
+                    NButton {
+                      text: pluginApi?.tr("panel.prevPage")
+                      icon: "chevron-left"
+                      enabled: root.currentPage > 0
+                      onClicked: root.goToPreviousPage()
                     }
 
                     NText {
-                      text: pluginApi?.tr("panel.empty")
+                      text: pluginApi?.tr("panel.pageSummary", {
+                        current: root.currentPageDisplay,
+                        total: root.pageCount
+                      })
+                      color: Color.mOnSurface
+                      font.weight: Font.Medium
+                    }
+
+                    NText {
+                      text: pluginApi?.tr("panel.pageRange", {
+                        start: root.currentPageStartIndex,
+                        end: root.currentPageEndIndex,
+                        total: root.visibleWallpapers.length
+                      })
                       color: Color.mOnSurfaceVariant
+                    }
+
+                    Item { Layout.fillWidth: true }
+
+                    NButton {
+                      text: pluginApi?.tr("panel.nextPage")
+                      icon: "chevron-right"
+                      enabled: root.currentPage < root.pageCount - 1
+                      onClicked: root.goToNextPage()
                     }
                   }
                 }
@@ -993,29 +1866,108 @@ Item {
                       elide: Text.ElideRight
                     }
 
-                    NText {
+                    RowLayout {
                       Layout.fillWidth: true
-                      text: root.selectedWallpaperData ? root.selectedWallpaperData.id : ""
-                      color: Color.mOnSurfaceVariant
-                      elide: Text.ElideMiddle
-                      font.pointSize: Style.fontSizeS
-                    }
+                      spacing: Style.marginXS
 
-                    NDivider {
-                      Layout.fillWidth: true
-                      Layout.topMargin: Style.marginM
-                      Layout.bottomMargin: Style.marginM
-                    }
+                      Rectangle {
+                        visible: root.selectedWallpaperData && root.resolutionBadgeLabel(root.selectedWallpaperData.resolution).length > 0
+                        color: Qt.alpha(Color.mSurfaceVariant, 0.24)
+                        radius: Style.radiusXS
+                        implicitWidth: sidebarResolutionBadgeRow.implicitWidth + Style.marginS * 2
+                        implicitHeight: sidebarResolutionBadgeRow.implicitHeight + Style.marginXS * 2
 
-                    NText {
-                      text: pluginApi?.tr("panel.sectionInfo")
-                      color: Color.mOnSurface
-                      font.weight: Font.Bold
-                      font.pointSize: Style.fontSizeM
+                        RowLayout {
+                          id: sidebarResolutionBadgeRow
+                          anchors.centerIn: parent
+                          spacing: Style.marginXS
+
+                          NIcon {
+                            icon: root.selectedWallpaperData ? root.resolutionBadgeIcon(root.selectedWallpaperData.resolution) : ""
+                            pointSize: Style.fontSizeM
+                            color: Color.mOnSurfaceVariant
+                          }
+
+                          NText {
+                            id: sidebarResolutionBadgeText
+                            text: root.selectedWallpaperData ? root.resolutionBadgeLabel(root.selectedWallpaperData.resolution) : ""
+                            color: Color.mOnSurfaceVariant
+                            font.pointSize: Style.fontSizeXS
+                            font.weight: Font.Medium
+                          }
+                        }
+                      }
+
+                      Rectangle {
+                        color: Qt.alpha(Color.mSecondary, 0.18)
+                        radius: Style.radiusXS
+                        implicitWidth: sidebarTypeBadgeText.implicitWidth + Style.marginS * 2
+                        implicitHeight: sidebarTypeBadgeText.implicitHeight + Style.marginXS * 2
+
+                        NText {
+                          id: sidebarTypeBadgeText
+                          anchors.centerIn: parent
+                          text: root.selectedWallpaperData ? root.typeLabel(root.selectedWallpaperData.type) : ""
+                          color: Color.mSecondary
+                          font.pointSize: Style.fontSizeXS
+                          font.weight: Font.Medium
+                        }
+                      }
+
+                      Rectangle {
+                        color: root.selectedWallpaperData && root.selectedWallpaperData.dynamic
+                          ? Qt.alpha(Color.mTertiary, 0.18)
+                          : Qt.alpha(Color.mOutline, 0.18)
+                        radius: Style.radiusXS
+                        implicitWidth: sidebarMotionBadgeText.implicitWidth + Style.marginS * 2
+                        implicitHeight: sidebarMotionBadgeText.implicitHeight + Style.marginXS * 2
+
+                        NText {
+                          id: sidebarMotionBadgeText
+                          anchors.centerIn: parent
+                          text: root.selectedWallpaperData
+                            ? (root.selectedWallpaperData.dynamic
+                              ? pluginApi?.tr("panel.dynamicBadge")
+                              : pluginApi?.tr("panel.staticBadge"))
+                            : ""
+                          color: root.selectedWallpaperData && root.selectedWallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant
+                          font.pointSize: Style.fontSizeXS
+                          font.weight: Font.Medium
+                        }
+                      }
+
+                      Rectangle {
+                        visible: root.wallpaperPropertyLoadFailedByPath[String(root.selectedWallpaperData?.path || "")] === true
+                        color: Qt.alpha(Color.mError, 0.16)
+                        radius: Style.radiusXS
+                        implicitWidth: sidebarPropertyFailedBadgeRow.implicitWidth + Style.marginS * 2
+                        implicitHeight: sidebarPropertyFailedBadgeRow.implicitHeight + Style.marginXS * 2
+
+                        RowLayout {
+                          id: sidebarPropertyFailedBadgeRow
+                          anchors.centerIn: parent
+                          spacing: Style.marginXS
+
+                          NIcon {
+                            icon: "alert-triangle"
+                            pointSize: Style.fontSizeM
+                            color: Color.mError
+                          }
+
+                          NText {
+                            text: pluginApi?.tr("panel.propertiesFailedBadge")
+                            color: Color.mError
+                            font.pointSize: Style.fontSizeXS
+                            font.weight: Font.Medium
+                          }
+                        }
+                      }
+
                     }
 
                     RowLayout {
                       Layout.fillWidth: true
+                      Layout.topMargin: Style.marginM
 
                       NText {
                         text: pluginApi?.tr("panel.infoType")
@@ -1040,10 +1992,37 @@ Item {
 
                       Item { Layout.fillWidth: true }
 
-                      NText {
-                        text: root.selectedWallpaperData ? root.selectedWallpaperData.id : ""
-                        color: Color.mOnSurface
-                        elide: Text.ElideMiddle
+                      Rectangle {
+                        color: "transparent"
+                        implicitWidth: idValueText.implicitWidth
+                        implicitHeight: idValueText.implicitHeight
+
+                        NText {
+                          id: idValueText
+                          text: root.selectedWallpaperData ? root.selectedWallpaperData.id : ""
+                          color: idLinkArea.containsMouse ? Color.mPrimary : Color.mOnSurface
+                          elide: Text.ElideMiddle
+                        }
+
+                        MouseArea {
+                          id: idLinkArea
+                          anchors.fill: parent
+                          hoverEnabled: true
+                          enabled: root.workshopUrlForWallpaper(root.selectedWallpaperData).length > 0
+                          cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                          onClicked: {
+                            const workshopUrl = root.workshopUrlForWallpaper(root.selectedWallpaperData);
+                            if (workshopUrl.length === 0) {
+                              return;
+                            }
+
+                            const screen = pluginApi?.panelOpenScreen;
+                            if (pluginApi) {
+                              pluginApi.togglePanel(screen);
+                            }
+                            Qt.openUrlExternally(workshopUrl);
+                          }
+                        }
                       }
                     }
 
@@ -1083,104 +2062,377 @@ Item {
                       }
                     }
 
-                    NDivider {
+                    ColumnLayout {
                       Layout.fillWidth: true
-                      Layout.topMargin: Style.marginM
-                      Layout.bottomMargin: Style.marginM
-                    }
+                      spacing: Style.marginS
 
-                    NText {
-                      text: pluginApi?.tr("panel.sectionAudio")
-                      color: Color.mOnSurface
-                      font.weight: Font.Bold
-                      font.pointSize: Style.fontSizeM
-                    }
+                      RowLayout {
+                        Layout.fillWidth: true
+                        spacing: Style.marginS
 
-                    NComboBox {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperScaling")
-                      model: [
-                        { "key": "fill", "name": pluginApi?.tr("panel.scalingFill") },
-                        { "key": "fit", "name": pluginApi?.tr("panel.scalingFit") },
-                        { "key": "stretch", "name": pluginApi?.tr("panel.scalingStretch") },
-                        { "key": "default", "name": pluginApi?.tr("panel.scalingDefault") }
-                      ]
-                      currentKey: root.selectedScaling
-                      onSelected: key => root.selectedScaling = key
-                    }
+                        NButton {
+                          Layout.fillWidth: true
+                          text: pluginApi?.tr("panel.confirmApply")
+                          icon: "check"
+                          enabled: (mainInstance?.engineAvailable ?? false) && root.pendingPath.length > 0
+                          onClicked: root.applyPendingSelection()
+                        }
 
-                    NSpinBox {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperVolume")
-                      from: 0
-                      to: 100
-                      suffix: " %"
-                      value: root.selectedVolume
-                      enabled: !root.selectedMuted
-                      onValueChanged: root.selectedVolume = value
-                    }
+                        NIconButton {
+                          Layout.preferredWidth: 42 * Style.uiScaleRatio
+                          Layout.preferredHeight: 42 * Style.uiScaleRatio
+                          visible: !root.singleScreenMode
+                          enabled: mainInstance?.engineAvailable ?? false
+                          icon: "device-desktop"
+                          tooltipText: root.applyAllDisplays
+                            ? pluginApi?.tr("panel.targetAllDisplays")
+                            : pluginApi?.tr("panel.targetSingleDisplay", { screen: root.selectedScreenName })
+                          onClicked: root.applyTargetExpanded = !root.applyTargetExpanded
+                        }
+                      }
 
-                    NToggle {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperMuted")
-                      checked: root.selectedMuted
-                      onToggled: checked => root.selectedMuted = checked
-                    }
+                      NBox {
+                        Layout.fillWidth: true
+                        visible: !root.singleScreenMode && root.applyTargetExpanded
+                        Layout.preferredHeight: targetScreenColumn.implicitHeight + Style.marginL * 2
 
-                    NDivider {
-                      Layout.fillWidth: true
-                      Layout.topMargin: Style.marginM
-                      Layout.bottomMargin: Style.marginM
-                    }
+                        ButtonGroup {
+                          id: targetScreenGroup
+                        }
 
-                    NText {
-                      text: pluginApi?.tr("panel.sectionFeatures")
-                      color: Color.mOnSurface
-                      font.weight: Font.Bold
-                      font.pointSize: Style.fontSizeM
-                    }
+                        ColumnLayout {
+                          id: targetScreenColumn
+                          anchors.fill: parent
+                          anchors.margins: Style.marginL
+                          spacing: Style.marginS
 
-                    NToggle {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperAudioReactive")
-                      checked: root.selectedAudioReactiveEffects
-                      onToggled: checked => root.selectedAudioReactiveEffects = checked
-                    }
+                          NRadioButton {
+                            ButtonGroup.group: targetScreenGroup
+                            Layout.fillWidth: true
+                            enabled: mainInstance?.engineAvailable ?? false
+                            text: pluginApi?.tr("panel.applyAllDisplays")
+                            checked: root.applyAllDisplays
+                            onClicked: {
+                              root._applyAllDisplays = true;
+                              root.applyTargetExpanded = false;
+                            }
+                          }
 
-                    NToggle {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperDisableMouse")
-                      checked: root.selectedDisableMouse
-                      onToggled: checked => root.selectedDisableMouse = checked
-                    }
+                          Repeater {
+                            model: root.screenModel
 
-                    NToggle {
-                      Layout.fillWidth: true
-                      label: pluginApi?.tr("panel.wallpaperDisableParallax")
-                      checked: root.selectedDisableParallax
-                      onToggled: checked => root.selectedDisableParallax = checked
-                    }
+                            NRadioButton {
+                              ButtonGroup.group: targetScreenGroup
+                              required property var modelData
+                              Layout.fillWidth: true
+                              enabled: mainInstance?.engineAvailable ?? false
+                              text: pluginApi?.tr("panel.applySingleDisplay", { screen: modelData.name })
+                              checked: !root.applyAllDisplays && root.selectedScreenName === modelData.key
+                              onClicked: {
+                                root._applyAllDisplays = false;
+                                root.selectedScreenName = modelData.key;
+                                root.applyTargetExpanded = false;
+                              }
+                            }
+                          }
+                        }
+                      }
 
-                    NText {
-                      Layout.fillWidth: true
-                      text: pluginApi?.tr("panel.pendingHint")
-                      color: Color.mOnSurfaceVariant
-                      wrapMode: Text.Wrap
-                    }
+                      NDivider {
+                        Layout.fillWidth: true
+                        Layout.topMargin: Style.marginM
+                        Layout.bottomMargin: Style.marginM
+                      }
 
-                    NButton {
-                      Layout.fillWidth: true
-                      text: pluginApi?.tr("panel.confirmApply")
-                      icon: "check"
-                      enabled: (mainInstance?.engineAvailable ?? false) && root.pendingPath.length > 0
-                      onClicked: root.applyPendingSelection()
-                    }
+                      NText {
+                        text: pluginApi?.tr("panel.sectionAudio")
+                        color: Color.mOnSurface
+                        font.weight: Font.Bold
+                        font.pointSize: Style.fontSizeM
+                      }
 
-                    NButton {
-                      Layout.fillWidth: true
-                      text: pluginApi?.tr("panel.resetWallpaperSettings")
-                      icon: "refresh"
-                      onClicked: root.resetPendingToGlobalDefaults()
+                      NComboBox {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperScaling")
+                        model: [
+                          { "key": "fill", "name": pluginApi?.tr("panel.scalingFill") },
+                          { "key": "fit", "name": pluginApi?.tr("panel.scalingFit") },
+                          { "key": "stretch", "name": pluginApi?.tr("panel.scalingStretch") },
+                          { "key": "default", "name": pluginApi?.tr("panel.scalingDefault") }
+                        ]
+                        currentKey: root.selectedScaling
+                        onSelected: key => root.selectedScaling = key
+                      }
+
+                      NComboBox {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperClamp")
+                        model: [
+                          { "key": "clamp", "name": pluginApi?.tr("panel.clampClamp") },
+                          { "key": "border", "name": pluginApi?.tr("panel.clampBorder") },
+                          { "key": "repeat", "name": pluginApi?.tr("panel.clampRepeat") }
+                        ]
+                        currentKey: root.selectedClamp
+                        onSelected: key => root.selectedClamp = key
+                      }
+
+                      NSpinBox {
+                        id: wallpaperVolumeSpinBox
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperVolume")
+                        from: 0
+                        to: 100
+                        stepSize: 1
+                        suffix: pluginApi?.tr("settings.units.percent")
+                        value: root.selectedVolume
+                        enabled: !root.selectedMuted
+                        onValueChanged: if (value !== root.selectedVolume) root.selectedVolume = value
+                      }
+
+                      NToggle {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperMuted")
+                        checked: root.selectedMuted
+                        onToggled: checked => root.selectedMuted = checked
+                      }
+
+                      NDivider {
+                        Layout.fillWidth: true
+                        Layout.topMargin: Style.marginM
+                        Layout.bottomMargin: Style.marginM
+                      }
+
+                      NText {
+                        text: pluginApi?.tr("panel.sectionFeatures")
+                        color: Color.mOnSurface
+                        font.weight: Font.Bold
+                        font.pointSize: Style.fontSizeM
+                      }
+
+                      NToggle {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperAudioReactive")
+                        checked: root.selectedAudioReactiveEffects
+                        onToggled: checked => root.selectedAudioReactiveEffects = checked
+                      }
+
+                      NToggle {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperDisableMouse")
+                        checked: root.selectedDisableMouse
+                        onToggled: checked => root.selectedDisableMouse = checked
+                      }
+
+                      NToggle {
+                        Layout.fillWidth: true
+                        label: pluginApi?.tr("panel.wallpaperDisableParallax")
+                        checked: root.selectedDisableParallax
+                        onToggled: checked => root.selectedDisableParallax = checked
+                      }
+
+                      ColumnLayout {
+                        Layout.fillWidth: true
+                        visible: root.extraPropertiesEditorEnabled
+                        spacing: Style.marginS
+
+                        NDivider {
+                          Layout.fillWidth: true
+                          Layout.topMargin: Style.marginM
+                          Layout.bottomMargin: Style.marginM
+                        }
+
+                        NText {
+                          text: pluginApi?.tr("panel.sectionProperties")
+                          color: Color.mOnSurface
+                          font.weight: Font.Bold
+                          font.pointSize: Style.fontSizeM
+                        }
+
+                        NText {
+                          visible: root.loadingWallpaperProperties
+                          Layout.fillWidth: true
+                          text: pluginApi?.tr("panel.loadingProperties")
+                          color: Color.mOnSurfaceVariant
+                          wrapMode: Text.Wrap
+                        }
+
+                        NText {
+                          visible: !root.loadingWallpaperProperties && root.wallpaperPropertyError.length > 0
+                          Layout.fillWidth: true
+                          text: root.wallpaperPropertyError
+                          color: Color.mError
+                          wrapMode: Text.Wrap
+                        }
+
+                        NText {
+                          visible: !root.loadingWallpaperProperties && root.wallpaperPropertyError.length === 0 && root.wallpaperPropertyDefinitions.length === 0
+                          Layout.fillWidth: true
+                          text: pluginApi?.tr("panel.noEditableProperties")
+                          color: Color.mOnSurfaceVariant
+                          wrapMode: Text.Wrap
+                        }
+
+                        NText {
+                          visible: !root.loadingWallpaperProperties && root.wallpaperPropertyDefinitions.length > 0
+                          Layout.fillWidth: true
+                          text: pluginApi?.tr("panel.propertiesNotice")
+                          color: Color.mOnSurfaceVariant
+                          wrapMode: Text.Wrap
+                        }
+
+                        Repeater {
+                          model: root.wallpaperPropertyDefinitions
+
+                          delegate: ColumnLayout {
+                            id: propertyEditor
+                            required property var modelData
+                            Layout.fillWidth: true
+                            spacing: Style.marginXS
+
+                          property bool boolValue: !!root.propertyValueFor(modelData)
+                          property real sliderValue: root.numberOr(root.propertyValueFor(modelData), 0)
+                          property string comboValue: String(root.propertyValueFor(modelData))
+                          property string textValue: String(root.propertyValueFor(modelData))
+                          property color colorValue: Qt.rgba(1, 1, 1, 1)
+
+                          Component.onCompleted: {
+                            if (modelData.type === "color") {
+                              propertyEditor.colorValue = root.ensureColorValue(root.propertyValueFor(modelData));
+                            }
+                          }
+
+                          NToggle {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "boolean"
+                            label: modelData.label
+                            checked: propertyEditor.boolValue
+                            onToggled: checked => {
+                              if (checked === propertyEditor.boolValue) {
+                                return;
+                              }
+                              propertyEditor.boolValue = checked;
+                              root.setPropertyValue(modelData.key, checked);
+                            }
+                          }
+
+                          NValueSlider {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "slider"
+                            label: modelData.label
+                            from: root.numberOr(modelData.min, 0)
+                            to: root.numberOr(modelData.max, 100)
+                            stepSize: Math.max(root.numberOr(modelData.step, 1), 0.001)
+                            value: propertyEditor.sliderValue
+                            text: root.formatSliderValue(propertyEditor.sliderValue, modelData.step)
+                            onMoved: value => {
+                              if (value === propertyEditor.sliderValue) {
+                                return;
+                              }
+                              propertyEditor.sliderValue = value;
+                              root.setPropertyValue(modelData.key, value);
+                            }
+                          }
+
+                          NComboBox {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "combo"
+                            label: modelData.label
+                            model: root.comboChoicesFor(modelData)
+                            currentKey: propertyEditor.comboValue
+                            onSelected: key => {
+                              const normalizedKey = String(key);
+                              if (normalizedKey === propertyEditor.comboValue) {
+                                return;
+                              }
+                              propertyEditor.comboValue = normalizedKey;
+                              root.setPropertyValue(modelData.key, normalizedKey);
+                            }
+                          }
+
+                          NTextInput {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "textinput"
+                            label: modelData.label
+                            text: propertyEditor.textValue
+                            onEditingFinished: {
+                              const nextText = String(text);
+                              if (nextText === propertyEditor.textValue) {
+                                return;
+                              }
+                              propertyEditor.textValue = nextText;
+                              root.setPropertyValue(modelData.key, nextText);
+                            }
+                            onAccepted: {
+                              const nextText = String(text);
+                              if (nextText === propertyEditor.textValue) {
+                                return;
+                              }
+                              propertyEditor.textValue = nextText;
+                              root.setPropertyValue(modelData.key, nextText);
+                            }
+                          }
+
+                          NText {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "text"
+                            text: modelData.label
+                            color: Color.mPrimary
+                            font.pointSize: Style.fontSizeM
+                            font.weight: Font.Bold
+                            wrapMode: Text.Wrap
+                            topPadding: Style.marginXS
+                            bottomPadding: Style.marginXS
+                          }
+
+                          ColumnLayout {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: visible ? implicitHeight : 0
+                            visible: modelData.type === "color"
+                            spacing: Style.marginXS
+
+                            NText {
+                              Layout.fillWidth: true
+                              text: modelData.label
+                              color: Color.mOnSurface
+                              font.pointSize: Style.fontSizeM
+                              wrapMode: Text.Wrap
+                            }
+
+                            Rectangle {
+                              Layout.fillWidth: true
+                              Layout.preferredHeight: Style.baseWidgetSize
+                              radius: Style.radiusM
+                              color: propertyEditor.colorValue
+                              border.width: Style.borderS
+                              border.color: Qt.alpha(Color.mOutline, 0.35)
+                            }
+
+                            NColorPicker {
+                              screen: pluginApi?.panelOpenScreen
+                              Layout.fillWidth: true
+                              Layout.preferredHeight: Style.baseWidgetSize
+                              selectedColor: propertyEditor.colorValue
+                              onColorSelected: color => {
+                                propertyEditor.colorValue = color;
+                                root.setPropertyValue(modelData.key, color);
+                              }
+                            }
+
+                            NText {
+                              Layout.fillWidth: true
+                              text: root.serializePropertyValue(propertyEditor.colorValue, "color")
+                              color: Color.mOnSurfaceVariant
+                              font.pointSize: Style.fontSizeS
+                            }
+                          }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -1203,21 +2455,73 @@ Item {
           wrapMode: Text.WrapAnywhere
         }
 
-      NText {
-        visible: root.scanningWallpapers
-        text: pluginApi?.tr("panel.scanning")
-        color: Color.mOnSurfaceVariant
+        NText {
+          visible: root.scanningWallpapers
+          text: pluginApi?.tr("panel.scanning")
+          color: Color.mOnSurfaceVariant
+        }
       }
-    }
 
   }
 
   MouseArea {
     anchors.fill: parent
-    visible: root.filterDropdownOpen || root.sortDropdownOpen
+    visible: root.filterDropdownOpen || root.resolutionDropdownOpen || root.sortDropdownOpen
     z: 900
     acceptedButtons: Qt.LeftButton | Qt.RightButton
     onClicked: root.closeDropdowns()
+  }
+
+  Rectangle {
+    visible: root.resolutionDropdownOpen
+    x: root.resolutionDropdownX
+    y: root.resolutionDropdownY
+    width: root.resolutionDropdownWidth
+    height: Math.min(210 * Style.uiScaleRatio, resolutionList.contentHeight + 2 * Style.marginS)
+    radius: Style.radiusL
+    color: Qt.alpha(Color.mSurface, 0.96)
+    border.width: Style.borderS
+    border.color: Qt.alpha(Color.mOutline, 0.45)
+    z: 901
+
+    NListView {
+      id: resolutionList
+      anchors.fill: parent
+      anchors.margins: Style.marginS
+      clip: true
+      spacing: Style.marginXS
+      model: [
+        { "label": pluginApi?.tr("panel.filterResAll"), "action": "res:all", "selected": root.selectedResolution === "all" },
+        { "label": pluginApi?.tr("panel.filterRes4k"), "action": "res:4k", "selected": root.selectedResolution === "4k" },
+        { "label": pluginApi?.tr("panel.filterRes8k"), "action": "res:8k", "selected": root.selectedResolution === "8k" },
+        { "label": pluginApi?.tr("panel.filterResUnknown"), "action": "res:unknown", "selected": root.selectedResolution === "unknown" }
+      ]
+
+      delegate: Rectangle {
+        required property var modelData
+        width: resolutionList.availableWidth
+        height: 34 * Style.uiScaleRatio
+        radius: Style.radiusM
+        color: modelData.selected ? Qt.alpha(Color.mPrimary, 0.22) : "transparent"
+        border.width: modelData.selected ? 1 : 0
+        border.color: Qt.alpha(Color.mPrimary, 0.45)
+
+        NText {
+          anchors.verticalCenter: parent.verticalCenter
+          anchors.left: parent.left
+          anchors.leftMargin: Style.marginS
+          text: modelData.label
+          color: modelData.selected ? Color.mPrimary : Color.mOnSurface
+          font.weight: modelData.selected ? Font.Medium : Font.Normal
+        }
+
+        MouseArea {
+          anchors.fill: parent
+          hoverEnabled: true
+          onClicked: root.applyResolutionFilterAction(modelData.action)
+        }
+      }
+    }
   }
 
   Rectangle {
@@ -1248,7 +2552,7 @@ Item {
 
       delegate: Rectangle {
         required property var modelData
-        width: filterList.width
+        width: filterList.availableWidth
         height: 34 * Style.uiScaleRatio
         radius: Style.radiusM
         color: modelData.selected ? Qt.alpha(Color.mPrimary, 0.22) : "transparent"
@@ -1307,7 +2611,7 @@ Item {
 
       delegate: Rectangle {
         required property var modelData
-        width: sortList.width
+        width: sortList.availableWidth
         height: 34 * Style.uiScaleRatio
         radius: Style.radiusM
         color: modelData.selected ? Qt.alpha(Color.mPrimary, 0.22) : "transparent"
@@ -1329,6 +2633,103 @@ Item {
           onClicked: root.applySortAction(modelData.action)
         }
       }
+    }
+  }
+
+  Process {
+    id: wallpaperPropertyProcess
+
+    stdout: StdioCollector {
+      id: wallpaperPropertyStdout
+    }
+
+    stderr: StdioCollector {
+      id: wallpaperPropertyStderr
+    }
+
+    onExited: function(exitCode) {
+      const requestPath = root.wallpaperPropertyRequestPath;
+      root.loadingWallpaperProperties = false;
+
+      const outputText = [String(wallpaperPropertyStdout.text || ""), String(wallpaperPropertyStderr.text || "")]
+        .filter(part => part.trim().length > 0)
+        .join("\n");
+
+      if (requestPath.length === 0 || requestPath !== String(root.pendingPath || "")) {
+        Logger.d("LWEController", "Ignoring stale wallpaper property result", "requestPath=", requestPath, "pendingPath=", root.pendingPath, "exitCode=", exitCode);
+        return;
+      }
+
+      if (exitCode !== 0) {
+        root.wallpaperPropertyDefinitions = [];
+        root.wallpaperPropertyValues = ({});
+        root.setWallpaperPropertyLoadFailed(requestPath, true);
+        root.wallpaperPropertyError = pluginApi?.tr("panel.propertiesLoadFailed");
+        Logger.w("LWEController", "Wallpaper properties load failed", "path=", requestPath, "exitCode=", exitCode, "stderr=", wallpaperPropertyStderr.text);
+        return;
+      }
+
+      const definitions = root.parseWallpaperPropertiesOutput(outputText);
+      root.setWallpaperPropertyLoadFailed(requestPath, false);
+      root.wallpaperPropertyDefinitions = definitions;
+      for (const definition of definitions) {
+        if (definition.type === "combo") {
+          Logger.d("LWEController", "Combo property parsed", "key=", definition.key, "choices=", JSON.stringify(root.comboChoicesFor(definition)));
+        }
+      }
+
+      const savedProperties = mainInstance?.getWallpaperProperties(requestPath) || ({});
+      const nextValues = {};
+      for (const definition of definitions) {
+        const propertyKey = String(definition.key || "");
+        if (savedProperties[propertyKey] !== undefined) {
+          nextValues[propertyKey] = root.parsePropertyValue(savedProperties[propertyKey], definition.type);
+        } else {
+          nextValues[propertyKey] = definition.defaultValue;
+        }
+      }
+      root.wallpaperPropertyValues = nextValues;
+      root.wallpaperPropertyError = "";
+      Logger.i("LWEController", "Wallpaper properties loaded", "path=", requestPath, "count=", definitions.length);
+    }
+  }
+
+  Process {
+    id: compatibilityScanProcess
+
+    stdout: StdioCollector {
+      id: compatibilityScanStdout
+    }
+
+    stderr: StdioCollector {
+      id: compatibilityScanStderr
+    }
+
+    onExited: function(exitCode) {
+      root.scanningCompatibility = false;
+
+      const stdoutText = String(compatibilityScanStdout.text || "");
+      const stderrText = String(compatibilityScanStderr.text || "").trim();
+
+      if (exitCode !== 0) {
+        if (stderrText.length > 0) {
+          Logger.w("LWEController", "Compatibility scan failed", "exitCode=", exitCode, "stderr=", stderrText);
+        } else {
+          Logger.w("LWEController", "Compatibility scan failed", "exitCode=", exitCode);
+        }
+        return;
+      }
+
+      const result = root.applyCompatibilityScanOutput(stdoutText);
+      Logger.i("LWEController", "Compatibility scan completed", "totalCount=", result.totalCount, "failedCount=", result.failedCount);
+      ToastService.showNotice(
+        pluginApi?.tr("panel.title"),
+        pluginApi?.tr("panel.compatibilityQuickCheckFinished", {
+          total: result.totalCount,
+          failed: result.failedCount
+        }),
+        result.failedCount > 0 ? "alert-triangle" : "check"
+      );
     }
   }
 

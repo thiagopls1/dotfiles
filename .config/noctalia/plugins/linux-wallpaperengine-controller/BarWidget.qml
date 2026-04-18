@@ -17,6 +17,11 @@ NIconButton {
   property int sectionWidgetsCount: 0
 
   readonly property var mainInstance: pluginApi?.mainInstance
+  readonly property var cfg: pluginApi?.pluginSettings || ({})
+  readonly property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
+  readonly property string iconColorKey: cfg.iconColor ?? defaults.iconColor ?? "none"
+  readonly property color resolvedIconColor: Color.resolveColorKey(iconColorKey)
+  readonly property bool hasCustomIconColor: iconColorKey !== "none"
 
   icon: "wallpaper-selector"
   tooltipDirection: BarService.getTooltipDirection(screen?.name)
@@ -25,14 +30,8 @@ NIconButton {
   customRadius: Style.radiusL
   colorBg: Style.capsuleColor
   colorFg: {
-    if (!mainInstance?.engineAvailable) {
-      return Color.mError;
-    }
-    if (mainInstance?.isApplying) {
-      return Color.mPrimary;
-    }
-    if (mainInstance?.lastError && mainInstance.lastError.length > 0) {
-      return Color.mError;
+    if (root.hasCustomIconColor) {
+      return root.resolvedIconColor;
     }
     return Color.mOnSurface;
   }
@@ -69,9 +68,9 @@ NIconButton {
         "icon": "refresh"
       },
       {
-        "label": pluginApi?.tr("menu.stop"),
-        "action": "stop",
-        "icon": "player-stop"
+        "label": mainInstance?.engineRunning ? pluginApi?.tr("menu.stop") : pluginApi?.tr("menu.start"),
+        "action": mainInstance?.engineRunning ? "stop" : "start",
+        "icon": mainInstance?.engineRunning ? "player-stop" : "player-play"
       },
       {
         "label": pluginApi?.tr("menu.settings"),
@@ -85,9 +84,11 @@ NIconButton {
       PanelService.closeContextMenu(screen);
 
       if (action === "reload") {
-        mainInstance?.reload();
+        mainInstance?.reload(true);
       } else if (action === "stop") {
-        mainInstance?.stopAll();
+        mainInstance?.stopAll(true);
+      } else if (action === "start") {
+        mainInstance?.reload(true);
       } else if (action === "settings") {
         BarService.openPluginSettings(root.screen, pluginApi.manifest);
       }

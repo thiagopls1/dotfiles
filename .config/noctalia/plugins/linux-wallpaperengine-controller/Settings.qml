@@ -15,11 +15,15 @@ ColumnLayout {
 
   property string editWallpapersFolder: cfg.wallpapersFolder ?? defaults.wallpapersFolder ?? ""
   property string editAssetsDir: cfg.assetsDir ?? defaults.assetsDir ?? ""
+  property string editIconColor: cfg.iconColor ?? defaults.iconColor ?? "none"
+  property bool editEnableExtraPropertiesEditor: cfg.enableExtraPropertiesEditor ?? defaults.enableExtraPropertiesEditor ?? true
   property string editDefaultScaling: cfg.defaultScaling ?? defaults.defaultScaling ?? "fill"
+  property string editDefaultClamp: cfg.defaultClamp ?? defaults.defaultClamp ?? "clamp"
   property int editDefaultFps: cfg.defaultFps ?? defaults.defaultFps ?? 30
   property int editDefaultVolume: cfg.defaultVolume ?? defaults.defaultVolume ?? 100
   property bool editDefaultMuted: cfg.defaultMuted ?? defaults.defaultMuted ?? true
   property bool editDefaultAudioReactiveEffects: cfg.defaultAudioReactiveEffects ?? defaults.defaultAudioReactiveEffects ?? true
+  property bool editDefaultNoAutomute: cfg.defaultNoAutomute ?? defaults.defaultNoAutomute ?? false
   property bool editDefaultDisableMouse: cfg.defaultDisableMouse ?? defaults.defaultDisableMouse ?? false
   property bool editDefaultDisableParallax: cfg.defaultDisableParallax ?? defaults.defaultDisableParallax ?? false
   property bool editDefaultNoFullscreenPause: cfg.defaultNoFullscreenPause ?? defaults.defaultNoFullscreenPause ?? false
@@ -31,27 +35,49 @@ ColumnLayout {
 
   NText {
     Layout.fillWidth: true
+    text: pluginApi?.tr("settings.category.interfaceTitle")
+    color: Color.mOnSurface
+    font.weight: Font.Bold
+  }
+
+  NColorChoice {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.iconColor.label")
+    description: pluginApi?.tr("settings.iconColor.description")
+    currentKey: root.editIconColor
+    onSelected: key => root.editIconColor = key
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.enableExtraPropertiesEditor.label")
+    description: pluginApi?.tr("settings.enableExtraPropertiesEditor.description")
+    checked: root.editEnableExtraPropertiesEditor
+    onToggled: checked => root.editEnableExtraPropertiesEditor = checked
+  }
+
+  NDivider {
+    Layout.fillWidth: true
+  }
+
+  NText {
+    Layout.fillWidth: true
     text: pluginApi?.tr("settings.category.performanceTitle")
     color: Color.mOnSurface
     font.weight: Font.Bold
   }
 
-  RowLayout {
+  NSpinBox {
+    id: defaultFpsSpinBox
     Layout.fillWidth: true
-
-    NText {
-      Layout.fillWidth: true
-      text: pluginApi?.tr("settings.defaultFps.label")
-      color: Color.mOnSurface
-    }
-
-    NSpinBox {
-      from: 1
-      to: 240
-      value: root.editDefaultFps
-      suffix: " FPS"
-      onValueChanged: root.editDefaultFps = value
-    }
+    label: pluginApi?.tr("settings.defaultFps.label")
+    description: pluginApi?.tr("settings.defaultFps.description")
+    from: 1
+    to: 240
+    stepSize: 1
+    value: root.editDefaultFps
+    suffix: pluginApi?.tr("settings.units.fps")
+    onValueChanged: if (value !== root.editDefaultFps) root.editDefaultFps = value
   }
 
   NToggle {
@@ -76,6 +102,10 @@ ColumnLayout {
     description: pluginApi?.tr("settings.autoApplyOnStartup.description")
     checked: root.editAutoApplyOnStartup
     onToggled: checked => root.editAutoApplyOnStartup = checked
+  }
+
+  NDivider {
+    Layout.fillWidth: true
   }
 
   NText {
@@ -118,6 +148,10 @@ ColumnLayout {
     onTextChanged: root.editAssetsDir = text
   }
 
+  NDivider {
+    Layout.fillWidth: true
+  }
+
   NText {
     Layout.fillWidth: true
     text: pluginApi?.tr("settings.category.audioTitle")
@@ -134,14 +168,16 @@ ColumnLayout {
   }
 
   NSpinBox {
+    id: defaultVolumeSpinBox
     Layout.fillWidth: true
     label: pluginApi?.tr("settings.defaultVolume.label")
     from: 0
     to: 100
-    suffix: " %"
+    stepSize: 1
+    suffix: pluginApi?.tr("settings.units.percent")
     value: root.editDefaultVolume
     enabled: !root.editDefaultMuted
-    onValueChanged: root.editDefaultVolume = value
+    onValueChanged: if (value !== root.editDefaultVolume) root.editDefaultVolume = value
   }
 
   NToggle {
@@ -149,6 +185,18 @@ ColumnLayout {
     label: pluginApi?.tr("settings.defaultAudioReactiveEffects.label")
     checked: root.editDefaultAudioReactiveEffects
     onToggled: checked => root.editDefaultAudioReactiveEffects = checked
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultNoAutomute.label")
+    description: pluginApi?.tr("settings.defaultNoAutomute.description")
+    checked: root.editDefaultNoAutomute
+    onToggled: checked => root.editDefaultNoAutomute = checked
+  }
+
+  NDivider {
+    Layout.fillWidth: true
   }
 
   NText {
@@ -170,6 +218,19 @@ ColumnLayout {
     ]
     currentKey: root.editDefaultScaling
     onSelected: key => root.editDefaultScaling = key
+  }
+
+  NComboBox {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultClamp.label")
+    description: pluginApi?.tr("settings.defaultClamp.description")
+    model: [
+      { "key": "clamp", "name": pluginApi?.tr("panel.clampClamp") },
+      { "key": "border", "name": pluginApi?.tr("panel.clampBorder") },
+      { "key": "repeat", "name": pluginApi?.tr("panel.clampRepeat") }
+    ]
+    currentKey: root.editDefaultClamp
+    onSelected: key => root.editDefaultClamp = key
   }
 
   NToggle {
@@ -198,11 +259,15 @@ ColumnLayout {
 
     pluginApi.pluginSettings.wallpapersFolder = root.editWallpapersFolder;
     pluginApi.pluginSettings.assetsDir = root.editAssetsDir;
+    pluginApi.pluginSettings.iconColor = root.editIconColor;
+    pluginApi.pluginSettings.enableExtraPropertiesEditor = root.editEnableExtraPropertiesEditor;
     pluginApi.pluginSettings.defaultScaling = root.editDefaultScaling;
-    pluginApi.pluginSettings.defaultFps = root.editDefaultFps;
-    pluginApi.pluginSettings.defaultVolume = root.editDefaultVolume;
+    pluginApi.pluginSettings.defaultClamp = root.editDefaultClamp;
+    pluginApi.pluginSettings.defaultFps = defaultFpsSpinBox.value;
+    pluginApi.pluginSettings.defaultVolume = defaultVolumeSpinBox.value;
     pluginApi.pluginSettings.defaultMuted = root.editDefaultMuted;
     pluginApi.pluginSettings.defaultAudioReactiveEffects = root.editDefaultAudioReactiveEffects;
+    pluginApi.pluginSettings.defaultNoAutomute = root.editDefaultNoAutomute;
     pluginApi.pluginSettings.defaultDisableMouse = root.editDefaultDisableMouse;
     pluginApi.pluginSettings.defaultDisableParallax = root.editDefaultDisableParallax;
     pluginApi.pluginSettings.defaultNoFullscreenPause = root.editDefaultNoFullscreenPause;
@@ -210,7 +275,7 @@ ColumnLayout {
     pluginApi.pluginSettings.autoApplyOnStartup = root.editAutoApplyOnStartup;
 
     pluginApi.saveSettings();
-    Logger.d("LWEController", "Settings saved", "wallpapersFolder=", root.editWallpapersFolder, "assetsDir=", root.editAssetsDir, "defaultScaling=", root.editDefaultScaling, "defaultFps=", root.editDefaultFps, "defaultVolume=", root.editDefaultVolume, "defaultMuted=", root.editDefaultMuted, "defaultAudioReactiveEffects=", root.editDefaultAudioReactiveEffects, "defaultDisableMouse=", root.editDefaultDisableMouse, "defaultDisableParallax=", root.editDefaultDisableParallax, "defaultNoFullscreenPause=", root.editDefaultNoFullscreenPause, "defaultFullscreenPauseOnlyActive=", root.editDefaultFullscreenPauseOnlyActive, "autoApplyOnStartup=", root.editAutoApplyOnStartup);
+    Logger.d("LWEController", "Settings saved", "wallpapersFolder=", root.editWallpapersFolder, "assetsDir=", root.editAssetsDir, "defaultScaling=", root.editDefaultScaling, "defaultClamp=", root.editDefaultClamp, "defaultFps=", defaultFpsSpinBox.value, "defaultVolume=", defaultVolumeSpinBox.value, "defaultMuted=", root.editDefaultMuted, "defaultAudioReactiveEffects=", root.editDefaultAudioReactiveEffects, "defaultNoAutomute=", root.editDefaultNoAutomute, "defaultDisableMouse=", root.editDefaultDisableMouse, "defaultDisableParallax=", root.editDefaultDisableParallax, "defaultNoFullscreenPause=", root.editDefaultNoFullscreenPause, "defaultFullscreenPauseOnlyActive=", root.editDefaultFullscreenPauseOnlyActive, "autoApplyOnStartup=", root.editAutoApplyOnStartup);
 
     if (pluginApi.mainInstance && pluginApi.mainInstance.engineAvailable) {
       Logger.d("LWEController", "Triggering engine reload after settings save");

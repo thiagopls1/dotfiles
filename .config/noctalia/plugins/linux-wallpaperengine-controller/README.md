@@ -1,26 +1,20 @@
 # Linux WallpaperEngine Controller
 
-A lightweight Noctalia plugin to browse and apply `linux-wallpaperengine` wallpapers.
+A Noctalia plugin that provides a Wallpaper-Engine wallpaper selector powered by your locally installed `linux-wallpaperengine`, with multi-display targeting, runtime controls, extra property editing, and compatibility checks.
 
-Use it directly from the bar and panel to switch wallpapers quickly, with per-screen control and simple playback options.
+## Features
 
-## Highlights
-
-- Apply wallpapers per display or to all displays
-- Quick search, filter, and sort in panel
-- Per-wallpaper options (scaling, volume, mute, audio reactive)
-- One-click engine reload/stop from bar menu
+- Bar widget with quick access to the wallpaper selector panel
+- Panel with wallpaper search by name or workshop ID, type filter, resolution filter, sorting, and pagination
+- Apply wallpapers to all displays or select a specific display target
+- Sidebar preview with wallpaper badges for resolution, type, dynamic/static state, and possible compatibility issues, plus a clickable workshop ID
+- Runtime controls for scaling, clamp mode, volume, mute, audio reactive effects, mouse input, and parallax
+- 5 translations: en, ja, ru, zh-CN, zh-TW
 
 ## Requirements
 
 - [linux-wallpaperengine](https://github.com/Almamu/linux-wallpaperengine) installed and available in `PATH`
-- Wallpaper Engine projects available in your Steam Workshop folder
-
-## Quick Start
-
-1. Open plugin settings and set `Wallpapers source folder`
-2. Open the plugin panel from the bar icon
-3. Select a wallpaper and click `Apply`
+- Wallpaper Engine workshop projects available in your Steam Workshop folder
 
 ## IPC Commands
 
@@ -44,13 +38,17 @@ qs ipc call plugin:linux-wallpaperengine-controller stop all
 qs ipc call plugin:linux-wallpaperengine-controller reload
 ```
 
-## Basic Troubleshooting
+## Troubleshooting
 
-- Check binary in PATH: `command -v linux-wallpaperengine`
-- If panel shows folder error: verify `Wallpapers source folder` exists and contains wallpaper project folders
-- If engine fails to start: recheck dependencies and GPU/OpenGL environment
-- For runtime logs: start shell with debug: `NOCTALIA_DEBUG=1 qs -c noctalia-shell`
+- Check that `linux-wallpaperengine` is available: `command -v linux-wallpaperengine`
+- If the panel shows a source-folder error, verify that `Wallpapers source folder` exists and contains Wallpaper Engine project directories
+- If no wallpapers appear after applying filters, clear the search text and resolution/type filters
+- If a wallpaper is marked as `may fail`, run the compatibility quick check again and verify that `linux-wallpaperengine --list-properties <wallpaper-path>` succeeds
+- If the extra properties section is empty, that wallpaper may not expose supported editable properties
+- If the engine fails to start, recheck your GPU / OpenGL environment.
+- For runtime logs, start the shell with debug enabled: `NOCTALIA_DEBUG=1 qs -c noctalia-shell`
 
 ## Notes
 
-- This plugin controls the `linux-wallpaperengine` process and does not ship wallpapers itself.
+- This plugin does not bundle the wallpaper engine or any wallpapers. It works by calling your locally installed `linux-wallpaperengine` and using Wallpaper Engine workshop wallpapers you have already downloaded.
+- If no wallpaper matches the current search or filters, the panel will show a filtered empty state instead of the generic source-folder message.

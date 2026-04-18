@@ -18,6 +18,7 @@ Item {
   property string lastError: ""
   property string lastErrorDetails: ""
   property string statusMessage: ""
+  readonly property bool engineRunning: engineProcess.running || isApplying || pendingCommand.length > 0
 
   property var pendingCommand: []
 
@@ -39,6 +40,10 @@ Item {
 
     if (pluginApi.pluginSettings.lastKnownGoodScreens === undefined || pluginApi.pluginSettings.lastKnownGoodScreens === null) {
       pluginApi.pluginSettings.lastKnownGoodScreens = {};
+    }
+
+    if (pluginApi.pluginSettings.wallpaperProperties === undefined || pluginApi.pluginSettings.wallpaperProperties === null) {
+      pluginApi.pluginSettings.wallpaperProperties = {};
     }
 
     if (pluginApi.pluginSettings.runtimeRecoveryPending === undefined || pluginApi.pluginSettings.runtimeRecoveryPending === null) {
@@ -163,6 +168,7 @@ Item {
   }
 
   readonly property string defaultScaling: cfg.defaultScaling ?? defaults.defaultScaling ?? "fill"
+  readonly property string defaultClamp: cfg.defaultClamp ?? defaults.defaultClamp ?? "clamp"
   readonly property int defaultFps: cfg.defaultFps ?? defaults.defaultFps ?? 30
 
   readonly property int defaultVolume: {
@@ -175,6 +181,7 @@ Item {
 
   readonly property bool defaultMuted: cfg.defaultMuted ?? defaults.defaultMuted ?? true
   readonly property bool defaultAudioReactiveEffects: cfg.defaultAudioReactiveEffects ?? defaults.defaultAudioReactiveEffects ?? true
+  readonly property bool defaultNoAutomute: cfg.defaultNoAutomute ?? defaults.defaultNoAutomute ?? false
   readonly property bool defaultDisableMouse: cfg.defaultDisableMouse ?? defaults.defaultDisableMouse ?? false
   readonly property bool defaultDisableParallax: cfg.defaultDisableParallax ?? defaults.defaultDisableParallax ?? false
   readonly property bool defaultNoFullscreenPause: cfg.defaultNoFullscreenPause ?? defaults.defaultNoFullscreenPause ?? false
@@ -190,16 +197,10 @@ Item {
     const screenConfigs = cfg.screens || ({});
     const raw = screenConfigs[screenName] || ({});
 
-    const resolvedVolume = Number(raw.volume ?? defaultVolume);
-
     return {
       path: raw.path ?? "",
       scaling: raw.scaling ?? defaultScaling,
-      volume: isNaN(resolvedVolume) ? defaultVolume : Math.max(0, Math.min(100, Math.floor(resolvedVolume))),
-      muted: raw.muted ?? defaultMuted,
-      audioReactiveEffects: raw.audioReactiveEffects ?? defaultAudioReactiveEffects,
-      disableMouse: raw.disableMouse ?? defaultDisableMouse,
-      disableParallax: raw.disableParallax ?? defaultDisableParallax
+      clamp: raw.clamp ?? defaultClamp
     };
   }
 
@@ -213,8 +214,75 @@ Item {
     return false;
   }
 
+  function wallpaperIdFromPath(path) {
+    const raw = normalizedPath(path);
+    if (raw.length === 0) {
+      return "";
+    }
+
+    const parts = raw.split("/");
+    return parts.length > 0 ? String(parts[parts.length - 1] || "") : "";
+  }
+
+  function cloneWallpaperProperties(source) {
+    const cloned = {};
+    const raw = source || ({});
+    for (const key of Object.keys(raw)) {
+      const value = raw[key];
+      if (value !== undefined) {
+        cloned[key] = value;
+      }
+    }
+    return cloned;
+  }
+
+  function setWallpaperProperties(path, properties) {
+    if (!pluginApi) {
+      return;
+    }
+
+    ensureSettingsRoot();
+    const wallpaperId = wallpaperIdFromPath(path);
+    if (wallpaperId.length === 0) {
+      return;
+    }
+
+    pluginApi.pluginSettings.wallpaperProperties[wallpaperId] = cloneWallpaperProperties(properties);
+  }
+
+  function getWallpaperProperties(path) {
+    const wallpaperId = wallpaperIdFromPath(path);
+    if (wallpaperId.length === 0) {
+      return {};
+    }
+
+    const raw = cfg.wallpaperProperties || ({});
+    return cloneWallpaperProperties(raw[wallpaperId] || ({}));
+  }
+
   function setScreenWallpaper(screenName, path) {
     setScreenWallpaperWithOptions(screenName, path, ({}));
+  }
+
+  function clearLegacyScreenRuntimeOptions(screenName) {
+    const screenConfig = pluginApi?.pluginSettings?.screens?.[screenName];
+    if (!screenConfig) {
+      return;
+    }
+
+    delete screenConfig.clamp;
+    delete screenConfig.volume;
+    delete screenConfig.muted;
+    delete screenConfig.audioReactiveEffects;
+    delete screenConfig.noAutomute;
+    delete screenConfig.disableMouse;
+    delete screenConfig.disableParallax;
+  }
+
+  function clearLegacyRuntimeOptionsForAllScreens() {
+    for (const screen of Quickshell.screens) {
+      clearLegacyScreenRuntimeOptions(screen.name);
+    }
   }
 
   function setScreenWallpaperWithOptions(screenName, path, options) {
@@ -233,31 +301,45 @@ Item {
     pluginApi.pluginSettings.screens[screenName].path = path;
 
     const resolvedScaling = (options?.scaling || "").trim();
+    const resolvedClamp = (options?.clamp || "").trim();
     if (resolvedScaling.length > 0) {
       pluginApi.pluginSettings.screens[screenName].scaling = resolvedScaling;
+    }
+    if (resolvedClamp.length > 0) {
+      pluginApi.pluginSettings.defaultClamp = resolvedClamp;
     }
 
     if (options?.volume !== undefined) {
       const rawVolume = Number(options.volume);
       if (!isNaN(rawVolume)) {
-        pluginApi.pluginSettings.screens[screenName].volume = Math.max(0, Math.min(100, Math.floor(rawVolume)));
+        pluginApi.pluginSettings.defaultVolume = Math.max(0, Math.min(100, Math.floor(rawVolume)));
       }
     }
 
     if (options?.muted !== undefined) {
-      pluginApi.pluginSettings.screens[screenName].muted = !!options.muted;
+      pluginApi.pluginSettings.defaultMuted = !!options.muted;
     }
 
     if (options?.audioReactiveEffects !== undefined) {
-      pluginApi.pluginSettings.screens[screenName].audioReactiveEffects = !!options.audioReactiveEffects;
+      pluginApi.pluginSettings.defaultAudioReactiveEffects = !!options.audioReactiveEffects;
+    }
+
+    if (options?.noAutomute !== undefined) {
+      pluginApi.pluginSettings.defaultNoAutomute = !!options.noAutomute;
     }
 
     if (options?.disableMouse !== undefined) {
-      pluginApi.pluginSettings.screens[screenName].disableMouse = !!options.disableMouse;
+      pluginApi.pluginSettings.defaultDisableMouse = !!options.disableMouse;
     }
 
     if (options?.disableParallax !== undefined) {
-      pluginApi.pluginSettings.screens[screenName].disableParallax = !!options.disableParallax;
+      pluginApi.pluginSettings.defaultDisableParallax = !!options.disableParallax;
+    }
+
+    clearLegacyScreenRuntimeOptions(screenName);
+
+    if (options?.customProperties !== undefined) {
+      setWallpaperProperties(path, options.customProperties);
     }
 
     pluginApi.saveSettings();
@@ -298,11 +380,13 @@ Item {
     ensureSettingsRoot();
 
     const resolvedScaling = (options?.scaling || "").trim();
+    const resolvedClamp = (options?.clamp || "").trim();
     const resolvedVolumeRaw = Number(options?.volume);
     const hasResolvedVolume = !isNaN(resolvedVolumeRaw);
     const resolvedVolume = hasResolvedVolume ? Math.max(0, Math.min(100, Math.floor(resolvedVolumeRaw))) : 0;
     const hasMuted = options?.muted !== undefined;
     const hasAudioReactive = options?.audioReactiveEffects !== undefined;
+    const hasNoAutomute = options?.noAutomute !== undefined;
     const hasDisableMouse = options?.disableMouse !== undefined;
     const hasDisableParallax = options?.disableParallax !== undefined;
 
@@ -315,22 +399,35 @@ Item {
       if (resolvedScaling.length > 0) {
         pluginApi.pluginSettings.screens[screen.name].scaling = resolvedScaling;
       }
-      if (hasResolvedVolume) {
-        pluginApi.pluginSettings.screens[screen.name].volume = resolvedVolume;
-      }
-      if (hasMuted) {
-        pluginApi.pluginSettings.screens[screen.name].muted = !!options.muted;
-      }
-      if (hasAudioReactive) {
-        pluginApi.pluginSettings.screens[screen.name].audioReactiveEffects = !!options.audioReactiveEffects;
-      }
-      if (hasDisableMouse) {
-        pluginApi.pluginSettings.screens[screen.name].disableMouse = !!options.disableMouse;
-      }
-      if (hasDisableParallax) {
-        pluginApi.pluginSettings.screens[screen.name].disableParallax = !!options.disableParallax;
+      if (options?.customProperties !== undefined) {
+        setWallpaperProperties(path, options.customProperties);
       }
     }
+
+    if (resolvedClamp.length > 0) {
+      pluginApi.pluginSettings.defaultClamp = resolvedClamp;
+    }
+
+    if (hasResolvedVolume) {
+      pluginApi.pluginSettings.defaultVolume = resolvedVolume;
+    }
+    if (hasMuted) {
+      pluginApi.pluginSettings.defaultMuted = !!options.muted;
+    }
+    if (hasAudioReactive) {
+      pluginApi.pluginSettings.defaultAudioReactiveEffects = !!options.audioReactiveEffects;
+    }
+    if (hasNoAutomute) {
+      pluginApi.pluginSettings.defaultNoAutomute = !!options.noAutomute;
+    }
+    if (hasDisableMouse) {
+      pluginApi.pluginSettings.defaultDisableMouse = !!options.disableMouse;
+    }
+    if (hasDisableParallax) {
+      pluginApi.pluginSettings.defaultDisableParallax = !!options.disableParallax;
+    }
+
+    clearLegacyRuntimeOptionsForAllScreens();
 
     pluginApi.saveSettings();
     restartEngine();
@@ -419,10 +516,12 @@ Item {
   function buildCommand() {
     const command = ["linux-wallpaperengine"];
     let firstPath = "";
+    const appendedWallpaperIds = {};
     let runtimeOptions = {
       volume: defaultVolume,
       muted: defaultMuted,
       audioReactiveEffects: defaultAudioReactiveEffects,
+      noAutomute: defaultNoAutomute,
       disableMouse: defaultDisableMouse,
       disableParallax: defaultDisableParallax
     };
@@ -431,19 +530,18 @@ Item {
       const candidateCfg = getScreenConfig(candidate.name);
       const candidatePath = normalizedPath(candidateCfg.path);
       if (candidatePath && candidatePath.length > 0) {
-        runtimeOptions = {
-          volume: candidateCfg.volume,
-          muted: candidateCfg.muted,
-          audioReactiveEffects: candidateCfg.audioReactiveEffects,
-          disableMouse: candidateCfg.disableMouse,
-          disableParallax: candidateCfg.disableParallax
-        };
         break;
       }
     }
 
     command.push("--fps");
     command.push(String(defaultFps));
+
+    const runtimeClamp = String(defaultClamp || "clamp").trim();
+    if (runtimeClamp.length > 0) {
+      command.push("--clamp");
+      command.push(runtimeClamp);
+    }
 
     if (runtimeOptions.muted) {
       command.push("--silent");
@@ -454,6 +552,10 @@ Item {
 
     if (!runtimeOptions.audioReactiveEffects) {
       command.push("--no-audio-processing");
+    }
+
+    if (runtimeOptions.noAutomute) {
+      command.push("--noautomute");
     }
 
     if (runtimeOptions.disableMouse) {
@@ -489,12 +591,27 @@ Item {
         firstPath = path;
       }
 
-      command.push("--scaling");
-      command.push(String(screenCfg.scaling));
       command.push("--screen-root");
       command.push(screen.name);
       command.push("--bg");
       command.push(path);
+
+      command.push("--scaling");
+      command.push(String(screenCfg.scaling));
+
+      const wallpaperId = wallpaperIdFromPath(path);
+      if (wallpaperId.length > 0 && !appendedWallpaperIds[wallpaperId]) {
+        const customProperties = getWallpaperProperties(path);
+        for (const propertyKey of Object.keys(customProperties)) {
+          const propertyValue = customProperties[propertyKey];
+          if (propertyValue === undefined || propertyValue === null || String(propertyKey || "").trim().length === 0) {
+            continue;
+          }
+          command.push("--set-property");
+          command.push(String(propertyKey) + "=" + String(propertyValue));
+        }
+        appendedWallpaperIds[wallpaperId] = true;
+      }
     }
 
     if (firstPath.length > 0) {
@@ -504,7 +621,7 @@ Item {
     return command;
   }
 
-  function stopAll() {
+  function stopAll(showToast = false) {
     Logger.i("LWEController", "Stopping engine process");
     pendingCommand = [];
 
@@ -522,6 +639,9 @@ Item {
 
     isApplying = false;
     statusMessage = pluginApi?.tr("main.status.stopped");
+    if (showToast) {
+      ToastService.showNotice(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.stopped"), "player-stop");
+    }
   }
 
   function startEngineWithCommand(command) {
@@ -585,16 +705,22 @@ Item {
     startEngineWithCommand(command);
   }
 
-  function reload() {
+  function reload(showToast = false) {
     if (!hasAnyConfiguredWallpaper()) {
       lastError = "";
       lastErrorDetails = "";
       statusMessage = pluginApi?.tr("main.status.ready");
       Logger.i("LWEController", "Reload skipped: no configured wallpaper paths");
+      if (showToast) {
+        ToastService.showWarning(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.reloadSkippedNoWallpaper"), "alert-circle");
+      }
       return;
     }
 
     restartEngine();
+    if (showToast) {
+      ToastService.showNotice(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.reloaded"), "refresh");
+    }
   }
 
   Process {
