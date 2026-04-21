@@ -1,5 +1,8 @@
 #!/bin/bash
-# Detect Steam workshop folder for Wallpaper Engine
+
+# Detect the Steam workshop folder used by Wallpaper Engine.
+# Output:
+#   First matching workshop directory path, or empty output if not found
 
 for common in "$HOME/.steam/steam/steamapps/common" \
               "$HOME/.local/share/Steam/steamapps/common" \

@@ -8,7 +8,7 @@
     }
   },
   "menu": {
-    "reload": "重新載入壁紙引擎",
+    "refreshWallpapers": "刷新壁紙列表",
     "start": "啟動壁紙引擎",
     "stop": "停止壁紙引擎",
     "settings": "外掛設定"
@@ -16,7 +16,16 @@
   "toast": {
     "reloaded": "壁紙引擎已重新載入",
     "stopped": "壁紙引擎已停止",
-    "reloadSkippedNoWallpaper": "目前未設定壁紙，因此無需重新載入"
+    "reloadSkippedNoWallpaper": "目前未設定壁紙，因此無需重新載入",
+    "refreshingWallpapers": "正在刷新壁紙列表...",
+    "refreshedWallpapers": "壁紙列表已刷新：共 {count} 個壁紙",
+    "refreshSkippedNoFolder": "壁紙來源目錄為空，因此無法刷新壁紙列表",
+    "wallpaperColorsGenerating": "正在產生用於取色的壁紙截圖...",
+    "wallpaperColorsApplied": "已將壁紙顏色套用到 Noctalia",
+    "wallpaperColorsCached": "已為此顯示器快取壁紙顏色",
+    "wallpaperColorsFailed": "無法從所選壁紙中擷取顏色",
+    "wallpaperColorsNoSelection": "請先選擇壁紙，再套用壁紙顏色",
+    "wallpaperColorsEngineUnavailable": "需要可用的 linux-wallpaperengine 才能產生壁紙顏色"
   },
   "main": {
     "status": {
@@ -48,7 +57,7 @@
     "errorShowDetails": "查看詳情",
     "errorHideDetails": "收起詳情",
     "errorDismiss": "關閉提示",
-    "reload": "重新載入",
+    "refreshWallpapers": "刷新壁紙",
     "start": "啟動",
     "stop": "停止",
     "confirm": "確認",
@@ -66,6 +75,7 @@
     "applyAllDisplays": "套用到全部顯示器",
     "closePanel": "關閉面板",
     "confirmApply": "套用壁紙",
+    "syncWallpaperColors": "同步壁紙顏色",
     "wallpaperScaling": "縮放",
     "wallpaperClamp": "邊界模式",
     "wallpaperVolume": "音量",
@@ -144,9 +154,16 @@
       "label": "啟用額外屬性編輯器",
       "description": "在可用時於面板側欄顯示壁紙專屬的額外屬性"
     },
+    "cache": {
+      "currentSize": "目前配色圖片快取大小：{size}",
+      "refresh": "刷新配色快取大小",
+      "clear": "清除配色圖片快取",
+      "sizeUnknown": "未知"
+    },
     "units": {
       "fps": " FPS",
-      "percent": " %"
+      "percent": " %",
+      "minutes": " 分鐘"
     },
     "wallpapersFolder": {
       "label": "壁紙來源目錄",
@@ -158,6 +175,10 @@
       "label": "Wallpaper Engine 資源目錄",
       "description": "可選：linux-wallpaperengine 使用的 assets 路徑",
       "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "wallpaperScanCacheMinutes": {
+      "label": "壁紙掃描快取時長",
+      "description": "開啟面板時，若未超過該分鐘數則重用快取的壁紙列表而不重新掃描"
     },
     "defaultScaling": {
       "label": "預設縮放模式",

@@ -1,6 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Io
+
+import "helpers/ColorCacheHelpers.js" as ColorCacheHelpers
 
 import qs.Commons
 import qs.Widgets
@@ -29,9 +32,41 @@ ColumnLayout {
   property bool editDefaultNoFullscreenPause: cfg.defaultNoFullscreenPause ?? defaults.defaultNoFullscreenPause ?? false
   property bool editDefaultFullscreenPauseOnlyActive: cfg.defaultFullscreenPauseOnlyActive ?? defaults.defaultFullscreenPauseOnlyActive ?? false
   property bool editAutoApplyOnStartup: cfg.autoApplyOnStartup ?? defaults.autoApplyOnStartup ?? true
+  property int editWallpaperScanCacheMinutes: cfg.wallpaperScanCacheMinutes ?? defaults.wallpaperScanCacheMinutes ?? 5
   property bool scanning: false
+  property bool refreshingCacheSize: false
+  property bool clearingCache: false
+  property string cacheSizeLabel: pluginApi?.tr("settings.cache.sizeUnknown")
+  readonly property string pluginCacheDir: Settings.cacheDir + "plugins/linux-wallpaperengine-controller"
 
   spacing: Style.marginL
+
+  function refreshCacheSize() {
+    if (root.refreshingCacheSize) {
+      return;
+    }
+
+    root.refreshingCacheSize = true;
+    cacheSizeProcess.running = true;
+  }
+
+  function formatBytes(bytes) {
+    return ColorCacheHelpers.formatBytes(bytes, pluginApi?.tr("settings.cache.sizeUnknown"));
+  }
+
+  function preservedWallpaperColorScreenshots() {
+    return ColorCacheHelpers.preservedEntriesForScreens(
+      pluginApi?.pluginSettings?.wallpaperColorScreenshots,
+      Quickshell.screens
+    );
+  }
+
+  function clearCacheCommand() {
+    const preserved = root.preservedWallpaperColorScreenshots();
+    return ColorCacheHelpers.clearCacheCommand(root.pluginApi?.pluginDir || "", root.pluginCacheDir, preserved);
+  }
+
+  Component.onCompleted: refreshCacheSize()
 
   NText {
     Layout.fillWidth: true
@@ -146,6 +181,50 @@ ColumnLayout {
     placeholderText: pluginApi?.tr("settings.assetsDir.placeholder")
     text: root.editAssetsDir
     onTextChanged: root.editAssetsDir = text
+  }
+
+  NSpinBox {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.wallpaperScanCacheMinutes.label")
+    description: pluginApi?.tr("settings.wallpaperScanCacheMinutes.description")
+    from: 0
+    to: 1440
+    stepSize: 1
+    value: root.editWallpaperScanCacheMinutes
+    suffix: pluginApi?.tr("settings.units.minutes")
+    onValueChanged: if (value !== root.editWallpaperScanCacheMinutes) root.editWallpaperScanCacheMinutes = value
+  }
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.cache.currentSize", { size: root.cacheSizeLabel })
+    color: Color.mOnSurfaceVariant
+    wrapMode: Text.Wrap
+  }
+
+  ColumnLayout {
+    Layout.fillWidth: true
+    spacing: Style.marginS
+
+    NButton {
+      Layout.fillWidth: true
+      text: pluginApi?.tr("settings.cache.refresh")
+      icon: root.refreshingCacheSize ? "loader" : "refresh"
+      enabled: !root.refreshingCacheSize && !root.clearingCache
+      onClicked: root.refreshCacheSize()
+    }
+
+    NButton {
+      Layout.fillWidth: true
+      text: pluginApi?.tr("settings.cache.clear")
+      icon: root.clearingCache ? "loader" : "trash"
+      enabled: !root.clearingCache && !root.refreshingCacheSize
+      onClicked: {
+        root.clearingCache = true;
+        clearCacheProcess.command = root.clearCacheCommand();
+        clearCacheProcess.running = true;
+      }
+    }
   }
 
   NDivider {
@@ -273,13 +352,17 @@ ColumnLayout {
     pluginApi.pluginSettings.defaultNoFullscreenPause = root.editDefaultNoFullscreenPause;
     pluginApi.pluginSettings.defaultFullscreenPauseOnlyActive = root.editDefaultFullscreenPauseOnlyActive;
     pluginApi.pluginSettings.autoApplyOnStartup = root.editAutoApplyOnStartup;
+    pluginApi.pluginSettings.wallpaperScanCacheMinutes = root.editWallpaperScanCacheMinutes;
 
     pluginApi.saveSettings();
-    Logger.d("LWEController", "Settings saved", "wallpapersFolder=", root.editWallpapersFolder, "assetsDir=", root.editAssetsDir, "defaultScaling=", root.editDefaultScaling, "defaultClamp=", root.editDefaultClamp, "defaultFps=", defaultFpsSpinBox.value, "defaultVolume=", defaultVolumeSpinBox.value, "defaultMuted=", root.editDefaultMuted, "defaultAudioReactiveEffects=", root.editDefaultAudioReactiveEffects, "defaultNoAutomute=", root.editDefaultNoAutomute, "defaultDisableMouse=", root.editDefaultDisableMouse, "defaultDisableParallax=", root.editDefaultDisableParallax, "defaultNoFullscreenPause=", root.editDefaultNoFullscreenPause, "defaultFullscreenPauseOnlyActive=", root.editDefaultFullscreenPauseOnlyActive, "autoApplyOnStartup=", root.editAutoApplyOnStartup);
+    Logger.d("LWEController", "Settings saved", "wallpapersFolder=", root.editWallpapersFolder, "assetsDir=", root.editAssetsDir, "defaultScaling=", root.editDefaultScaling, "defaultClamp=", root.editDefaultClamp, "defaultFps=", defaultFpsSpinBox.value, "defaultVolume=", defaultVolumeSpinBox.value, "defaultMuted=", root.editDefaultMuted, "defaultAudioReactiveEffects=", root.editDefaultAudioReactiveEffects, "defaultNoAutomute=", root.editDefaultNoAutomute, "defaultDisableMouse=", root.editDefaultDisableMouse, "defaultDisableParallax=", root.editDefaultDisableParallax, "defaultNoFullscreenPause=", root.editDefaultNoFullscreenPause, "defaultFullscreenPauseOnlyActive=", root.editDefaultFullscreenPauseOnlyActive, "autoApplyOnStartup=", root.editAutoApplyOnStartup, "wallpaperScanCacheMinutes=", root.editWallpaperScanCacheMinutes);
 
-    if (pluginApi.mainInstance && pluginApi.mainInstance.engineAvailable) {
-      Logger.d("LWEController", "Triggering engine reload after settings save");
-      pluginApi.mainInstance.reload();
+    if (pluginApi.mainInstance) {
+      Logger.d("LWEController", "Refreshing wallpaper cache and reloading engine after settings save");
+      pluginApi.mainInstance.refreshWallpaperCache(true, false);
+      if (pluginApi.mainInstance.hasAnyConfiguredWallpaper()) {
+        pluginApi.mainInstance.reload();
+      }
     }
   }
 
@@ -290,7 +373,7 @@ ColumnLayout {
     command: {
       const pluginDir = root.pluginApi?.pluginDir || "";
       const scriptPath = pluginDir + "/scripts/detect-steam-workshop.sh";
-      return ["sh", scriptPath];
+      return ["bash", scriptPath];
     }
 
     onExited: function () {
@@ -299,6 +382,59 @@ ColumnLayout {
       if (detected.length > 0 && root.editWallpapersFolder.length === 0) {
         root.editWallpapersFolder = detected;
       }
+    }
+
+    stdout: StdioCollector {}
+    stderr: StdioCollector {}
+  }
+
+  Process {
+    id: cacheSizeProcess
+    running: false
+    command: {
+      const pluginDir = root.pluginApi?.pluginDir || "";
+      const scriptPath = pluginDir + "/scripts/get-cache-size-bytes.sh";
+      return ["bash", scriptPath, root.pluginCacheDir];
+    }
+
+    onExited: function (exitCode) {
+      root.refreshingCacheSize = false;
+
+      if (exitCode !== 0) {
+        const errorOutput = String(stderr.text || "").trim();
+        if (errorOutput.length > 0) {
+          console.warn("Failed to get cache size:", errorOutput);
+        }
+        root.cacheSizeLabel = pluginApi?.tr("settings.cache.sizeUnknown");
+        return;
+      }
+
+      const output = String(stdout.text || "").trim();
+      const bytes = Number(output);
+      if (output.length === 0 || isNaN(bytes) || bytes < 0) {
+        root.cacheSizeLabel = pluginApi?.tr("settings.cache.sizeUnknown");
+        return;
+      }
+
+      root.cacheSizeLabel = root.formatBytes(bytes);
+    }
+
+    stdout: StdioCollector {}
+    stderr: StdioCollector {}
+  }
+
+  Process {
+    id: clearCacheProcess
+    running: false
+    command: root.clearCacheCommand()
+
+    onExited: function () {
+      root.clearingCache = false;
+      if (pluginApi) {
+        pluginApi.pluginSettings.wallpaperColorScreenshots = root.preservedWallpaperColorScreenshots();
+        pluginApi.saveSettings();
+      }
+      root.refreshCacheSize();
     }
 
     stdout: StdioCollector {}

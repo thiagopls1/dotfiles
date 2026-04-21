@@ -1,5 +1,11 @@
 #!/bin/bash
-# Scan wallpaper folders and extract metadata
+
+# Scan wallpaper folders and extract metadata for panel listing.
+# Args:
+#   1: Wallpaper Engine workshop directory (contains wallpaper subdirectories)
+# Output:
+#   Tab-separated rows:
+#   <path>\t<name>\t<thumb>\t<motion>\t<dynamic>\t<id>\t<type>\t<resolution>\t<bytes>:<mtime>
 
 dir="$1"
 [ -d "$dir" ] || exit 10

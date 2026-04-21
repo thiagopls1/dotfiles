@@ -12,9 +12,12 @@
   "defaultNoAutomute": false,
   "defaultDisableMouse": false,
   "defaultDisableParallax": false,
+  "applyWallpaperColorsOnApply": false,
+  "wallpaperColorScreenshots": {},
   "defaultNoFullscreenPause": false,
   "defaultFullscreenPauseOnlyActive": false,
   "autoApplyOnStartup": true,
+  "wallpaperScanCacheMinutes": 5,
   "panelLastSelectedPath": "",
   "screens": {
     "DP-3": {

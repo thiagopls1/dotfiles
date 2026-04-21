@@ -8,7 +8,7 @@
     }
   },
   "menu": {
-    "reload": "壁紙エンジンを再読み込み",
+    "refreshWallpapers": "壁紙一覧を更新",
     "start": "壁紙エンジンを開始",
     "stop": "壁紙エンジンを停止",
     "settings": "プラグイン設定"
@@ -16,7 +16,16 @@
   "toast": {
     "reloaded": "壁紙エンジンを再読み込みしました",
     "stopped": "壁紙エンジンを停止しました",
-    "reloadSkippedNoWallpaper": "壁紙が設定されていないため、再読み込みする内容がありません"
+    "reloadSkippedNoWallpaper": "壁紙が設定されていないため、再読み込みする内容がありません",
+    "refreshingWallpapers": "壁紙一覧を更新中...",
+    "refreshedWallpapers": "壁紙一覧を更新しました：{count} 件",
+    "refreshSkippedNoFolder": "壁紙ソースディレクトリが空のため、壁紙一覧を更新できません",
+    "wallpaperColorsGenerating": "色抽出用の壁紙スクリーンショットを生成中...",
+    "wallpaperColorsApplied": "壁紙の色を Noctalia に適用しました",
+    "wallpaperColorsCached": "このディスプレイ用の壁紙カラーを保存しました",
+    "wallpaperColorsFailed": "選択した壁紙から色を抽出できませんでした",
+    "wallpaperColorsNoSelection": "壁紙の色を適用する前に壁紙を選択してください",
+    "wallpaperColorsEngineUnavailable": "壁紙の色を生成するには linux-wallpaperengine が利用可能である必要があります"
   },
   "main": {
     "status": {
@@ -48,7 +57,7 @@
     "errorShowDetails": "詳細を表示",
     "errorHideDetails": "詳細を隠す",
     "errorDismiss": "閉じる",
-    "reload": "再読み込み",
+    "refreshWallpapers": "壁紙を更新",
     "start": "開始",
     "stop": "停止",
     "confirm": "確認",
@@ -66,6 +75,7 @@
     "applyAllDisplays": "すべてのディスプレイに適用",
     "closePanel": "パネルを閉じる",
     "confirmApply": "壁紙を適用",
+    "syncWallpaperColors": "壁紙の色を同期",
     "wallpaperScaling": "拡大縮小",
     "wallpaperClamp": "クランプモード",
     "wallpaperVolume": "音量",
@@ -144,9 +154,16 @@
       "label": "追加プロパティ編集を有効化",
       "description": "利用可能な場合、壁紙ごとの追加プロパティをパネルのサイドバーに表示します"
     },
+    "cache": {
+      "currentSize": "現在の配色画像キャッシュサイズ: {size}",
+      "refresh": "配色キャッシュサイズを更新",
+      "clear": "配色画像キャッシュを削除",
+      "sizeUnknown": "不明"
+    },
     "units": {
       "fps": " FPS",
-      "percent": " %"
+      "percent": " %",
+      "minutes": " 分"
     },
     "wallpapersFolder": {
       "label": "壁紙ソースディレクトリ",
@@ -158,6 +175,10 @@
       "label": "Wallpaper Engine 資産ディレクトリ",
       "description": "任意: linux-wallpaperengine が使用する assets パス",
       "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "wallpaperScanCacheMinutes": {
+      "label": "壁紙スキャンキャッシュ時間",
+      "description": "パネルを開くとき、この分数を超えていなければキャッシュ済みの壁紙一覧を再利用します"
     },
     "defaultScaling": {
       "label": "既定の拡大縮小モード",

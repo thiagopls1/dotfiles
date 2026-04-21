@@ -8,7 +8,7 @@
     }
   },
   "menu": {
-    "reload": "Перезагрузить движок обоев",
+    "refreshWallpapers": "Обновить список обоев",
     "start": "Запустить движок обоев",
     "stop": "Остановить движок обоев",
     "settings": "Настройки плагина"
@@ -16,7 +16,16 @@
   "toast": {
     "reloaded": "Движок обоев перезагружен",
     "stopped": "Движок обоев остановлен",
-    "reloadSkippedNoWallpaper": "Обои не настроены, поэтому перезагружать нечего"
+    "reloadSkippedNoWallpaper": "Обои не настроены, поэтому перезагружать нечего",
+    "refreshingWallpapers": "Обновление списка обоев...",
+    "refreshedWallpapers": "Список обоев обновлён: {count}",
+    "refreshSkippedNoFolder": "Каталог источника обоев пуст, поэтому список обоев нельзя обновить",
+    "wallpaperColorsGenerating": "Создание скриншота обоев для извлечения цветов...",
+    "wallpaperColorsApplied": "Цвета обоев применены к Noctalia",
+    "wallpaperColorsCached": "Цвета обоев сохранены для этого дисплея",
+    "wallpaperColorsFailed": "Не удалось извлечь цвета из выбранных обоев",
+    "wallpaperColorsNoSelection": "Сначала выберите обои, а затем применяйте их цвета",
+    "wallpaperColorsEngineUnavailable": "Для генерации цветов обоев требуется доступный linux-wallpaperengine"
   },
   "main": {
     "status": {
@@ -48,7 +57,7 @@
     "errorShowDetails": "Показать подробности",
     "errorHideDetails": "Скрыть подробности",
     "errorDismiss": "Закрыть",
-    "reload": "Перезагрузить",
+    "refreshWallpapers": "Обновить обои",
     "start": "Запустить",
     "stop": "Остановить",
     "confirm": "Подтвердить",
@@ -66,13 +75,14 @@
     "applyAllDisplays": "Применить ко всем дисплеям",
     "closePanel": "Закрыть панель",
     "confirmApply": "Применить обои",
+    "syncWallpaperColors": "Синхронизировать цвета",
     "wallpaperScaling": "Масштабирование",
     "wallpaperClamp": "Режим зажатия",
     "wallpaperVolume": "Громкость",
     "wallpaperMuted": "Без звука",
-    "wallpaperAudioReactive": "Эффекты аудиореакции",
-    "wallpaperDisableMouse": "Отключить взаимодействие мышью",
-    "wallpaperDisableParallax": "Отключить эффект параллакса",
+    "wallpaperAudioReactive": "Аудиореактивные эффекты",
+    "wallpaperDisableMouse": "Отключить мышь",
+    "wallpaperDisableParallax": "Отключить параллакс",
     "sectionProperties": "Дополнительные свойства",
     "loadingProperties": "Загрузка свойств обоев...",
     "propertiesLoadFailed": "Не удалось загрузить свойства обоев. Возможно, формат свойств этих обоев пока не поддерживается, либо сами обои не могут быть корректно загружены и запущены",
@@ -142,11 +152,18 @@
     },
     "enableExtraPropertiesEditor": {
       "label": "Включить редактор дополнительных свойств",
-      "description": "Показывать в боковой панели дополнительные свойства конкретных обоев, если они доступны"
+      "description": "Показывать дополнительные свойства обоев в боковой панели, если они доступны"
+    },
+    "cache": {
+      "currentSize": "Размер кэша цветовых изображений: {size}",
+      "refresh": "Обновить размер кэша",
+      "clear": "Очистить кэш цветов",
+      "sizeUnknown": "Неизвестно"
     },
     "units": {
       "fps": " FPS",
-      "percent": " %"
+      "percent": " %",
+      "minutes": " мин"
     },
     "wallpapersFolder": {
       "label": "Каталог источника обоев",
@@ -158,6 +175,10 @@
       "label": "Каталог ресурсов Wallpaper Engine",
       "description": "Необязательно: путь к assets, используемый linux-wallpaperengine",
       "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "wallpaperScanCacheMinutes": {
+      "label": "Время кэша сканирования обоев",
+      "description": "При открытии панели повторно использовать кэшированный список обоев, если он не старше указанного количества минут"
     },
     "defaultScaling": {
       "label": "Режим масштабирования по умолчанию",
@@ -191,8 +212,8 @@
       "label": "Эффекты аудиореакции"
     },
     "defaultNoAutomute": {
-      "label": "Не заглушать при воспроизведении звука другими приложениями",
-      "description": "Если включено, звук обоев продолжит воспроизводиться даже когда другие приложения выводят аудио"
+      "label": "Не заглушать при звуке других приложений",
+      "description": "Если включено, звук обоев продолжит играть, даже когда другие приложения выводят аудио"
     },
     "defaultDisableMouse": {
       "label": "Отключить взаимодействие мышью"

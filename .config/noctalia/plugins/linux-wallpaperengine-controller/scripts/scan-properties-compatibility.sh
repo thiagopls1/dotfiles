@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Scan wallpaper folders and mark `--list-properties` compatibility.
+# Args:
+#   1: Wallpaper Engine workshop directory (contains wallpaper subdirectories)
+# Output:
+#   Tab-separated rows: <wallpaper_dir>\t<status>
+#   status: 0 = compatible, 1 = failed
+
 dir="$1"
 [ -d "$dir" ] || exit 10
 

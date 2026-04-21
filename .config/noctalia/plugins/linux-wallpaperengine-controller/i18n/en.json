@@ -8,7 +8,7 @@
     }
   },
   "menu": {
-    "reload": "Reload wallpaper engine",
+    "refreshWallpapers": "Refresh wallpaper list",
     "start": "Start wallpaper engine",
     "stop": "Stop wallpaper engine",
     "settings": "Plugin settings"
@@ -16,7 +16,16 @@
   "toast": {
     "reloaded": "Wallpaper engine reloaded",
     "stopped": "Wallpaper engine stopped",
-    "reloadSkippedNoWallpaper": "No wallpaper is configured, so there was nothing to reload"
+    "reloadSkippedNoWallpaper": "No wallpaper is configured, so there was nothing to reload",
+    "refreshingWallpapers": "Refreshing wallpaper list...",
+    "refreshedWallpapers": "Wallpaper list refreshed: {count} wallpapers",
+    "refreshSkippedNoFolder": "Wallpaper source directory is empty, so the wallpaper list could not be refreshed",
+    "wallpaperColorsGenerating": "Generating wallpaper screenshot for color extraction...",
+    "wallpaperColorsApplied": "Wallpaper colors applied to Noctalia",
+    "wallpaperColorsCached": "Wallpaper colors cached for this display",
+    "wallpaperColorsFailed": "Failed to extract colors from the selected wallpaper",
+    "wallpaperColorsNoSelection": "Select a wallpaper first before applying wallpaper colors",
+    "wallpaperColorsEngineUnavailable": "linux-wallpaperengine must be available to generate wallpaper colors"
   },
   "main": {
     "status": {
@@ -48,7 +57,7 @@
     "errorShowDetails": "View details",
     "errorHideDetails": "Hide details",
     "errorDismiss": "Dismiss",
-    "reload": "Reload",
+    "refreshWallpapers": "Refresh wallpapers",
     "start": "Start",
     "stop": "Stop",
     "confirm": "Confirm",
@@ -66,6 +75,7 @@
     "applyAllDisplays": "Apply to all displays",
     "closePanel": "Close panel",
     "confirmApply": "Apply wallpaper",
+    "syncWallpaperColors": "Sync wallpaper colors",
     "wallpaperScaling": "Scaling",
     "wallpaperClamp": "Clamp mode",
     "wallpaperVolume": "Volume",
@@ -144,9 +154,16 @@
       "label": "Enable extra property editor",
       "description": "Show wallpaper-specific extra properties in the panel sidebar when available"
     },
+    "cache": {
+      "currentSize": "Current color image cache size: {size}",
+      "refresh": "Refresh color cache size",
+      "clear": "Clear color image cache",
+      "sizeUnknown": "Unknown"
+    },
     "units": {
       "fps": " FPS",
-      "percent": " %"
+      "percent": " %",
+      "minutes": " min"
     },
     "wallpapersFolder": {
       "label": "Wallpaper source directory",
@@ -158,6 +175,10 @@
       "label": "Wallpaper Engine assets directory",
       "description": "Optional: assets path used by linux-wallpaperengine",
       "placeholder": "~/.local/share/wallpaperengine/assets"
+    },
+    "wallpaperScanCacheMinutes": {
+      "label": "Wallpaper scan cache duration",
+      "description": "Reuse the cached wallpaper list for this many minutes before scanning again when opening the panel"
     },
     "defaultScaling": {
       "label": "Default scaling mode",

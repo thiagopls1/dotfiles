@@ -63,8 +63,8 @@ NIconButton {
 
     model: [
       {
-        "label": pluginApi?.tr("menu.reload"),
-        "action": "reload",
+        "label": pluginApi?.tr("menu.refreshWallpapers"),
+        "action": "refreshWallpapers",
         "icon": "refresh"
       },
       {
@@ -83,8 +83,8 @@ NIconButton {
       contextMenu.close();
       PanelService.closeContextMenu(screen);
 
-      if (action === "reload") {
-        mainInstance?.reload(true);
+      if (action === "refreshWallpapers") {
+        mainInstance?.refreshWallpaperCache(true, true);
       } else if (action === "stop") {
         mainInstance?.stopAll(true);
       } else if (action === "start") {
