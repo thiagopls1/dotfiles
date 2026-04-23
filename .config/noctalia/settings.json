@@ -93,7 +93,7 @@
                     "labelMode": "name",
                     "occupiedColor": "secondary",
                     "pillSize": 0.6,
-                    "showApplications": false,
+                    "showApplications": true,
                     "showApplicationsHover": true,
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": false,
@@ -358,20 +358,28 @@
         "indicatorOpacity": 1,
         "indicatorThickness": 3,
         "launcherIcon": "rocket",
-        "launcherIconColor": "none",
+        "launcherIconColor": "primary",
         "launcherPosition": "end",
-        "launcherUseDistroLogo": false,
+        "launcherUseDistroLogo": true,
         "monitors": [
         ],
         "onlySameOutput": true,
         "pinnedApps": [
+            "org.gnome.Nautilus",
+            "firefox",
+            "org.gnome.Evolution",
+            "steam",
+            "net.lutris.Lutris",
+            "discord",
+            "spotify-launcher",
+            "obsidian"
         ],
         "pinnedStatic": true,
         "position": "bottom",
         "showDockIndicator": true,
         "showLauncherIcon": true,
         "sitOnFrame": false,
-        "size": 1
+        "size": 1.1
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
