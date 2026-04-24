@@ -347,7 +347,7 @@
         "deadOpacity": 0.6,
         "displayMode": "auto_hide",
         "dockType": "floating",
-        "enabled": false,
+        "enabled": true,
         "floatingRatio": 1,
         "groupApps": true,
         "groupClickAction": "cycle",
@@ -375,7 +375,7 @@
             "obsidian"
         ],
         "pinnedStatic": true,
-        "position": "bottom",
+        "position": "right",
         "showDockIndicator": true,
         "showLauncherIcon": true,
         "sitOnFrame": false,
