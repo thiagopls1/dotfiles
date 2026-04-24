@@ -52,7 +52,8 @@ Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
-Plug 'nvim-treesitter/nvim-treesitter', { 'tag': 'master', 'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', { 'tag': 'master', 'do': ':TSUpdate'}
+Plug 'romus204/tree-sitter-manager.nvim'
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
