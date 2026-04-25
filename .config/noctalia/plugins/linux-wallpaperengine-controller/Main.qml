@@ -368,16 +368,33 @@ Item {
     return Settings.data.colorSchemes.darkMode ? "dark" : "light";
   }
 
-  function applyWallpaperColorsFromScreenshot(screenshotPath) {
+  function syncWallpaperColorSource(screenName, screenshotPath) {
+    const normalizedScreenName = String(screenName || "").trim();
+    const normalizedScreenshotPath = String(screenshotPath || "").trim();
+    if (normalizedScreenName.length === 0 || normalizedScreenshotPath.length === 0) {
+      return;
+    }
+
+    WallpaperService.changeWallpaper(normalizedScreenshotPath, normalizedScreenName, "dark");
+    WallpaperService.changeWallpaper(normalizedScreenshotPath, normalizedScreenName, "light");
+  }
+
+  function applyWallpaperColorsFromScreenshot(screenName, screenshotPath) {
     if (String(screenshotPath || "").trim().length === 0) {
       return;
     }
 
+    syncWallpaperColorSource(screenName, screenshotPath);
     TemplateProcessor.processWallpaperColors(screenshotPath, currentWallpaperColorMode());
   }
 
   function screenshotPathForWallpaper(path, screenName = "") {
-    return ColorCacheHelpers.screenshotPathForWallpaper(Settings.cacheDir, wallpaperIdFromPath(path), screenName);
+    return ColorCacheHelpers.screenshotPathForWallpaper(
+      Settings.cacheDir,
+      pluginApi?.manifest?.id || pluginApi?.pluginId || "linux-wallpaperengine-controller",
+      wallpaperIdFromPath(path),
+      screenName
+    );
   }
 
   function wallpaperColorScreenshotEntry(screenName) {
@@ -903,10 +920,6 @@ Item {
       }
     }
 
-    if (firstPath.length > 0) {
-      command.push(firstPath);
-    }
-
     return command;
   }
 
@@ -1219,7 +1232,7 @@ Item {
       saveWallpaperColorScreenshot(screenName, screenshotPath, requestPath, root.wallpaperColorScaling);
 
       if (wallpaperColorsEnabled && screenName === activeColorMonitor) {
-        root.applyWallpaperColorsFromScreenshot(screenshotPath);
+        root.applyWallpaperColorsFromScreenshot(screenName, screenshotPath);
         Logger.i("LWEController", "Wallpaper screenshot generated and applied for active color monitor", "path=", requestPath, "screen=", screenName, "screenshot=", screenshotPath);
         ToastService.showNotice(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.wallpaperColorsApplied"), "palette");
         return;
@@ -1245,7 +1258,7 @@ Item {
         Logger.i("LWEController", "Reusing cached wallpaper color screenshot", "path=", request.wallpaperPath, "screen=", request.screenName, "scaling=", request.scaling, "screenshot=", request.screenshotPath);
 
         if (root.wallpaperColorsEnabled && request.screenName === root.activeColorMonitor) {
-          root.applyWallpaperColorsFromScreenshot(request.screenshotPath);
+          root.applyWallpaperColorsFromScreenshot(request.screenName, request.screenshotPath);
           ToastService.showNotice(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.wallpaperColorsApplied"), "palette");
         } else {
           ToastService.showNotice(pluginApi?.tr("panel.title"), pluginApi?.tr("toast.wallpaperColorsCached"), "palette");
@@ -1310,7 +1323,7 @@ Item {
         return;
       }
       Logger.i("LWEController", "Applying cached wallpaper colors for active monitor", "screen=", screenName || root.activeColorMonitor, "path=", screenshotPath);
-      root.applyWallpaperColorsFromScreenshot(screenshotPath);
+      root.applyWallpaperColorsFromScreenshot(screenName || root.activeColorMonitor, screenshotPath);
     }
   }
 

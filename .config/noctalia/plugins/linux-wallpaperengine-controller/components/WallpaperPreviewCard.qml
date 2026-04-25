@@ -66,7 +66,7 @@ ColumnLayout {
     elide: Text.ElideRight
   }
 
-  RowLayout {
+  Flow {
     Layout.fillWidth: true
     spacing: Style.marginXS
 
@@ -163,42 +163,43 @@ ColumnLayout {
     }
   }
 
-  RowLayout {
+  GridLayout {
     Layout.fillWidth: true
     Layout.topMargin: Style.marginM
+    columns: 2
+    columnSpacing: Style.marginM
+    rowSpacing: Style.marginS
 
     NText {
       text: pluginApi?.tr("panel.infoType")
       color: Color.mOnSurfaceVariant
     }
 
-    Item { Layout.fillWidth: true }
-
     NText {
+      Layout.fillWidth: true
       text: root.selectedWallpaperData && root.typeLabel ? root.typeLabel(root.selectedWallpaperData.type) : ""
       color: Color.mOnSurface
+      horizontalAlignment: Text.AlignRight
+      wrapMode: Text.Wrap
     }
-  }
-
-  RowLayout {
-    Layout.fillWidth: true
 
     NText {
       text: pluginApi?.tr("panel.infoId")
       color: Color.mOnSurfaceVariant
     }
 
-    Item { Layout.fillWidth: true }
-
     Rectangle {
       color: "transparent"
-      implicitWidth: idValueText.implicitWidth
+      Layout.fillWidth: true
       implicitHeight: idValueText.implicitHeight
 
       NText {
         id: idValueText
+        anchors.left: parent.left
+        anchors.right: parent.right
         text: root.selectedWallpaperData ? root.selectedWallpaperData.id : ""
         color: idLinkArea.containsMouse ? Color.mPrimary : Color.mOnSurface
+        horizontalAlignment: Text.AlignRight
         elide: Text.ElideMiddle
       }
 
@@ -217,41 +218,35 @@ ColumnLayout {
         }
       }
     }
-  }
-
-  RowLayout {
-    Layout.fillWidth: true
 
     NText {
       text: pluginApi?.tr("panel.infoResolution")
       color: Color.mOnSurfaceVariant
     }
 
-    Item { Layout.fillWidth: true }
-
     NText {
+      Layout.fillWidth: true
       text: root.selectedWallpaperData
         ? (String(root.selectedWallpaperData.resolution || "unknown") === "unknown"
           ? pluginApi?.tr("panel.resolutionUnknown")
           : root.selectedWallpaperData.resolution)
         : ""
       color: Color.mOnSurface
+      horizontalAlignment: Text.AlignRight
+      wrapMode: Text.Wrap
     }
-  }
-
-  RowLayout {
-    Layout.fillWidth: true
 
     NText {
       text: pluginApi?.tr("panel.infoSize")
       color: Color.mOnSurfaceVariant
     }
 
-    Item { Layout.fillWidth: true }
-
     NText {
+      Layout.fillWidth: true
       text: root.selectedWallpaperData && root.formatBytes ? root.formatBytes(root.selectedWallpaperData.bytes) : ""
       color: Color.mOnSurface
+      horizontalAlignment: Text.AlignRight
+      wrapMode: Text.Wrap
     }
   }
 }

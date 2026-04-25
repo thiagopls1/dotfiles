@@ -104,6 +104,7 @@
     "targetAllDisplays": "Target: All displays",
     "targetSingleDisplay": "Target: {screen}",
     "applySingleDisplay": "Apply to {screen}",
+    "applyTarget": "Choose apply target",
     "filterAll": "All",
     "filterTypeAll": "All",
     "filterTypeScene": "Scene",
@@ -146,6 +147,10 @@
       "audioTitle": "Audio",
       "displayTitle": "Display"
     },
+    "defaults": {
+      "title": "Default application options",
+      "description": "These options are used as defaults when you apply a wallpaper without overriding its per-wallpaper settings."
+    },
     "iconColor": {
       "label": "Icon color",
       "description": "Color used for the bar widget icon"
@@ -181,15 +186,15 @@
       "description": "Reuse the cached wallpaper list for this many minutes before scanning again when opening the panel"
     },
     "defaultScaling": {
-      "label": "Default scaling mode",
+      "label": "Scaling mode",
       "description": "Default scaling mode when no custom value is set"
     },
     "defaultClamp": {
-      "label": "Default clamp mode",
+      "label": "Clamp mode",
       "description": "Default edge handling mode used when rendering wallpapers"
     },
     "defaultFps": {
-      "label": "Default FPS",
+      "label": "FPS limit",
       "description": "Default frame rate limit for wallpapers",
       "placeholder": "30"
     },
@@ -202,24 +207,28 @@
       "description": "(Wayland only) Pause only when a fullscreen window is active"
     },
     "defaultVolume": {
-      "label": "Default wallpaper volume"
+      "label": "Volume",
+      "description": "Volume used when wallpapers start without mute enabled"
     },
     "defaultMuted": {
-      "label": "Mute wallpaper by default",
+      "label": "Start muted",
       "description": "Start wallpapers in mute mode by default"
     },
     "defaultAudioReactiveEffects": {
-      "label": "Audio reactive effects"
+      "label": "Audio reactive effects",
+      "description": "Keep wallpaper audio processing enabled by default when the wallpaper supports it"
     },
     "defaultNoAutomute": {
       "label": "Do not mute when other apps play audio",
       "description": "When enabled, wallpaper audio keeps playing even while other applications are outputting sound"
     },
     "defaultDisableMouse": {
-      "label": "Disable mouse interaction"
+      "label": "Disable mouse interaction",
+      "description": "Start wallpapers with mouse input disabled by default"
     },
     "defaultDisableParallax": {
-      "label": "Disable parallax effect"
+      "label": "Disable parallax effect",
+      "description": "Start wallpapers with parallax effects disabled by default"
     },
     "autoApplyOnStartup": {
       "label": "Auto apply on startup",

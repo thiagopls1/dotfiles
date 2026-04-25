@@ -104,6 +104,7 @@
     "targetAllDisplays": "目標：全部顯示器",
     "targetSingleDisplay": "目標：{screen}",
     "applySingleDisplay": "套用到 {screen}",
+    "applyTarget": "選擇套用目標",
     "filterAll": "全部",
     "filterTypeAll": "全部",
     "filterTypeScene": "場景",
@@ -146,6 +147,10 @@
       "audioTitle": "音訊",
       "displayTitle": "顯示"
     },
+    "defaults": {
+      "title": "預設套用選項",
+      "description": "當你套用壁紙且未覆蓋其個別設定時，這些選項會作為預設值使用。"
+    },
     "iconColor": {
       "label": "圖示顏色",
       "description": "用於欄元件圖示的顏色"
@@ -181,15 +186,15 @@
       "description": "開啟面板時，若未超過該分鐘數則重用快取的壁紙列表而不重新掃描"
     },
     "defaultScaling": {
-      "label": "預設縮放模式",
+      "label": "縮放模式",
       "description": "未設定自訂值時使用的預設縮放模式"
     },
     "defaultClamp": {
-      "label": "預設邊界模式",
+      "label": "邊界模式",
       "description": "渲染壁紙時預設使用的邊界處理方式"
     },
     "defaultFps": {
-      "label": "預設 FPS",
+      "label": "FPS 限制",
       "description": "壁紙預設使用的幀率上限",
       "placeholder": "30"
     },
@@ -202,24 +207,28 @@
       "description": "（僅限 Wayland）僅在全螢幕視窗為作用中時暫停"
     },
     "defaultVolume": {
-      "label": "預設壁紙音量"
+      "label": "音量",
+      "description": "壁紙在未啟用靜音時使用的播放音量"
     },
     "defaultMuted": {
-      "label": "預設靜音壁紙",
+      "label": "啟動時靜音",
       "description": "預設以靜音模式啟動壁紙"
     },
     "defaultAudioReactiveEffects": {
-      "label": "音訊響應效果"
+      "label": "音訊響應效果",
+      "description": "在壁紙支援時，預設保持啟用音訊處理效果"
     },
     "defaultNoAutomute": {
       "label": "其他應用播放音訊時不靜音",
       "description": "開啟後，其他應用輸出聲音時壁紙也會繼續播放音訊"
     },
     "defaultDisableMouse": {
-      "label": "停用滑鼠互動"
+      "label": "停用滑鼠互動",
+      "description": "預設以停用滑鼠輸入的方式啟動壁紙"
     },
     "defaultDisableParallax": {
-      "label": "停用視差效果"
+      "label": "停用視差效果",
+      "description": "預設以關閉視差效果的方式啟動壁紙"
     },
     "autoApplyOnStartup": {
       "label": "啟動時自動套用",

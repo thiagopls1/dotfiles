@@ -50,6 +50,18 @@ ColumnLayout {
   signal selectedDisableParallaxRequested(bool value)
   signal applyWallpaperColorsOnApplyRequested(bool value)
 
+  readonly property string applyButtonText: {
+    if (root.singleScreenMode) {
+      return pluginApi?.tr("panel.confirmApply");
+    }
+
+    if (root.applyAllDisplays) {
+      return pluginApi?.tr("panel.applyAllDisplays");
+    }
+
+    return pluginApi?.tr("panel.applySingleDisplay", { screen: root.selectedScreenName });
+  }
+
   Layout.fillWidth: true
   spacing: Style.marginS
 
@@ -59,7 +71,7 @@ ColumnLayout {
 
     NButton {
       Layout.fillWidth: true
-      text: pluginApi?.tr("panel.confirmApply")
+      text: root.applyButtonText
       icon: "check"
       enabled: (root.mainInstance?.engineAvailable ?? false) && !!root.selectedWallpaperData
       onClicked: root.applyRequested()
@@ -70,10 +82,8 @@ ColumnLayout {
       Layout.preferredHeight: 42 * Style.uiScaleRatio
       visible: !root.singleScreenMode
       enabled: root.mainInstance?.engineAvailable ?? false
-      icon: "device-desktop"
-      tooltipText: root.applyAllDisplays
-        ? pluginApi?.tr("panel.targetAllDisplays")
-        : pluginApi?.tr("panel.targetSingleDisplay", { screen: root.selectedScreenName })
+      icon: root.applyTargetExpanded ? "chevron-up" : "chevron-down"
+      tooltipText: pluginApi?.tr("panel.applyTarget")
       onClicked: root.applyTargetExpandedRequested(!root.applyTargetExpanded)
     }
   }

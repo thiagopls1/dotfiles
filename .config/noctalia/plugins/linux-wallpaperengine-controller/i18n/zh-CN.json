@@ -104,6 +104,7 @@
     "targetAllDisplays": "目标：全部显示器",
     "targetSingleDisplay": "目标：{screen}",
     "applySingleDisplay": "应用到 {screen}",
+    "applyTarget": "选择应用目标",
     "filterAll": "全部",
     "filterTypeAll": "全部",
     "filterTypeScene": "场景",
@@ -146,6 +147,10 @@
       "audioTitle": "音频",
       "displayTitle": "显示"
     },
+    "defaults": {
+      "title": "默认应用选项",
+      "description": "当你应用壁纸且未覆盖其单独设置时，这些选项会作为默认值使用。"
+    },
     "iconColor": {
       "label": "图标颜色",
       "description": "用于栏组件图标的颜色"
@@ -181,15 +186,15 @@
       "description": "打开面板时，若未超过该分钟数则复用缓存的壁纸列表而不重新扫描"
     },
     "defaultScaling": {
-      "label": "默认缩放模式",
+      "label": "缩放模式",
       "description": "未设置自定义值时的默认缩放模式"
     },
     "defaultClamp": {
-      "label": "默认边界模式",
+      "label": "边界模式",
       "description": "渲染壁纸时默认使用的边界处理方式"
     },
     "defaultFps": {
-      "label": "默认 FPS",
+      "label": "FPS 限制",
       "description": "壁纸默认使用的帧率上限",
       "placeholder": "30"
     },
@@ -202,24 +207,28 @@
       "description": "（仅限 Wayland）仅在全屏窗口激活时暂停"
     },
     "defaultVolume": {
-      "label": "默认壁纸音量"
+      "label": "音量",
+      "description": "壁纸在未启用静音时使用的播放音量"
     },
     "defaultMuted": {
-      "label": "默认静音壁纸",
+      "label": "启动时静音",
       "description": "默认以静音模式启动壁纸"
     },
     "defaultAudioReactiveEffects": {
-      "label": "音频响应效果"
+      "label": "音频响应效果",
+      "description": "在壁纸支持时，默认保持启用音频处理效果"
     },
     "defaultNoAutomute": {
       "label": "其他应用播放音频时不静音",
       "description": "开启后，其他应用输出声音时壁纸也会继续播放音频"
     },
     "defaultDisableMouse": {
-      "label": "禁用鼠标交互"
+      "label": "禁用鼠标交互",
+      "description": "默认以禁用鼠标输入的方式启动壁纸"
     },
     "defaultDisableParallax": {
-      "label": "禁用视差效果"
+      "label": "禁用视差效果",
+      "description": "默认以关闭视差效果的方式启动壁纸"
     },
     "autoApplyOnStartup": {
       "label": "启动时自动应用",

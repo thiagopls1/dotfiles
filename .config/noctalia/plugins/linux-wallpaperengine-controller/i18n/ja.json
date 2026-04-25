@@ -104,6 +104,7 @@
     "targetAllDisplays": "対象: すべてのディスプレイ",
     "targetSingleDisplay": "対象: {screen}",
     "applySingleDisplay": "{screen} に適用",
+    "applyTarget": "適用先を選択",
     "filterAll": "すべて",
     "filterTypeAll": "すべて",
     "filterTypeScene": "シーン",
@@ -146,6 +147,10 @@
       "audioTitle": "音声",
       "displayTitle": "表示"
     },
+    "defaults": {
+      "title": "既定の適用オプション",
+      "description": "壁紙ごとの設定を上書きしない場合、壁紙の適用時にこれらの項目が既定値として使用されます。"
+    },
     "iconColor": {
       "label": "アイコンの色",
       "description": "バーウィジェットのアイコンに使う色"
@@ -181,15 +186,15 @@
       "description": "パネルを開くとき、この分数を超えていなければキャッシュ済みの壁紙一覧を再利用します"
     },
     "defaultScaling": {
-      "label": "既定の拡大縮小モード",
+      "label": "拡大縮小モード",
       "description": "カスタム値が未設定のときに使う既定モード"
     },
     "defaultClamp": {
-      "label": "既定のクランプモード",
+      "label": "クランプモード",
       "description": "壁紙を描画するときに使う既定の境界処理モード"
     },
     "defaultFps": {
-      "label": "既定 FPS",
+      "label": "FPS 制限",
       "description": "壁紙で使う既定のフレームレート上限",
       "placeholder": "30"
     },
@@ -202,24 +207,28 @@
       "description": "（Wayland のみ）フルスクリーンウィンドウがアクティブなときのみ一時停止"
     },
     "defaultVolume": {
-      "label": "壁紙の既定音量"
+      "label": "音量",
+      "description": "壁紙をミュートせずに起動したときに使う音量です"
     },
     "defaultMuted": {
-      "label": "壁紙を既定でミュート",
+      "label": "ミュートで起動",
       "description": "壁紙を既定でミュート状態で起動します"
     },
     "defaultAudioReactiveEffects": {
-      "label": "オーディオ反応効果"
+      "label": "オーディオ反応効果",
+      "description": "壁紙が対応している場合、音声処理を既定で有効のままにします"
     },
     "defaultNoAutomute": {
       "label": "他のアプリが音声再生中でもミュートしない",
       "description": "有効にすると、他のアプリが音を出していても壁紙音声を再生し続けます"
     },
     "defaultDisableMouse": {
-      "label": "マウス操作を無効化"
+      "label": "マウス操作を無効化",
+      "description": "壁紙を既定でマウス入力無効の状態で起動します"
     },
     "defaultDisableParallax": {
-      "label": "パララックス効果を無効化"
+      "label": "パララックス効果を無効化",
+      "description": "壁紙を既定でパララックス無効の状態で起動します"
     },
     "autoApplyOnStartup": {
       "label": "起動時に自動適用",

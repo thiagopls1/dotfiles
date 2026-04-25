@@ -1,7 +1,7 @@
 {
   "id": "linux-wallpaperengine-controller",
   "name": "Linux WallpaperEngine Controller",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "minNoctaliaVersion": "4.6.6",
   "author": "PaloMiku",
   "license": "MIT",

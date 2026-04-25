@@ -56,9 +56,9 @@ ColumnLayout {
       width: gridView.cellWidth
       height: gridView.cellHeight
       radius: Style.radiusL
-      color: Qt.alpha(Color.mSurface, 0.82)
+      color: Qt.alpha(Color.mSurfaceVariant, 0.42)
       border.width: root.pendingPath === modelData.path ? 2 : (root.selectedPath === modelData.path ? 1 : 0)
-      border.color: root.pendingPath === modelData.path ? Color.mPrimary : Qt.alpha(Color.mOutline, 0.45)
+      border.color: root.pendingPath === modelData.path ? Color.mPrimary : Qt.alpha(Color.mOutline, 0.35)
       clip: true
 
       ColumnLayout {
@@ -129,8 +129,8 @@ ColumnLayout {
             Layout.fillWidth: true
             text: modelData.name
             color: Color.mOnSurface
-            elide: Text.ElideRight
             font.weight: Font.Medium
+            elide: Text.ElideRight
           }
 
           NIcon {
@@ -141,7 +141,7 @@ ColumnLayout {
           }
         }
 
-        RowLayout {
+        Flow {
           Layout.fillWidth: true
           spacing: Style.marginXS
 
@@ -178,8 +178,6 @@ ColumnLayout {
               font.weight: Font.Medium
             }
           }
-
-          Item { Layout.fillWidth: true }
 
           Rectangle {
             visible: root.resolutionBadgeIcon && root.resolutionBadgeIcon(modelData.resolution).length > 0
@@ -278,7 +276,7 @@ ColumnLayout {
     visible: root.paginationVisible
     implicitHeight: paginationRow.implicitHeight + Style.marginS * 2
     radius: Style.radiusM
-    color: Qt.alpha(Color.mSurface, 0.78)
+    color: Qt.alpha(Color.mSurfaceVariant, 0.35)
     border.width: Style.borderS
     border.color: Qt.alpha(Color.mOutline, 0.3)
 

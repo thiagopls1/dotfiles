@@ -10,14 +10,19 @@ function screenCacheKey(screenName) {
   return sanitizeCachePathSegment(screenName, "screen");
 }
 
-function screenshotPathForWallpaper(cacheDir, wallpaperId, screenName) {
+function pluginCacheDir(cacheDir, pluginId) {
   const normalizedCacheDir = String(cacheDir || "").trim();
   const cacheRoot = normalizedCacheDir.length > 0
     ? normalizedCacheDir.replace(/\/+$/, "") + "/"
     : "";
+  const pluginCacheId = sanitizeCachePathSegment(pluginId, "plugin");
+  return cacheRoot + "plugins/" + pluginCacheId;
+}
+
+function screenshotPathForWallpaper(cacheDir, pluginId, wallpaperId, screenName) {
   const fileId = sanitizeCachePathSegment(wallpaperId, "wallpaper");
   const screenId = screenCacheKey(screenName);
-  return cacheRoot + "plugins/linux-wallpaperengine-controller/" + screenId + "-" + fileId + "-theme-shot.png";
+  return pluginCacheDir(cacheDir, pluginId) + "/" + screenId + "-" + fileId + "-theme-shot.png";
 }
 
 function cachedScreenshotEntry(entries, screenName) {
