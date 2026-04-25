@@ -669,7 +669,7 @@
         "fontDefaultScale": 1,
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 0.65,
+        "panelBackgroundOpacity": 0.85,
         "panelsAttachedToBar": false,
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
