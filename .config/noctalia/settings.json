@@ -670,7 +670,7 @@
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
         "panelBackgroundOpacity": 0.65,
-        "panelsAttachedToBar": false,
+        "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
         "settingsPanelSideBarCardStyle": false,
