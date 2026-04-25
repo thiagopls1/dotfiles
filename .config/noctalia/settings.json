@@ -11,9 +11,9 @@
         "enableClipboardChips": true,
         "enableClipboardHistory": true,
         "enableClipboardSmartIcons": true,
-        "enableSessionSearch": true,
-        "enableSettingsSearch": true,
-        "enableWindowsSearch": true,
+        "enableSessionSearch": false,
+        "enableSettingsSearch": false,
+        "enableWindowsSearch": false,
         "iconMode": "native",
         "ignoreMouseInput": false,
         "overviewLayer": true,
@@ -24,7 +24,7 @@
         "showCategories": true,
         "showIconBackground": false,
         "sortByMostUsed": true,
-        "terminalCommand": "alacritty -e",
+        "terminalCommand": "kitty -e",
         "viewMode": "list"
     },
     "audio": {
