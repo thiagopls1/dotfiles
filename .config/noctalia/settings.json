@@ -43,9 +43,9 @@
         "autoHideDelay": 500,
         "autoShowDelay": 150,
         "backgroundOpacity": 0.93,
-        "barType": "framed",
+        "barType": "simple",
         "capsuleColorKey": "none",
-        "capsuleOpacity": 0.75,
+        "capsuleOpacity": 0.5,
         "contentPadding": 5,
         "density": "comfortable",
         "displayMode": "always_visible",
@@ -243,7 +243,7 @@
     "calendar": {
         "cards": [
             {
-                "enabled": false,
+                "enabled": true,
                 "id": "weather-card"
             },
             {
@@ -426,13 +426,13 @@
         },
         "language": "",
         "lockOnSuspend": true,
-        "lockScreenAnimations": false,
+        "lockScreenAnimations": true,
         "lockScreenBlur": 0,
         "lockScreenCountdownDuration": 10000,
         "lockScreenMonitors": [
         ],
         "lockScreenTint": 0,
-        "passwordChars": false,
+        "passwordChars": true,
         "radiusRatio": 0.5,
         "reverseScroll": false,
         "scaleRatio": 0.9500000000000001,
@@ -445,7 +445,7 @@
         "showScreenCorners": false,
         "showSessionButtonsOnLockScreen": true,
         "smoothScrollEnabled": true,
-        "telemetryEnabled": false
+        "telemetryEnabled": true
     },
     "hooks": {
         "colorGeneration": "",
@@ -474,12 +474,12 @@
         "suspendTimeout": 1800
     },
     "location": {
-        "analogClockInCalendar": false,
-        "autoLocate": false,
+        "analogClockInCalendar": true,
+        "autoLocate": true,
         "firstDayOfWeek": -1,
         "hideWeatherCityName": false,
         "hideWeatherTimezone": true,
-        "name": "São Paulo, SP",
+        "name": "São Paulo",
         "showCalendarEvents": true,
         "showCalendarWeather": true,
         "showWeekNumberInCalendar": false,
@@ -502,7 +502,7 @@
     "nightLight": {
         "autoSchedule": false,
         "dayTemp": "6500",
-        "enabled": true,
+        "enabled": false,
         "forced": false,
         "manualSunrise": "07:30",
         "manualSunset": "22:00",
@@ -519,7 +519,7 @@
         "density": "default",
         "enableBatteryToast": true,
         "enableKeyboardLayoutToast": true,
-        "enableMarkdown": false,
+        "enableMarkdown": true,
         "enableMediaToast": false,
         "enabled": true,
         "location": "top_right",
