@@ -14,6 +14,7 @@ telescope.setup({
 			override_file_sorter = true,
 			case_mode = "smart_case",
 		},
+		["ui-select"] = require("telescope.themes").get_dropdown({}),
 	},
 	pickers = {
 		find_files = {
@@ -49,6 +50,8 @@ telescope.setup({
 		},
 	},
 })
+
+require("telescope").load_extension("ui-select")
 
 vim.keymap.set("n", "tf", builtin.find_files, { desc = "Telescope find files" })
 vim.keymap.set("n", "tr", builtin.lsp_references, { desc = "Telescope peek references" })

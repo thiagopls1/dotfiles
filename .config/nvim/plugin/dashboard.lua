@@ -24,18 +24,14 @@ db.setup({
 				action = "Telescope find_files",
 				key = "f",
 			},
-			-- {
-			--   desc = " Apps",
-			--   group = "DiagnosticHint",
-			--   action = "Telescope app",
-			--   key = "a",
-			-- },
-			-- {
-			--   desc = " dotfiles",
-			--   group = "Number",
-			--   action = "Telescope dotfiles",
-			--   key = "d",
-			-- },
+			{
+				icon = " ",
+				icon_hl = "@variable",
+				desc = "Sessions",
+				group = "Label",
+				action = "SessionManager load_session",
+				key = "s",
+			},
 		},
 	},
 })

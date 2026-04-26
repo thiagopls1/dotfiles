@@ -58,6 +58,8 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
 Plug 'rcarriga/nvim-notify'
+Plug 'Shatur/neovim-session-manager'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
 
 call plug#end()
 
