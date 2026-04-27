@@ -20,6 +20,7 @@ lspconf.util.default_config = vim.tbl_extend("force", lspconf.util.default_confi
 	capabilities = vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities()),
 })
 
+require("venv-lsp").setup()
 require("lsp-file-operations").setup()
 
 return on_attach, capabilities

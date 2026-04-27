@@ -25,6 +25,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'AckslD/nvim-neoclip.lua'
 
@@ -59,7 +60,7 @@ Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'Shatur/neovim-session-manager'
-Plug 'nvim-telescope/telescope-ui-select.nvim'
+Plug 'jglasovic/venv-lsp.nvim'
 
 call plug#end()
 
