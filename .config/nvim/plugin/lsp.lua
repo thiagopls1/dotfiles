@@ -10,9 +10,12 @@ require("inc_rename").setup()
 vim.keymap.set("n", "zr", ":IncRename ")
 vim.keymap.set("v", "zr", ":IncRename ")
 
-local on_attach = function(client, _)
+local on_attach = function(client, bufnr)
 	client.server_capabilities.semanticTokensProvider = nil
 	client.server_capabilities.documentHighlightProvider = false
+	if client.server_capabilities.inlayHintProvider then
+		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+	end
 end
 
 -- LSP File Operations setup

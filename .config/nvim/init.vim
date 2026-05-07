@@ -82,6 +82,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
+
 vim.api.nvim_create_user_command("Redir", function(ctx)
 	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
 	vim.cmd('new')
@@ -95,6 +96,8 @@ package.path = home_dir .. "/.config/nvim/?.lua;" .. package.path
 
 -- KeyBindings
 vim.keymap.set('n', 'mt', '<Cmd>terminal<CR>', { silent = true, desc = 'Open Terminal' })
+
+
 EOF
 
 vnoremap zy "+y
