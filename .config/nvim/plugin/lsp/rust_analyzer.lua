@@ -1,11 +1,11 @@
-local on_attach, capabilities = require "plugin.lsp"
+local on_attach, capabilities = require("plugin.lsp")
 
-vim.lsp.config('rust_analyzer', {
+vim.lsp.config("rust_analyzer", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	cmd = { "rustup", "run", "stable", "rust-analyzer" },
 	settings = {
-		['rust_analyzer'] = {
+		["rust_analyzer"] = {
 			useLibraryCodeForTypes = true,
 			autoSearchPaths = true,
 			autoImportCompletions = false,
@@ -13,7 +13,7 @@ vim.lsp.config('rust_analyzer', {
 			followImportForHints = true,
 
 			diagnostics = {
-				enable = true
+				enable = true,
 			},
 			cargo = {
 				allFeatures = true,
@@ -21,8 +21,19 @@ vim.lsp.config('rust_analyzer', {
 			checkOnSave = {
 				command = "cargo clippy",
 			},
+			inlayHints = {
+				bindingModeHints = {
+					enable = true,
+				},
+				closureReturnTypeHints = {
+					enable = "always",
+				},
+				lifetimeElisionHints = {
+					enable = "always",
+				},
+			},
 		},
 	},
 })
 
-vim.lsp.enable('rust_analyzer')
+vim.lsp.enable("rust_analyzer")

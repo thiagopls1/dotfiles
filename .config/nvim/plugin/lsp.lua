@@ -13,9 +13,11 @@ vim.keymap.set("v", "zr", ":IncRename ")
 local on_attach = function(client, bufnr)
 	client.server_capabilities.semanticTokensProvider = nil
 	client.server_capabilities.documentHighlightProvider = false
-	if client.server_capabilities.inlayHintProvider then
-		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-	end
+	vim.defer_fn(function()
+		if client.server_capabilities.inlayHintProvider then
+			vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+		end
+	end, 500)
 end
 
 -- LSP File Operations setup
