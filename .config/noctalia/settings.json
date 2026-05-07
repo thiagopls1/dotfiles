@@ -16,7 +16,7 @@
         "enableWindowsSearch": false,
         "iconMode": "native",
         "ignoreMouseInput": false,
-        "overviewLayer": false,
+        "overviewLayer": true,
         "pinnedApps": [
         ],
         "position": "center",
@@ -33,7 +33,7 @@
         "preferredPlayer": "",
         "spectrumFrameRate": 60,
         "spectrumMirrored": true,
-        "visualizerType": "mirrored",
+        "visualizerType": "wave",
         "volumeFeedback": true,
         "volumeFeedbackSoundFile": "",
         "volumeOverdrive": false,
@@ -45,8 +45,8 @@
         "backgroundOpacity": 0.93,
         "barType": "simple",
         "capsuleColorKey": "none",
-        "capsuleOpacity": 0.5,
-        "contentPadding": 5,
+        "capsuleOpacity": 0.6,
+        "contentPadding": 2,
         "density": "comfortable",
         "displayMode": "always_visible",
         "enableExclusionZoneInset": true,
@@ -75,7 +75,7 @@
         "showOnWorkspaceSwitch": true,
         "showOutline": false,
         "useSeparateOpacity": false,
-        "widgetSpacing": 7,
+        "widgetSpacing": 10,
         "widgets": {
             "center": [
                 {
@@ -92,7 +92,7 @@
                     "id": "Workspace",
                     "labelMode": "name",
                     "occupiedColor": "secondary",
-                    "pillSize": 0.6,
+                    "pillSize": 0.56,
                     "showApplications": false,
                     "showApplicationsHover": true,
                     "showBadge": true,
@@ -146,7 +146,7 @@
                     "showAlbumArt": true,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": true,
+                    "showVisualizer": false,
                     "textColor": "primary",
                     "useFixedWidth": false,
                     "visualizerType": "wave"
@@ -188,10 +188,12 @@
                     "useCustomFont": false
                 },
                 {
-                    "displayMode": "alwaysHide",
-                    "iconColor": "primary",
-                    "id": "Network",
-                    "textColor": "primary"
+                    "hideWhenZero": false,
+                    "hideWhenZeroUnread": false,
+                    "iconColor": "tertiary",
+                    "id": "NotificationHistory",
+                    "showUnreadBadge": true,
+                    "unreadBadgeColor": "tertiary"
                 },
                 {
                     "displayMode": "alwaysHide",
@@ -207,6 +209,12 @@
                     "textColor": "primary"
                 },
                 {
+                    "displayMode": "alwaysHide",
+                    "iconColor": "primary",
+                    "id": "Network",
+                    "textColor": "primary"
+                },
+                {
                     "deviceNativePath": "__default__",
                     "displayMode": "icon-hover",
                     "hideIfIdle": true,
@@ -214,11 +222,6 @@
                     "id": "Battery",
                     "showNoctaliaPerformance": true,
                     "showPowerProfiles": true
-                },
-                {
-                    "defaultSettings": {
-                    },
-                    "id": "plugin:kde-connect"
                 },
                 {
                     "colorizeDistroLogo": false,
@@ -313,6 +316,11 @@
             ],
             "right": [
                 {
+                    "defaultSettings": {
+                    },
+                    "id": "plugin:kde-connect"
+                },
+                {
                     "id": "Notifications"
                 },
                 {
@@ -320,15 +328,12 @@
                 },
                 {
                     "id": "KeepAwake"
-                },
-                {
-                    "id": "NightLight"
                 }
             ]
         }
     },
     "desktopWidgets": {
-        "enabled": false,
+        "enabled": true,
         "gridSnap": false,
         "gridSnapScale": false,
         "monitorWidgets": [
