@@ -181,10 +181,10 @@
                 {
                     "clockColor": "tertiary",
                     "customFont": "",
-                    "formatHorizontal": "ddd dd 'de' MMMM HH:mm",
+                    "formatHorizontal": "HH:mm - dd/MM/yyyy",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
-                    "tooltipFormat": "",
+                    "tooltipFormat": "ddd dd 'de' MMMM HH:mm:ss",
                     "useCustomFont": false
                 },
                 {
@@ -661,10 +661,6 @@
     },
     "templates": {
         "activeTemplates": [
-            {
-                "enabled": true,
-                "id": "gtk"
-            }
         ],
         "enableUserTheming": false
     },
@@ -679,7 +675,7 @@
         "scrollbarAlwaysVisible": true,
         "settingsPanelMode": "attached",
         "settingsPanelSideBarCardStyle": false,
-        "tooltipsEnabled": false,
+        "tooltipsEnabled": true,
         "translucentWidgets": true
     },
     "wallpaper": {
