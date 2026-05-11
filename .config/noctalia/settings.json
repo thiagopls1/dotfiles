@@ -50,7 +50,7 @@
         "density": "comfortable",
         "displayMode": "always_visible",
         "enableExclusionZoneInset": true,
-        "fontScale": 1.1,
+        "fontScale": 1,
         "frameRadius": 12,
         "frameThickness": 8,
         "hideOnOverview": false,
@@ -75,7 +75,7 @@
         "showOnWorkspaceSwitch": true,
         "showOutline": false,
         "useSeparateOpacity": false,
-        "widgetSpacing": 10,
+        "widgetSpacing": 6,
         "widgets": {
             "center": [
                 {
@@ -92,7 +92,7 @@
                     "id": "Workspace",
                     "labelMode": "name",
                     "occupiedColor": "secondary",
-                    "pillSize": 0.56,
+                    "pillSize": 0.6,
                     "showApplications": false,
                     "showApplicationsHover": true,
                     "showBadge": true,
@@ -146,7 +146,7 @@
                     "showAlbumArt": true,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "textColor": "primary",
                     "useFixedWidth": false,
                     "visualizerType": "wave"
@@ -180,8 +180,8 @@
                 },
                 {
                     "clockColor": "tertiary",
-                    "customFont": "",
-                    "formatHorizontal": "HH:mm - dd/MM/yyyy",
+                    "customFont": "FiraCode Nerd Font Mono Med",
+                    "formatHorizontal": "HH:mm\\ndd 'de' MMMM",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "tooltipFormat": "ddd dd 'de' MMMM HH:mm:ss",
@@ -189,7 +189,7 @@
                 },
                 {
                     "hideWhenZero": false,
-                    "hideWhenZeroUnread": false,
+                    "hideWhenZeroUnread": true,
                     "iconColor": "tertiary",
                     "id": "NotificationHistory",
                     "showUnreadBadge": true,
@@ -261,7 +261,7 @@
     },
     "colorSchemes": {
         "darkMode": true,
-        "generationMethod": "tonal-spot",
+        "generationMethod": "faithful",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
@@ -281,11 +281,11 @@
                 "id": "shortcuts-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "audio-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "brightness-card"
             },
             {
@@ -308,18 +308,23 @@
                     "id": "Bluetooth"
                 },
                 {
-                    "id": "WallpaperSelector"
-                },
-                {
-                    "id": "NoctaliaPerformance"
-                }
-            ],
-            "right": [
-                {
                     "defaultSettings": {
                     },
                     "id": "plugin:kde-connect"
                 },
+                {
+                    "enableOnStateLogic": true,
+                    "generalTooltipText": "Volume",
+                    "icon": "volume",
+                    "id": "CustomButton",
+                    "onClicked": "qs -c noctalia-shell ipc call volume togglePanel",
+                    "onMiddleClicked": "",
+                    "onRightClicked": "qs -c noctalia-shell ipc call volume muteOutput",
+                    "showExecTooltip": false,
+                    "stateChecksJson": "[{\"command\":\"wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED\",\"icon\":\"volume-off\"}]"
+                }
+            ],
+            "right": [
                 {
                     "id": "Notifications"
                 },
@@ -328,6 +333,9 @@
                 },
                 {
                     "id": "KeepAwake"
+                },
+                {
+                    "id": "NightLight"
                 }
             ]
         }
@@ -438,7 +446,7 @@
         ],
         "lockScreenTint": 0,
         "passwordChars": true,
-        "radiusRatio": 0.5,
+        "radiusRatio": 0.65,
         "reverseScroll": false,
         "scaleRatio": 0.9500000000000001,
         "screenRadiusRatio": 1,
@@ -450,7 +458,7 @@
         "showScreenCorners": false,
         "showSessionButtonsOnLockScreen": true,
         "smoothScrollEnabled": true,
-        "telemetryEnabled": true
+        "telemetryEnabled": false
     },
     "hooks": {
         "colorGeneration": "",
@@ -670,10 +678,10 @@
         "fontDefaultScale": 1,
         "fontFixed": "FiraCode Nerd Font Mono",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 0.65,
+        "panelBackgroundOpacity": 0.75,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
-        "settingsPanelMode": "attached",
+        "settingsPanelMode": "centered",
         "settingsPanelSideBarCardStyle": false,
         "tooltipsEnabled": true,
         "translucentWidgets": true
