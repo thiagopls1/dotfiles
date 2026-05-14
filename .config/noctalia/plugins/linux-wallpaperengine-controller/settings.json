@@ -25,10 +25,10 @@
   "defaultFullscreenPauseOnlyActive": true,
   "autoApplyOnStartup": true,
   "wallpaperScanCacheMinutes": 5,
-  "panelLastSelectedPath": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/883826650",
+  "panelLastSelectedPath": "",
   "screens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/883826650",
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/1235696368",
       "scaling": "default"
     }
   },
@@ -41,6 +41,9 @@
     "883826650": {
       "schemecolor": "150,29,29"
     },
+    "927142368": {
+      "schemecolor": "0,0,0"
+    },
     "951259031": {
       "schemecolor": "0,0,0"
     },
@@ -52,8 +55,14 @@
     "1198839373": {
       "schemecolor": "0,128,0"
     },
+    "1235696368": {
+      "schemecolor": "0,0,0"
+    },
     "1431152580": {
       "schemecolor": "0,0,0"
+    },
+    "1441736444": {
+      "schemecolor": "24,17,29"
     },
     "1490131744": {},
     "1533705539": {
@@ -266,7 +275,7 @@
   },
   "lastKnownGoodScreens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/883826650",
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/1235696368",
       "scaling": "default"
     }
   },
