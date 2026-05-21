@@ -1,6 +1,5 @@
 {
   "wallpapersFolder": "~/.steam/steam/steamapps/workshop/content/431960",
-  "assetsDir": "~/.local/share/Steam/steamapps/common/wallpaper_engine/assets",
   "iconColor": "none",
   "enableExtraPropertiesEditor": true,
   "defaultScaling": "fill",
@@ -23,21 +22,46 @@
   },
   "defaultNoFullscreenPause": false,
   "defaultFullscreenPauseOnlyActive": true,
+  "showSidebarDescription": false,
+  "badgeOrder": [
+    "type",
+    "dynamic",
+    "music",
+    "reactive",
+    "approved",
+    "resolution",
+    "compatibility"
+  ],
+  "badgeEnabled": {
+    "type": true,
+    "dynamic": true,
+    "music": true,
+    "reactive": true,
+    "approved": true,
+    "resolution": true,
+    "compatibility": true
+  },
   "autoApplyOnStartup": true,
+  "panelPageSize": 24,
   "wallpaperScanCacheMinutes": 5,
   "panelLastSelectedPath": "",
   "screens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/1235696368",
-      "scaling": "default"
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2852537340",
+      "scaling": "fill"
     }
   },
   "wallpaperProperties": {
+    "783865077": {},
     "788989119": {},
     "821269088": {
       "schemecolor": "0,0,0"
     },
+    "827982449": {},
     "837440254": {},
+    "843532366": {
+      "schemecolor": "203,106,142"
+    },
     "883826650": {
       "schemecolor": "150,29,29"
     },
@@ -61,18 +85,65 @@
     "1431152580": {
       "schemecolor": "0,0,0"
     },
+    "1435735556": {},
     "1441736444": {
       "schemecolor": "24,17,29"
     },
     "1490131744": {},
+    "1502639794": {},
     "1533705539": {
       "schemecolor": "25,28,34"
+    },
+    "1582915184": {
+      "schemecolor": "172,124,114"
     },
     "1605112551": {
       "schemecolor": "72,0,179"
     },
-    "2120054900": {
-      "schemecolor": "14,14,30"
+    "1643204592": {
+      "schemecolor": "51,38,23"
+    },
+    "1888774449": {
+      "schemecolor": "35,38,80"
+    },
+    "1911016015": {
+      "schemecolor": "97,53,30"
+    },
+    "2031502939": {
+      "schemecolor": "51,38,128"
+    },
+    "2120054900": {},
+    "2134765860": {
+      "_24hourformat": "1",
+      "audioring": "1",
+      "audioringcolor": "1,1,1",
+      "barcount": "64",
+      "barfrequency": "2",
+      "clock": "1",
+      "clock1": "1,1,1",
+      "color": "1,1,1",
+      "customtext": "Custom Text Goes here",
+      "date": "1",
+      "date1": "1,1,1",
+      "dateshadowopacity": "0.85",
+      "day_night_settings": "1",
+      "dayabbreviation": "0",
+      "ddmm": "0",
+      "lightson": "1",
+      "monthabbreviation": "0",
+      "new_property": "0.7",
+      "numericmonth": "0",
+      "schemecolor": "0,0,0",
+      "shadowopacity": "0.75",
+      "sharpenimage": "1",
+      "showday": "1",
+      "showseconds": "1",
+      "text": "1",
+      "textcolor": "1,1,1",
+      "textsize": "5",
+      "turnoffalbumcoverposter": "0",
+      "twodigitdaydate": "0",
+      "visualizer_color": "1,1,1"
     },
     "2141510815": {
       "audioresponsive": "1",
@@ -81,24 +152,27 @@
       "rock_2": "0",
       "schemecolor": "69,48,116"
     },
+    "2145333761": {
+      "schemecolor": "224,52,92"
+    },
     "2162986216": {
       "schemecolor": "88,30,81"
     },
     "2176097362": {
       "audiocheckbox": "1",
-      "audioresponsivesettings": "0",
+      "audioresponsivesettings": "1",
       "bassshake": "1",
-      "blur": "0",
+      "blur": "1",
       "chromatic": "1",
       "custom_text": "DANCE CLUB",
       "dance_move": "4",
       "darkmode": "1",
-      "darkmode9": "0",
+      "darkmode9": "1",
       "ledfloor": "1",
       "notes": "1",
       "particles": "1",
       "pulse": "1",
-      "schemecolor": "1,1,1",
+      "schemecolor": "255,255,255",
       "speaker": "1",
       "speaker_2": "1",
       "speaker_3": "1",
@@ -112,9 +186,20 @@
       "rain": "0.2",
       "schemecolor": "18,27,79"
     },
+    "2310041491": {
+      "audioresposive": "1",
+      "changecolor": "0",
+      "changecolorcolor": "106,31,95",
+      "musichxvrmxntension": "0.3",
+      "newproperty": "1",
+      "rainaudio": "0.3",
+      "raindropsplatter": "0",
+      "schemecolor": "106,31,95"
+    },
     "2376307588": {
       "schemecolor": "19,32,64"
     },
+    "2388299037": {},
     "2435717385": {},
     "2459477453": {
       "schemecolor": "0,0,0"
@@ -125,6 +210,13 @@
       "schemecolor": "0,120,255",
       "sharpenquality1": "10",
       "vignette1": "0"
+    },
+    "2527347183": {},
+    "2649270706": {
+      "schemecolor": "214,106,173"
+    },
+    "2657602648": {
+      "schemecolor": "0,0,0"
     },
     "2665812582": {
       "animation": "",
@@ -147,8 +239,24 @@
       "moonlight": "1",
       "schemecolor": "106,76,131"
     },
+    "2796682207": {
+      "schemecolor": "55,46,40"
+    },
+    "2798213583": {},
     "2811735945": {
       "schemecolor": "20,36,48"
+    },
+    "2843998685": {
+      "clock": "1",
+      "filmgrain": "1",
+      "parallaxtoggle": "1",
+      "replaceremilia": "0",
+      "schemecolor": "76,76,76",
+      "shine": "1",
+      "vignette": "1"
+    },
+    "2852537340": {
+      "schemecolor": "90,153,204"
     },
     "2864255069": {
       "audiobars": "1",
@@ -219,18 +327,15 @@
       "wreathflames": "1",
       "wreathflamesopacity": "0.5"
     },
-    "2896161407": {},
-    "2927107167": {
-      "chromatic": "0",
-      "grain": "0",
-      "hidemisclayersreccomendfor219": "1",
-      "hue": "24,151,255",
-      "newproperty": "",
-      "postprocessing": "1",
-      "schemecolor": "255,255,255",
-      "timeofday": "0",
-      "vignette": "0"
+    "2885492021": {
+      "audio": "1",
+      "clock": "1",
+      "particlesperspective": "1",
+      "schemecolor": "0,0,0",
+      "thecurrent": "1"
     },
+    "2896161407": {},
+    "2927107167": {},
     "2943905118": {
       "actoreyemovement": "1",
       "actorhairandjacketphysics": "1",
@@ -238,10 +343,10 @@
       "barcodel": "0",
       "barcodelcolour": "255,255,255",
       "barcodelopacity": "0.2",
-      "barcoder": "0",
+      "barcoder": "1",
       "barcodercolour": "255,255,255",
       "barcoderopacity": "0.2",
-      "colouraudiovisualiser": "0",
+      "colouraudiovisualiser": "1",
       "colourvisopacity": "0.3",
       "colourvisualisercolour": "207,54,185",
       "colourvisualisermaxfreqrange": "2",
@@ -266,18 +371,24 @@
       "solidbackgroundcolour1": "0,0,0",
       "vhs": "0"
     },
+    "2963300842": {},
     "2963605825": {
       "bloom": "1",
       "camerashake": "1",
       "schemecolor": "57,78,129",
-      "windowcolor": "255,255,255"
+      "windowcolor": "1,1,1"
+    },
+    "2973440787": {},
+    "2987534984": {
+      "schemecolor": "1,1,1"
     }
   },
   "lastKnownGoodScreens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/1235696368",
-      "scaling": "default"
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2852537340",
+      "scaling": "fill"
     }
   },
-  "runtimeRecoveryPending": false
+  "runtimeRecoveryPending": false,
+  "assetsDir": "~/.local/share/Steam/steamapps/common/wallpaper_engine/assets"
 }
