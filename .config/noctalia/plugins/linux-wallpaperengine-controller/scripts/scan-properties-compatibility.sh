@@ -10,6 +10,8 @@
 #     1 = failed
 #     2 = limited editor support
 
+set -eu
+
 dir="$1"
 [ -d "$dir" ] || exit 10
 

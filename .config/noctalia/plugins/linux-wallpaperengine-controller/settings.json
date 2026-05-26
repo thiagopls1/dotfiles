@@ -22,7 +22,7 @@
   },
   "defaultNoFullscreenPause": false,
   "defaultFullscreenPauseOnlyActive": true,
-  "showSidebarDescription": false,
+  "showSidebarDescription": true,
   "badgeOrder": [
     "type",
     "dynamic",
@@ -258,7 +258,9 @@
       "shine": "1",
       "vignette": "1"
     },
-    "2852537340": {},
+    "2852537340": {
+      "schemecolor": "90,153,204"
+    },
     "2864255069": {
       "audiobars": "1",
       "audiobarscolor": "0,0,0",

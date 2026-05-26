@@ -13,6 +13,7 @@ import "helpers/panel/BadgeHelpers.js" as BadgeHelpers
 import "helpers/panel/WallpaperFilterHelpers.js" as WallpaperFilterHelpers
 import "helpers/panel/WallpaperMetaHelpers.js" as WallpaperMetaHelpers
 import "helpers/panel/WallpaperUiHelpers.js" as WallpaperUiHelpers
+import "helpers/shared/ColorCacheHelpers.js" as ColorCacheHelpers
 import "helpers/panel/PropertyHelpers.js" as PropertyHelpers
 
 Item {
@@ -117,17 +118,27 @@ Item {
   readonly property int currentPageStartIndex: visibleWallpapers.length === 0 ? 0 : currentPage * pageSize + 1
   readonly property int currentPageEndIndex: Math.min((currentPage + 1) * pageSize, visibleWallpapers.length)
 
+  // Named timer intervals.
+  readonly property int searchDebounceDelay: 250
+  readonly property int propertyLoadDelay: 500
+
+  // O(1) lookup map rebuilt when wallpaper items change.
+  property var wallpaperByPath: ({})
+
+  function rebuildWallpaperByPath() {
+    const map = Object.create(null);
+    for (const item of wallpaperItems) {
+      map[String(item.path || "")] = item;
+    }
+    wallpaperByPath = map;
+  }
+
   function getSelectedWallpaperData() {
     const target = String(pendingPath || "");
     if (target.length === 0) {
       return null;
     }
-    for (const item of wallpaperItems) {
-      if (String(item.path || "") === target) {
-        return item;
-      }
-    }
-    return null;
+    return wallpaperByPath[target] || null;
   }
 
   // Basic file and metadata helpers.
@@ -148,7 +159,7 @@ Item {
   }
 
   function formatBytes(bytesValue) {
-    return WallpaperMetaHelpers.formatBytes(bytesValue);
+    return ColorCacheHelpers.formatBytes(bytesValue);
   }
 
   function sortLabel(value) {
@@ -204,7 +215,31 @@ Item {
     wallpaperPropertyError = "";
     wallpaperPropertyRequestPath = wallpaperPath;
 
-    if (!extraPropertiesEditorEnabled || wallpaperPath.length === 0 || !(mainInstance?.engineAvailable ?? false)) {
+    if (!extraPropertiesEditorEnabled || wallpaperPath.length === 0) {
+      loadingWallpaperProperties = false;
+      return;
+    }
+
+    if (!(mainInstance?.engineAvailable ?? false)) {
+      const savedProperties = mainInstance?.getWallpaperProperties(wallpaperPath) || ({});
+      const savedKeys = Object.keys(savedProperties).filter(k => String(k || "").trim().length > 0);
+      if (savedKeys.length > 0) {
+        const fallbackDefinitions = savedKeys.map(key => ({
+          key: key,
+          type: "textinput",
+          label: key,
+          defaultValue: "",
+          choices: []
+        }));
+        wallpaperPropertyDefinitions = fallbackDefinitions;
+        const nextValues = {};
+        for (const key of savedKeys) {
+          nextValues[key] = String(savedProperties[key] ?? "");
+        }
+        wallpaperPropertyValues = nextValues;
+        wallpaperPropertyError = "";
+        setWallpaperPropertyLoadFailed(wallpaperPath, false);
+      }
       loadingWallpaperProperties = false;
       return;
     }
@@ -598,6 +633,7 @@ Item {
 
   // Reactive state updates.
   onWallpaperItemsChanged: {
+    rebuildWallpaperByPath();
     refreshVisibleWallpapers();
     reconcilePendingSelection();
   }
@@ -917,11 +953,32 @@ Item {
       }
 
       if (exitCode !== 0) {
-        root.wallpaperPropertyDefinitions = [];
-        root.wallpaperPropertyValues = ({});
-        root.setWallpaperPropertyLoadFailed(requestPath, true);
-        root.wallpaperPropertyError = pluginApi?.tr("panel.propertiesLoadFailed");
-        Logger.w("LWEController", "Wallpaper properties load failed", "path=", requestPath, "exitCode=", exitCode);
+        const savedProperties = mainInstance?.getWallpaperProperties(requestPath) || ({});
+        const savedKeys = Object.keys(savedProperties).filter(k => String(k || "").trim().length > 0);
+        if (savedKeys.length > 0) {
+          const fallbackDefinitions = savedKeys.map(key => ({
+            key: key,
+            type: "textinput",
+            label: key,
+            defaultValue: "",
+            choices: []
+          }));
+          root.wallpaperPropertyDefinitions = fallbackDefinitions;
+          const nextValues = {};
+          for (const key of savedKeys) {
+            nextValues[key] = String(savedProperties[key] ?? "");
+          }
+          root.wallpaperPropertyValues = nextValues;
+          root.setWallpaperPropertyLoadFailed(requestPath, false);
+          root.wallpaperPropertyError = "";
+          Logger.w("LWEController", "Wallpaper properties load failed, restored saved properties as fallback", "path=", requestPath, "exitCode=", exitCode, "count=", savedKeys.length);
+        } else {
+          root.wallpaperPropertyDefinitions = [];
+          root.wallpaperPropertyValues = ({});
+          root.setWallpaperPropertyLoadFailed(requestPath, true);
+          root.wallpaperPropertyError = pluginApi?.tr("panel.propertiesLoadFailed");
+          Logger.w("LWEController", "Wallpaper properties load failed", "path=", requestPath, "exitCode=", exitCode);
+        }
         return;
       }
 
@@ -991,7 +1048,7 @@ Item {
 
   Timer {
     id: searchDebounceTimer
-    interval: 250
+    interval: root.searchDebounceDelay
     onTriggered: {
       refreshVisibleWallpapers();
       resetPagination();
@@ -1000,7 +1057,7 @@ Item {
 
   Timer {
     id: propertiesLoadTimer
-    interval: 500
+    interval: root.propertyLoadDelay
     onTriggered: {
       loadWallpaperProperties(pendingPath);
     }

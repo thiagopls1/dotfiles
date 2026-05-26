@@ -163,248 +163,62 @@ ColumnLayout {
       Repeater {
         model: root.visibleBadgeKeys
 
-        Loader {
+        WallpaperBadge {
           required property var modelData
-          sourceComponent: {
+          compact: false
+          badgeIcon: {
             const key = String(modelData || "");
-            if (key === "resolution") return resolutionBadgeComponent;
-            if (key === "type") return typeBadgeComponent;
-            if (key === "dynamic") return motionBadgeComponent;
-            if (key === "music") return musicBadgeComponent;
-            if (key === "reactive") return reactiveBadgeComponent;
-            if (key === "approved") return approvedBadgeComponent;
-            if (key === "compatibility") return compatibilityBadgeComponent;
-            return null;
+            if (key === "type") return root.typeBadgeIcon ? root.typeBadgeIcon(root.selectedWallpaperData.type) : "category";
+            if (key === "dynamic") return root.dynamicBadgeIcon ? root.dynamicBadgeIcon(!!root.selectedWallpaperData.dynamic) : (root.selectedWallpaperData.dynamic ? "player-play" : "player-stop");
+            if (key === "music") return "volume";
+            if (key === "reactive") return "wave-sine";
+            if (key === "approved") return "rosette-discount-check";
+            if (key === "resolution") return "aspect-ratio";
+            if (key === "compatibility") return "settings-cog";
+            return "";
           }
-        }
-      }
-
-      Component {
-        id: resolutionBadgeComponent
-
-        Rectangle {
-          color: Qt.alpha(Color.mSurfaceVariant, 0.24)
-          radius: Style.radiusS
-          width: resolutionBadgeContent.implicitWidth + Style.marginS * 2
-          height: resolutionBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: resolutionBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: "aspect-ratio"
-              pointSize: Style.fontSizeM
-              color: Color.mOnSurfaceVariant
+          badgeText: {
+            const key = String(modelData || "");
+            if (key === "type") return root.typeLabel ? root.typeLabel(root.selectedWallpaperData.type) : "";
+            if (key === "dynamic") return root.selectedWallpaperData.dynamic ? pluginApi?.tr("panel.dynamicBadge") : pluginApi?.tr("panel.staticBadge");
+            if (key === "music") return pluginApi?.tr("panel.musicBadge");
+            if (key === "reactive") return pluginApi?.tr("panel.reactiveBadge");
+            if (key === "approved") return pluginApi?.tr("panel.approvedBadge");
+            if (key === "resolution") return root.resolutionBadgeLabel ? root.resolutionBadgeLabel(root.selectedWallpaperData.resolution) : "";
+            if (key === "compatibility") {
+              const cPath = String(root.selectedWallpaperData?.path || "");
+              return root.propertyCompatibilityBadgeTextForPath ? root.propertyCompatibilityBadgeTextForPath(cPath) : "";
             }
-
-            NText {
-              text: root.resolutionBadgeLabel ? root.resolutionBadgeLabel(root.selectedWallpaperData.resolution) : ""
-              color: Color.mOnSurfaceVariant
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
+            return "";
           }
-        }
-      }
-
-      Component {
-        id: typeBadgeComponent
-
-        Rectangle {
-          color: Qt.alpha(Color.mSecondary, 0.1)
-          radius: Style.radiusS
-          width: typeBadgeContent.implicitWidth + Style.marginS * 2
-          height: typeBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: typeBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: root.typeBadgeIcon ? root.typeBadgeIcon(root.selectedWallpaperData.type) : "category"
-              pointSize: Style.fontSizeM
-              color: Color.mSecondary
+          badgeColor: {
+            const key = String(modelData || "");
+            if (key === "type") return Color.mSecondary;
+            if (key === "dynamic") return root.selectedWallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant;
+            if (key === "music") return Color.mPrimary;
+            if (key === "reactive") return Color.mSecondary;
+            if (key === "approved") return Color.mPrimary;
+            if (key === "resolution") return Color.mOnSurfaceVariant;
+            if (key === "compatibility") {
+              const cPath = String(root.selectedWallpaperData?.path || "");
+              return root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(cPath) : Color.mError;
             }
-
-            NText {
-              text: root.typeLabel ? root.typeLabel(root.selectedWallpaperData.type) : ""
-              color: Color.mSecondary
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
+            return Color.mOnSurfaceVariant;
           }
-        }
-      }
-
-      Component {
-        id: motionBadgeComponent
-
-        Rectangle {
-          color: root.selectedWallpaperData.dynamic
-            ? Qt.alpha(Color.mTertiary, 0.1)
-            : Qt.alpha(Color.mOutline, 0.1)
-          radius: Style.radiusS
-          width: motionBadgeContent.implicitWidth + Style.marginS * 2
-          height: motionBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: motionBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: root.dynamicBadgeIcon
-                ? root.dynamicBadgeIcon(!!root.selectedWallpaperData.dynamic)
-                : (root.selectedWallpaperData.dynamic ? "player-play" : "player-stop")
-              pointSize: Style.fontSizeM
-              color: root.selectedWallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant
+          badgeBgColor: {
+            const key = String(modelData || "");
+            if (key === "type") return Qt.alpha(Color.mSecondary, 0.1);
+            if (key === "dynamic") return root.selectedWallpaperData.dynamic ? Qt.alpha(Color.mTertiary, 0.1) : Qt.alpha(Color.mOutline, 0.1);
+            if (key === "music") return Qt.alpha(Color.mPrimary, 0.1);
+            if (key === "reactive") return Qt.alpha(Color.mSecondary, 0.1);
+            if (key === "approved") return Qt.alpha(Color.mPrimary, 0.1);
+            if (key === "resolution") return Qt.alpha(Color.mSurfaceVariant, 0.24);
+            if (key === "compatibility") {
+              const cPath = String(root.selectedWallpaperData?.path || "");
+              const cColor = root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(cPath) : Color.mError;
+              return root.propertyCompatibilityBadgeBackgroundForPath ? root.propertyCompatibilityBadgeBackgroundForPath(cPath) : Qt.alpha(cColor, 0.1);
             }
-
-            NText {
-              text: root.selectedWallpaperData.dynamic
-                ? pluginApi?.tr("panel.dynamicBadge")
-                : pluginApi?.tr("panel.staticBadge")
-              color: root.selectedWallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
-          }
-        }
-      }
-
-      Component {
-        id: musicBadgeComponent
-
-        Rectangle {
-          color: Qt.alpha(Color.mPrimary, 0.1)
-          radius: Style.radiusS
-          width: audioBadgeContent.implicitWidth + Style.marginS * 2
-          height: audioBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: audioBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: "volume"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            NText {
-              text: pluginApi?.tr("panel.musicBadge")
-              color: Color.mPrimary
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
-          }
-        }
-      }
-
-      Component {
-        id: reactiveBadgeComponent
-
-        Rectangle {
-          color: Qt.alpha(Color.mSecondary, 0.1)
-          radius: Style.radiusS
-          width: reactiveBadgeContent.implicitWidth + Style.marginS * 2
-          height: reactiveBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: reactiveBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: "wave-sine"
-              pointSize: Style.fontSizeM
-              color: Color.mSecondary
-            }
-
-            NText {
-              text: pluginApi?.tr("panel.reactiveBadge")
-              color: Color.mSecondary
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
-          }
-        }
-      }
-
-      Component {
-        id: approvedBadgeComponent
-
-        Rectangle {
-          color: Qt.alpha(Color.mPrimary, 0.1)
-          radius: Style.radiusS
-          width: approvedBadgeContent.implicitWidth + Style.marginS * 2
-          height: approvedBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: approvedBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: "rosette-discount-check"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            NText {
-              text: pluginApi?.tr("panel.approvedBadge")
-              color: Color.mPrimary
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
-          }
-        }
-      }
-
-      Component {
-        id: compatibilityBadgeComponent
-
-        Rectangle {
-          id: compatibilityBadge
-          readonly property string compatibilityPath: String(root.selectedWallpaperData?.path || "")
-          readonly property string compatibilityLabel: root.propertyCompatibilityBadgeTextForPath ? root.propertyCompatibilityBadgeTextForPath(compatibilityPath) : ""
-          readonly property color compatibilityColor: root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(compatibilityPath) : Color.mError
-          readonly property string compatibilityIcon: root.propertyCompatibilityBadgeIconForPath ? root.propertyCompatibilityBadgeIconForPath(compatibilityPath) : "alert-triangle"
-          color: root.propertyCompatibilityBadgeBackgroundForPath
-            ? root.propertyCompatibilityBadgeBackgroundForPath(compatibilityPath)
-            : Qt.alpha(compatibilityColor, 0.1)
-          radius: Style.radiusS
-          width: compatBadgeContent.implicitWidth + Style.marginS * 2
-          height: compatBadgeContent.implicitHeight + Style.marginXS * 2
-
-          RowLayout {
-            id: compatBadgeContent
-            anchors.centerIn: parent
-            spacing: Style.marginXS
-
-            NIcon {
-              icon: "settings-cog"
-              pointSize: Style.fontSizeM
-              color: compatibilityBadge.compatibilityColor
-            }
-
-            NText {
-              text: compatibilityBadge.compatibilityLabel
-              color: compatibilityBadge.compatibilityColor
-              font.pointSize: Style.fontSizeXS
-              font.weight: Font.Medium
-              elide: Text.ElideRight
-            }
+            return Qt.alpha(Color.mSurfaceVariant, 0.24);
           }
         }
       }

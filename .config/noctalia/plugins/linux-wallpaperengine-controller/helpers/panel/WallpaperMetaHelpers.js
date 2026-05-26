@@ -16,27 +16,6 @@ function isVideoMotion(path) {
   return ext === "mp4" || ext === "webm" || ext === "mov" || ext === "mkv";
 }
 
-function formatBytes(bytesValue) {
-  const size = Number(bytesValue || 0);
-  if (isNaN(size) || size <= 0) {
-    return "0 B";
-  }
-
-  if (size < 1024) {
-    return Math.floor(size) + " B";
-  }
-
-  if (size < 1024 * 1024) {
-    return (size / 1024).toFixed(1) + " KB";
-  }
-
-  if (size < 1024 * 1024 * 1024) {
-    return (size / (1024 * 1024)).toFixed(1) + " MB";
-  }
-
-  return (size / (1024 * 1024 * 1024)).toFixed(1) + " GB";
-}
-
 function resolutionBadgeIcon(value) {
   const resolution = String(value || "").toLowerCase().trim();
   if (resolution.length === 0 || resolution === "unknown") {

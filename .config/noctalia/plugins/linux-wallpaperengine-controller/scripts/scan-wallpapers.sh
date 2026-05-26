@@ -7,7 +7,7 @@
 #   Tab-separated rows:
 #   <path>\t<name>\t<thumb>\t<motion>\t<dynamic>\t<id>\t<type>\t<resolution>\t<embedded_audio>\t<audio_reactive>\t<bytes>:<mtime>\t<approved>\t<description>
 
-set -u
+set -eu
 dir="${1:-}"
 [ -n "$dir" ] || exit 10
 [ -d "$dir" ] || exit 10

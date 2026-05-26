@@ -87,6 +87,11 @@ Rectangle {
        readonly property bool isSelected: root.selectedPath === modelData.path
        readonly property bool isMotion: modelData.motionPreview && modelData.motionPreview.length > 0
        readonly property bool isVideoMotion: root.isVideoMotion && root.isVideoMotion(modelData.motionPreview)
+       readonly property bool isInView: {
+         const gv = GridView.view;
+         const cellY = y - gv.contentY;
+         return cellY + height > -50 && cellY < gv.height + 50;
+       }
        width: GridView.view.cellWidth
        height: GridView.view.cellHeight
        radius: Style.radiusL
@@ -129,7 +134,7 @@ Rectangle {
               source: "file://" + modelData.motionPreview
               fillMode: Image.PreserveAspectCrop
               cache: false
-              playing: true
+              playing: tileCard.isInView
             }
           }
 
@@ -138,11 +143,12 @@ Rectangle {
 
             Video {
               anchors.fill: parent
-              autoPlay: true
+              autoPlay: tileCard.isInView
               loops: MediaPlayer.Infinite
               muted: true
               fillMode: VideoOutput.PreserveAspectCrop
               source: "file://" + modelData.motionPreview
+              visible: tileCard.isInView
             }
           }
 
@@ -198,179 +204,49 @@ Rectangle {
             Repeater {
               model: badgeContainer.visibleBadgeKeys
 
-              Loader {
+              WallpaperBadge {
                 required property var modelData
-                sourceComponent: {
+                compact: true
+                badgeIcon: {
                   const key = String(modelData || "");
-                  if (key === "type") return typeBadgeComponent;
-                  if (key === "dynamic") return dynamicBadgeComponent;
-                  if (key === "music") return musicBadgeComponent;
-                  if (key === "reactive") return reactiveBadgeComponent;
-                  if (key === "approved") return approvedBadgeComponent;
-                  if (key === "resolution") return resolutionBadgeComponent;
-                  if (key === "compatibility") return compatibilityBadgeComponent;
-                  return null;
+                  if (key === "type") return root.typeBadgeIcon ? root.typeBadgeIcon(tileCard.wallpaperData.type) : "category";
+                  if (key === "dynamic") return root.dynamicBadgeIcon ? root.dynamicBadgeIcon(!!tileCard.wallpaperData.dynamic) : (tileCard.wallpaperData.dynamic ? "player-play" : "player-stop");
+                  if (key === "music") return "volume";
+                  if (key === "reactive") return "wave-sine";
+                  if (key === "approved") return "rosette-discount-check";
+                  if (key === "resolution") return "aspect-ratio";
+                  if (key === "compatibility") return "settings-cog";
+                  return "";
                 }
-              }
-            }
-          }
-
-          Component {
-            id: typeBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mSecondary, 0.18)
-              radius: Style.radiusXS
-              implicitWidth: typeBadgeRow.implicitWidth + Style.marginS * 2
-              implicitHeight: typeBadgeText.implicitHeight + Style.marginXS * 2
-
-              RowLayout {
-                id: typeBadgeRow
-                anchors.centerIn: parent
-                spacing: Style.marginXS
-
-                NIcon {
-                  icon: root.typeBadgeIcon ? root.typeBadgeIcon(tileCard.wallpaperData.type) : "category"
-                  pointSize: Style.fontSizeM
-                  color: Color.mSecondary
+                badgeColor: {
+                  const key = String(modelData || "");
+                  if (key === "type") return Color.mSecondary;
+                  if (key === "dynamic") return tileCard.wallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant;
+                  if (key === "music") return Color.mPrimary;
+                  if (key === "reactive") return Color.mSecondary;
+                  if (key === "approved") return Color.mPrimary;
+                  if (key === "resolution") return Color.mOnSurfaceVariant;
+                  if (key === "compatibility") {
+                    const cPath = String(tileCard.wallpaperData.path || "");
+                    return root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(cPath) : Color.mError;
+                  }
+                  return Color.mOnSurfaceVariant;
                 }
-
-                NText {
-                  id: typeBadgeText
-                  text: root.typeLabel ? root.typeLabel(tileCard.wallpaperData.type) : ""
-                  color: Color.mSecondary
-                  font.pointSize: Style.fontSizeXS
-                  font.weight: Font.Medium
+                badgeBgColor: {
+                  const key = String(modelData || "");
+                  if (key === "type") return Qt.alpha(Color.mSecondary, 0.18);
+                  if (key === "dynamic") return Qt.alpha(Color.mTertiary, 0.18);
+                  if (key === "music") return Qt.alpha(Color.mPrimary, 0.16);
+                  if (key === "reactive") return Qt.alpha(Color.mSecondary, 0.16);
+                  if (key === "approved") return Qt.alpha(Color.mPrimary, 0.16);
+                  if (key === "resolution") return Qt.alpha(Color.mSurfaceVariant, 0.24);
+                  if (key === "compatibility") {
+                    const cPath = String(tileCard.wallpaperData.path || "");
+                    const cColor = root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(cPath) : Color.mError;
+                    return root.propertyCompatibilityBadgeBackgroundForPath ? root.propertyCompatibilityBadgeBackgroundForPath(cPath) : Qt.alpha(cColor, 0.16);
+                  }
+                  return Qt.alpha(Color.mSurfaceVariant, 0.24);
                 }
-              }
-            }
-          }
-
-          Component {
-            id: dynamicBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mTertiary, 0.18)
-              radius: Style.radiusXS
-              implicitWidth: motionBadgeIcon.implicitWidth + Style.marginXS * 2
-              implicitHeight: motionBadgeIcon.implicitHeight + Style.marginXS * 2
-
-              NIcon {
-                id: motionBadgeIcon
-                anchors.centerIn: parent
-                icon: root.dynamicBadgeIcon ? root.dynamicBadgeIcon(!!tileCard.wallpaperData.dynamic) : (tileCard.wallpaperData.dynamic ? "player-play" : "player-stop")
-                pointSize: Style.fontSizeM
-                color: tileCard.wallpaperData.dynamic ? Color.mTertiary : Color.mOnSurfaceVariant
-              }
-            }
-          }
-
-          Component {
-            id: musicBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mPrimary, 0.16)
-              radius: Style.radiusXS
-              implicitWidth: musicBadgeIcon.implicitWidth + Style.marginXS * 2
-              implicitHeight: musicBadgeIcon.implicitHeight + Style.marginXS * 2
-
-              NIcon {
-                id: musicBadgeIcon
-                anchors.centerIn: parent
-                icon: "volume"
-                pointSize: Style.fontSizeM
-                color: Color.mPrimary
-              }
-            }
-          }
-
-          Component {
-            id: reactiveBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mSecondary, 0.16)
-              radius: Style.radiusXS
-              implicitWidth: reactiveBadgeIcon.implicitWidth + Style.marginXS * 2
-              implicitHeight: reactiveBadgeIcon.implicitHeight + Style.marginXS * 2
-
-              NIcon {
-                id: reactiveBadgeIcon
-                anchors.centerIn: parent
-                icon: "wave-sine"
-                pointSize: Style.fontSizeM
-                color: Color.mSecondary
-              }
-            }
-          }
-
-          Component {
-            id: approvedBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mPrimary, 0.16)
-              radius: Style.radiusXS
-              implicitWidth: approvedBadgeIcon.implicitWidth + Style.marginXS * 2
-              implicitHeight: approvedBadgeIcon.implicitHeight + Style.marginXS * 2
-
-              NIcon {
-                id: approvedBadgeIcon
-                anchors.centerIn: parent
-                icon: "rosette-discount-check"
-                pointSize: Style.fontSizeM
-                color: Color.mPrimary
-              }
-            }
-          }
-
-          Component {
-            id: resolutionBadgeComponent
-
-            Rectangle {
-              color: Qt.alpha(Color.mSurfaceVariant, 0.24)
-              radius: Style.radiusXS
-              implicitWidth: resolutionBadgeRow.implicitWidth + Style.marginS * 2
-              implicitHeight: resolutionBadgeRow.implicitHeight + Style.marginXS * 2
-
-              RowLayout {
-                id: resolutionBadgeRow
-                anchors.centerIn: parent
-                spacing: Style.marginXS
-
-                NIcon {
-                  icon: "aspect-ratio"
-                  pointSize: Style.fontSizeM
-                  color: Color.mOnSurfaceVariant
-                }
-
-                NText {
-                  text: root.resolutionBadgeLabel ? root.resolutionBadgeLabel(tileCard.wallpaperData.resolution) : ""
-                  color: Color.mOnSurfaceVariant
-                  font.pointSize: Style.fontSizeXS
-                  font.weight: Font.Medium
-                }
-              }
-            }
-          }
-
-          Component {
-            id: compatibilityBadgeComponent
-
-            Rectangle {
-              readonly property string compatibilityPath: String(tileCard.wallpaperData.path || "")
-              readonly property color compatibilityColor: root.propertyCompatibilityBadgeColorForPath ? root.propertyCompatibilityBadgeColorForPath(compatibilityPath) : Color.mError
-              color: root.propertyCompatibilityBadgeBackgroundForPath
-                ? root.propertyCompatibilityBadgeBackgroundForPath(compatibilityPath)
-                : Qt.alpha(compatibilityColor, 0.16)
-              radius: Style.radiusXS
-              implicitWidth: compatibilityBadgeIcon.implicitWidth + Style.marginXS * 2
-              implicitHeight: compatibilityBadgeIcon.implicitHeight + Style.marginXS * 2
-
-              NIcon {
-                id: compatibilityBadgeIcon
-                anchors.centerIn: parent
-                icon: "settings-cog"
-                pointSize: Style.fontSizeM
-                color: parent.compatibilityColor
               }
             }
           }
