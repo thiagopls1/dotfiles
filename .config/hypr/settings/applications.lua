@@ -13,6 +13,7 @@ return {
 		shell = "qs -c noctalia-shell",
 		kde_connect = "kdeconnectd",
 		screenshot = "flameshot",
+		screenshot_cmd = "flameshot gui",
 		openrgb = "openrgb -p Default --startminimized",
 	},
 }

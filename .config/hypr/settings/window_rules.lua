@@ -6,14 +6,13 @@ hl.window_rule({
 	border_size = 0,
 })
 
--- hl.window_rule({
--- 	-- Ignore maximize requests from apps. You'll probably like this.
--- 	name = "supress-maximize-events",
--- 	match = {
--- 		class = ".*",
--- 	},
--- 	supress_event = "maximize",
--- })
+hl.window_rule({
+	-- Ignore maximize requests from apps. You'll probably like this.
+	name = "supress-maximize-events",
+	match = {
+		class = ".*",
+	},
+})
 
 hl.window_rule({
 	-- Fix some dragging issues with XWayland
@@ -33,7 +32,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "flameshot-rules",
 	match = {
-		class = "^$",
+		class = "^(flameshot)$",
 	},
 	fullscreen = false,
 	no_anim = true,

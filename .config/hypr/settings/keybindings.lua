@@ -23,8 +23,8 @@ hl.bind(mainMod .. " + f4", hl.dsp.exec_cmd(ipc_call .. " nightLight toggle"))
 -- Applications bindings
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(applications.terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(applications.file_manager))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(applications.services.screenshot))
-hl.bind("Print", hl.dsp.exec_cmd(applications.services.screenshot))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(applications.services.screenshot_cmd))
+hl.bind("Print", hl.dsp.exec_cmd(applications.services.screenshot_cmd))
 
 -- Window Bindings
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
@@ -58,13 +58,13 @@ hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + CTRL + right", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + CTRL + left", hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. " + CTRL + h", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + CTRL + l", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. " + CTRL + l", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + CTRL + h", hl.dsp.focus({ workspace = "e-1" }))
 
 hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.move({ workspace = "e-1" }))
-hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ workspace = "e+1" }))
-hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ workspace = "e-1" }))
+hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ workspace = "e+1" }))
+hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ workspace = "e-1" }))
 
 -- Layout bindings
 hl.bind(mainMod .. " + equal", hl.dsp.layout("move +col"))
