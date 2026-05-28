@@ -681,7 +681,7 @@
         "panelBackgroundOpacity": 0.93,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": true,
-        "settingsPanelMode": "centered",
+        "settingsPanelMode": "window",
         "settingsPanelSideBarCardStyle": false,
         "tooltipsEnabled": true,
         "translucentWidgets": true
@@ -690,7 +690,7 @@
         "automationEnabled": false,
         "directory": "/home/thiago_lins/Pictures/Wallpapers",
         "enableMultiMonitorDirectories": false,
-        "enabled": true,
+        "enabled": false,
         "favorites": [
         ],
         "fillColor": "#000000",

@@ -4,9 +4,9 @@
   "enableExtraPropertiesEditor": true,
   "defaultScaling": "fill",
   "defaultClamp": "clamp",
-  "defaultFps": 30,
-  "defaultVolume": 100,
-  "defaultMuted": true,
+  "defaultFps": 34,
+  "defaultVolume": 0,
+  "defaultMuted": false,
   "defaultAudioReactiveEffects": true,
   "defaultNoAutomute": false,
   "defaultDisableMouse": false,
@@ -47,7 +47,7 @@
   "panelLastSelectedPath": "",
   "screens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2852537340",
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/3672173183",
       "scaling": "fill"
     }
   },
@@ -58,9 +58,15 @@
       "schemecolor": "0,0,0"
     },
     "827982449": {},
+    "832328715": {
+      "schemecolor": "0,0,139"
+    },
     "837440254": {},
     "843532366": {
       "schemecolor": "203,106,142"
+    },
+    "872140516": {
+      "schemecolor": "73,5,129"
     },
     "883826650": {
       "schemecolor": "150,29,29"
@@ -75,6 +81,9 @@
       "schemecolor": "0,0,0"
     },
     "955880074": {},
+    "1085781504": {
+      "schemecolor": "0,0,0"
+    },
     "1103493745": {},
     "1198839373": {
       "schemecolor": "0,128,0"
@@ -82,10 +91,19 @@
     "1235696368": {
       "schemecolor": "0,0,0"
     },
+    "1245030240": {
+      "schemecolor": "0,0,0"
+    },
+    "1385596165": {
+      "schemecolor": "19,20,41"
+    },
     "1431152580": {
       "schemecolor": "0,0,0"
     },
     "1435735556": {},
+    "1438956394": {
+      "schemecolor": "0,0,0"
+    },
     "1441736444": {
       "schemecolor": "24,17,29"
     },
@@ -93,6 +111,9 @@
     "1502639794": {},
     "1533705539": {
       "schemecolor": "25,28,34"
+    },
+    "1582158004": {
+      "schemecolor": "11,65,46"
     },
     "1582915184": {
       "schemecolor": "172,124,114"
@@ -158,9 +179,13 @@
     "2145333761": {
       "schemecolor": "224,52,92"
     },
+    "2149586378": {
+      "schemecolor": "149,27,57"
+    },
     "2162986216": {
       "schemecolor": "88,30,81"
     },
+    "2176022596": {},
     "2176097362": {
       "audiocheckbox": "1",
       "audioresponsivesettings": "1",
@@ -199,10 +224,22 @@
       "raindropsplatter": "0",
       "schemecolor": "106,31,95"
     },
+    "2323829520": {
+      "hidesignartist": "0",
+      "schemecolor": "30,241,251"
+    },
     "2376307588": {
       "schemecolor": "19,32,64"
     },
     "2388299037": {},
+    "2419444134": {
+      "audioreactivedots": "1",
+      "audioreactivestars": "1",
+      "fog": "1",
+      "fog2": "1",
+      "schemecolor": "38,10,41",
+      "vhsneoncircle": "1"
+    },
     "2435717385": {},
     "2459477453": {
       "schemecolor": "0,0,0"
@@ -246,8 +283,21 @@
       "schemecolor": "55,46,40"
     },
     "2798213583": {},
+    "2798698350": {
+      "schemecolor": "88,60,46"
+    },
     "2811735945": {
       "schemecolor": "20,36,48"
+    },
+    "2830918086": {
+      "chromaticabberation": "1",
+      "clock": "1",
+      "leaves": "0",
+      "mouseinfluence": "1",
+      "perspective": "1",
+      "schemecolor": "164,118,72",
+      "shake": "1",
+      "visualizer": "1"
     },
     "2843998685": {
       "clock": "1",
@@ -337,12 +387,18 @@
       "schemecolor": "0,0,0",
       "thecurrent": "1"
     },
-    "2896161407": {},
+    "2896161407": {
+      "audioeffects": "1",
+      "schemecolor": "249,254,83"
+    },
+    "2902898320": {
+      "schemecolor": "26,11,27"
+    },
     "2927107167": {},
     "2943905118": {
       "actoreyemovement": "1",
       "actorhairandjacketphysics": "1",
-      "background": "2",
+      "background": "4",
       "barcodel": "0",
       "barcodelcolour": "255,255,255",
       "barcodelopacity": "0.2",
@@ -379,16 +435,94 @@
       "bloom": "1",
       "camerashake": "1",
       "schemecolor": "57,78,129",
-      "windowcolor": "1,1,1"
+      "windowcolor": "255,255,255"
     },
     "2973440787": {},
     "2987534984": {
       "schemecolor": "1,1,1"
+    },
+    "3085606089": {
+      "audiobars": "2",
+      "background": "1",
+      "backgroundblur": "0",
+      "barsize": "1",
+      "grading": "0",
+      "hdrstrength": "0.5",
+      "mediaintegration": "1",
+      "parallaxamount": "0.05",
+      "rain": "1",
+      "rainfrequency": "0.5",
+      "schemecolor": "1,1,1",
+      "tonemapping": "1"
+    },
+    "3250755486": {
+      "schemecolor": "0,0,0"
+    },
+    "3658702256": {
+      "newproperty": "1",
+      "newproperty1": "1",
+      "newproperty2": "1",
+      "schemecolor": "247,196,200",
+      "shicha": "1",
+      "xray": "0",
+      "xray1": "0.4"
+    },
+    "3664199515": {
+      "clock": "1",
+      "day": "1",
+      "schemecolor": "238,172,134"
+    },
+    "3666747189": {
+      "audiospectrumvisualizer": "1",
+      "clouds": "1",
+      "mountain": "1",
+      "music": "0.5",
+      "rain": "1",
+      "raindrops": "1",
+      "schemecolor": "42,51,72",
+      "waterdroplets": "1"
+    },
+    "3672173183": {
+      "schemecolor": "9,26,26"
+    },
+    "3679198633": {
+      "schemecolor": "66,0,79"
+    },
+    "3679620104": {
+      "newproperty1": "1",
+      "schemecolor": "0,0,0"
+    },
+    "3681201324": {
+      "newproperty": "1",
+      "newproperty1": "1",
+      "schemecolor": "193,162,158"
+    },
+    "3706286085": {},
+    "3706857990": {
+      "schemecolor": "22,42,70"
+    },
+    "3714466840": {
+      "schemecolor": "45,84,124"
+    },
+    "3724638954": {
+      "schemecolor": "109,118,152"
+    },
+    "3729998714": {
+      "schemecolor": "26,26,27"
+    },
+    "3731342789": {
+      "schemecolor": "209,222,241"
+    },
+    "3731927247": {
+      "liquid": "1",
+      "schemecolor": "142,156,190",
+      "switch": "2",
+      "xraysize": "2"
     }
   },
   "lastKnownGoodScreens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2852537340",
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/3672173183",
       "scaling": "fill"
     }
   },

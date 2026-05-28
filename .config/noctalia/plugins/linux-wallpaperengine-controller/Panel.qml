@@ -57,8 +57,8 @@ Item {
   property string searchText: ""
   property string selectedType: "all"
   property string selectedResolution: "all"
-  property string sortMode: "name"
-  property bool sortAscending: true
+  property string sortMode: "date"
+  property bool sortAscending: false
   property int currentPage: 0
   readonly property int pageSize: Math.max(1, Number(cfg.panelPageSize ?? defaults.panelPageSize ?? 24) || 24)
   readonly property bool singleScreenMode: Quickshell.screens.length <= 1
