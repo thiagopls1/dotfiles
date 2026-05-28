@@ -8,9 +8,9 @@ return {
 	discord = "discord",
 	services = {
 		idle_inhibit = "wayland-pipewie-idle-inhibit",
-		easy_effects = "easyeffects -w",
+		easy_effects = "easyeffects -w --service-mode",
 		window_switcher = "hyprshell run",
-		shell = "qs -c noctalia-shell",
+		shell = "qs -c noctalia-shell -d",
 		kde_connect = "kdeconnectd",
 		screenshot = "flameshot",
 		screenshot_cmd = "flameshot gui",
