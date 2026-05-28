@@ -29,6 +29,16 @@ hl.window_rule({
 	no_focus = true,
 })
 
+-- dev.noctalia.noctalia-qs
+hl.window_rule({
+	name = "noctalia-window-rules",
+	match = {
+		class = "^(dev.noctalia.noctalia-qs)$",
+	},
+	float = true,
+	center = true,
+})
+
 hl.window_rule({
 	name = "flameshot-rules",
 	match = {
