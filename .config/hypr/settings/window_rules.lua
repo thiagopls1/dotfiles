@@ -37,6 +37,7 @@ hl.window_rule({
 	},
 	float = true,
 	center = true,
+	rounding = 17,
 })
 
 hl.window_rule({
@@ -135,6 +136,18 @@ hl.window_rule({
 	fullscreen = true,
 	float = true,
 	pin = true,
+})
+
+hl.window_rule({
+	name = "gpu-screen-recorder-notify",
+	match = {
+		title = "gsr notify",
+	},
+	rounding = 0,
+	no_anim = true,
+	float = true,
+	no_focus = true,
+	move = { "monitor_w-window_w", "monitor_h*0.06" },
 })
 
 hl.window_rule({
