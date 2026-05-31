@@ -136,6 +136,7 @@ hl.window_rule({
 	fullscreen = true,
 	float = true,
 	pin = true,
+	move = { "0", "0" },
 })
 
 hl.window_rule({
@@ -146,6 +147,7 @@ hl.window_rule({
 	rounding = 0,
 	no_anim = true,
 	float = true,
+	pin = true,
 	no_focus = true,
 	move = { "monitor_w-window_w", "monitor_h*0.06" },
 })
