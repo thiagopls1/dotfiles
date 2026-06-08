@@ -128,5 +128,11 @@ if [ -d $NVM_DIR ]; then
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fi
 
+# Local Bin
+LOCAL_BIN="$HOME/.local/bin"
+if [ -d $LOCAL_BIN ]; then
+	export PATH=$PATH:$LOCAL_BIN
+fi
+
 # After config execution
 fastfetch
