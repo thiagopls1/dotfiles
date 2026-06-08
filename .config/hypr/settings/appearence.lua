@@ -6,7 +6,7 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_THEME", themes.cursor)
 hl.env("HYPRCURSOR_SIZE", "24")
 
-hl.env("GTK_THEME", themes.gtk)
+-- hl.env("GTK_THEME", themes.gtk)
 
 hl.env("QT_QPA_PLATFORM", themes.qt.platform)
 hl.env("QT_QPA_PLATFORMTHEME", themes.qt.platform_theme)
