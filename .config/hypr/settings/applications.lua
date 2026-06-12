@@ -1,13 +1,13 @@
 return {
 	terminal = "kitty",
-	file_manager = "nautilus",
+	file_manager = "dolphin",
 	browser = "firefox",
 	steam = "env LD_PRELOAD=/usr/lib32/libextest.so mangohud /usr/bin/steam",
 	mail = "GDK_BACKEND=x11 evolution",
 	spotify = "spotify-launcher",
 	discord = "discord",
 	services = {
-		idle_inhibit = "wayland-pipewie-idle-inhibit",
+		idle_inhibit = "wayland-pipewire-idle-inhibit",
 		easy_effects = "easyeffects -w --service-mode",
 		window_switcher = "hyprshell run",
 		shell = "qs -c noctalia-shell -d",
