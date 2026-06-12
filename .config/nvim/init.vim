@@ -61,6 +61,7 @@ Plug 'Civitasv/cmake-tools.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'Shatur/neovim-session-manager'
 Plug 'jglasovic/venv-lsp.nvim'
+Plug 'andythigpen/nvim-coverage'
 
 call plug#end()
 
