@@ -47,8 +47,8 @@
   "panelLastSelectedPath": "",
   "screens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/832328715",
-      "scaling": "fill"
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2509430104",
+      "scaling": "default"
     }
   },
   "wallpaperProperties": {
@@ -91,6 +91,9 @@
       "schemecolor": "0,0,0"
     },
     "955880074": {},
+    "959475938": {
+      "schemecolor": "0,0,0"
+    },
     "960368411": {
       "schemecolor": "0,0,0"
     },
@@ -389,6 +392,9 @@
       "musicvolume": "0.7",
       "schemecolor": "0,0,0"
     },
+    "2838640505": {
+      "schemecolor": "238,203,179"
+    },
     "2843998685": {
       "clock": "1",
       "filmgrain": "1",
@@ -626,8 +632,8 @@
   },
   "lastKnownGoodScreens": {
     "DP-3": {
-      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/832328715",
-      "scaling": "fill"
+      "path": "/home/thiago_lins/.steam/steam/steamapps/workshop/content/431960/2509430104",
+      "scaling": "default"
     }
   },
   "runtimeRecoveryPending": false,
