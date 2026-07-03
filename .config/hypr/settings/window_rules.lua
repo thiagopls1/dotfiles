@@ -123,7 +123,7 @@ hl.window_rule({
 	},
 	rounding = 0,
 	border_size = 0,
-	float = true,
+	fullscreen = true,
 })
 
 hl.window_rule({
@@ -135,7 +135,6 @@ hl.window_rule({
 	border_size = 0,
 	no_anim = true,
 	fullscreen = true,
-	float = true,
 	pin = true,
 	move = { "0", "0" },
 })

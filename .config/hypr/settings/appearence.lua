@@ -48,5 +48,6 @@ local default_speed = 4
 hl.animation({ leaf = "windows", enabled = true, speed = default_speed, bezier = "md3_decel", style = "popin 20%" })
 hl.animation({ leaf = "border", enabled = true, speed = default_speed, bezier = "default" })
 hl.animation({ leaf = "fade", enabled = true, speed = default_speed, bezier = "md3_decel" })
+hl.animation({ leaf = "layers", enabled = true, speed = default_speed, bezier = "md3_decel" })
 hl.animation({ leaf = "workspaces", enabled = true, speed = default_speed, bezier = "easeOutExpo" })
 -- hl.animation({ leaf = "specialWorkspaces", enabled = true, speed = 1, bezier = "md3_decel", style = "fade" })
