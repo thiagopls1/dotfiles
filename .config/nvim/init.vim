@@ -86,7 +86,6 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
-<<<<<<< Updated upstream
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex", "latex", "markdown" },
   callback = function()
@@ -95,8 +94,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-=======
->>>>>>> Stashed changes
 vim.api.nvim_create_user_command("Redir", function(ctx)
 	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
 	vim.cmd('new')
