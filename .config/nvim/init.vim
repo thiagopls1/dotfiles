@@ -22,7 +22,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'nvim-lua/plenary.nvim'
 
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': 'v0.2.1' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-fzf-writer.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
@@ -53,8 +53,8 @@ Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'antosha417/nvim-lsp-file-operations'
-" Plug 'nvim-treesitter/nvim-treesitter', { 'tag': 'master', 'do': ':TSUpdate'}
-Plug 'romus204/tree-sitter-manager.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+" Plug 'romus204/tree-sitter-manager.nvim'
 Plug 'windwp/nvim-ts-autotag'
 Plug 'smjonas/inc-rename.nvim'
 Plug 'Civitasv/cmake-tools.nvim'
@@ -66,23 +66,27 @@ Plug 'andythigpen/nvim-coverage'
 call plug#end()
 
 lua << EOF
-require	"Comment".setup{}
-require	"rainbow-delimiters.setup".setup{}
+require("Comment").setup()
 
-require "catppuccin".setup{
+require("catppuccin").setup({
 	flavour = "macchiato",
 	transparent_background = true,
-}
+})
 
-require"presence".setup{
+require("presence").setup({
 	auto_update = true,
 	debounce_timeout = 1,
-}
+})
+
+require("nvim-autopairs").setup({
+	check_ts = false,
+})
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
+<<<<<<< Updated upstream
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex", "latex", "markdown" },
   callback = function()
@@ -91,6 +95,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+=======
+>>>>>>> Stashed changes
 vim.api.nvim_create_user_command("Redir", function(ctx)
 	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
 	vim.cmd('new')

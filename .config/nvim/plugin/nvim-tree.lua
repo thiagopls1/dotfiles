@@ -5,24 +5,24 @@ local function opts(desc)
 	return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 end
 
-local function custom_on_attach(bufnr)
-	local api = require("nvim-tree.api")
-
-	-- default mappings
-	api.config.mappings.default_on_attach(bufnr)
-
-	-- custom mappings
-	vim.keymap.set("n", "<esc>", nvim_tree_api.tree.close, opts("Close"))
-end
+-- local function custom_on_attach(bufnr)
+-- 	local api = require("nvim-tree.api")
+--
+-- 	-- default mappings
+-- 	api.config.mappings.default_on_attach(bufnr)
+--
+-- 	-- custom mappings
+-- 	vim.keymap.set("n", "<esc>", nvim_tree_api.tree.close, opts("Close"))
+-- end
 
 require("nvim-tree").setup({
-	on_attach = custom_on_attach,
+	-- on_attach = custom_on_attach,
 	sort = {
 		sorter = "case_sensitive",
 	},
 	view = {
 		float = {
-			enable = true,
+			enable = false,
 			open_win_config = {
 				border = "rounded",
 				relative = "editor",
