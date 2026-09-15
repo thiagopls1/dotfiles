@@ -45,7 +45,7 @@ ZSH_THEME=""
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-plugins=(git git-auto-fetch)
+plugins=(git git-auto-fetch ollama)
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
