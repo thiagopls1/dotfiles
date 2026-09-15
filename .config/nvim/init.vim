@@ -62,6 +62,7 @@ Plug 'rcarriga/nvim-notify'
 Plug 'Shatur/neovim-session-manager'
 Plug 'jglasovic/venv-lsp.nvim'
 Plug 'andythigpen/nvim-coverage'
+Plug 'github/copilot.vim'
 
 call plug#end()
 
