@@ -85,7 +85,11 @@ require("nvim-autopairs").setup({
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
 vim.opt.termguicolors = true
+vim.opt.foldmethod = "syntax"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex", "latex", "markdown" },
@@ -94,13 +98,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spelllang = { "pt_br", "en" }
   end,
 })
-
-vim.api.nvim_create_user_command("Redir", function(ctx)
-	local lines = vim.split(vim.api.nvim_exec(ctx.args, true), "\n", {plain = true})
-	vim.cmd('new')
-	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-	vim.opt_local.modified = false
-end, { nargs = "+", complete = "command" })
 
 -- Add nvim config files to package
 local home_dir = os.getenv("HOME")
