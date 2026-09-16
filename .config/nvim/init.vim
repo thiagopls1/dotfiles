@@ -87,9 +87,9 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.opt.termguicolors = true
-vim.opt.foldmethod = "syntax"
+
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
+vim.opt.foldenable = false
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex", "latex", "markdown" },
