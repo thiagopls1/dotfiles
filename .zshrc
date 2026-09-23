@@ -22,6 +22,8 @@ else
     compinit -C
 fi
 
+bindkey -e
+
 # Paste fix
 
 pasteinit() {
@@ -38,25 +40,25 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 # ZSH Plugins & Theme
 #ZSH=/usr/share/oh-my-zsh/
-ZSH=~"/.oh-my-zsh"
+# ZSH=~"/.oh-my-zsh"
 
 # Theme Loading
 ZSH_THEME=""
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-plugins=(git git-auto-fetch ollama)
-
-ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
-if [[ ! -d $ZSH_CACHE_DIR ]]; then
-    mkdir $ZSH_CACHE_DIR
-fi
-
-if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
-fi
-
-source $ZSH/oh-my-zsh.sh
+# plugins=(git git-auto-fetch ollama)
+#
+# ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+# if [[ ! -d $ZSH_CACHE_DIR ]]; then
+#     mkdir $ZSH_CACHE_DIR
+# fi
+#
+# if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+#     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+# fi
+#
+# source $ZSH/oh-my-zsh.sh
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -83,6 +85,9 @@ zinit wait lucid for \
     zsh-users/zsh-completions
 
 zinit light MichaelAquilina/zsh-autoswitch-virtualenv
+
+zinit snippet OMZP::git
+zinit snippet OMZP::git-auto-fetch
 
 ### End of Zinit's installer chunk
 
