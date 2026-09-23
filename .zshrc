@@ -1,3 +1,13 @@
+# History
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+
 # Aliases
 alias l='ls -lah'
 alias lsa='ls -lah'
@@ -10,19 +20,17 @@ alias dvrc=$HOME/scripts/convert_davinci.sh
 export EDITOR=nvim
 
 # Performance Tweaks
-
-DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
 DISABLE_COMPFIX="true"
 
-autoload -Uz compinit
+autoload -U compinit; compinit
+
 if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
     compinit
 else
     compinit -C
 fi
 
-bindkey -e
 
 # Paste fix
 
@@ -39,26 +47,26 @@ zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
 # ZSH Plugins & Theme
-#ZSH=/usr/share/oh-my-zsh/
-# ZSH=~"/.oh-my-zsh"
+ZSH=/usr/share/oh-my-zsh/
+ZSH=~"/.oh-my-zsh"
 
 # Theme Loading
 ZSH_THEME=""
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-# plugins=(git git-auto-fetch ollama)
-#
-# ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
-# if [[ ! -d $ZSH_CACHE_DIR ]]; then
-#     mkdir $ZSH_CACHE_DIR
-# fi
-#
-# if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-#     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
-# fi
-#
-# source $ZSH/oh-my-zsh.sh
+plugins=()
+
+ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+if [[ ! -d $ZSH_CACHE_DIR ]]; then
+    mkdir $ZSH_CACHE_DIR
+fi
+
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+fi
+
+source $ZSH/oh-my-zsh.sh
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
