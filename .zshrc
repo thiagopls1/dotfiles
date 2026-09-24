@@ -23,13 +23,8 @@ export EDITOR=nvim
 DISABLE_MAGIC_FUNCTIONS="true"
 DISABLE_COMPFIX="true"
 
-autoload -U compinit; compinit
-
-if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
-    compinit
-else
-    compinit -C
-fi
+autoload -U compinit 
+compinit
 
 
 # Paste fix
@@ -47,15 +42,11 @@ zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
 # ZSH Plugins & Theme
-ZSH=/usr/share/oh-my-zsh/
 ZSH=~"/.oh-my-zsh"
 
 # Theme Loading
-ZSH_THEME=""
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
-
-plugins=()
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
@@ -90,9 +81,8 @@ zinit wait lucid for \
     zdharma-continuum/zinit-annex-rust \
     zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
-    zsh-users/zsh-completions
-
-zinit light MichaelAquilina/zsh-autoswitch-virtualenv
+    zsh-users/zsh-completions \
+    MichaelAquilina/zsh-autoswitch-virtualenv
 
 zinit snippet OMZP::git
 zinit snippet OMZP::git-auto-fetch
