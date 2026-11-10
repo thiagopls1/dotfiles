@@ -1,15 +1,32 @@
 #!/bin/bash
 
-REMOTE_NAME=gdrive
+set -euo pipefail
+
+REMOTE_NAME="gdrive"
 FOLDERS=(Pictures Videos Documents Public)
 
 for FOLDER in "${FOLDERS[@]}"; do
-	echo "Synchronizing $FOLDER..."
-	
-	if [[ -f "$HOME/$FOLDER/.rcloneignore" ]]; then
-		rclone sync $HOME/$FOLDER $REMOTE_NAME:$FOLDER -P --exclude-from $HOME/$FOLDER/.rcloneignore --verbose
-	else
-		rclone sync $HOME/$FOLDER $REMOTE_NAME:$FOLDER -P --verbose
-	fi
+    LOCAL_PATH="$HOME/$FOLDER"
+    REMOTE_PATH="$REMOTE_NAME:$FOLDER"
+    IGNORE_FILE="$LOCAL_PATH/.rcloneignore"
 
+    echo "Synchronizing $FOLDER..."
+
+    RCLONE_ARGS=(
+        bisync
+        "$LOCAL_PATH"
+        "$REMOTE_PATH"
+        -P
+        --verbose
+        --resilient
+        --recover
+        --check-access
+    )
+
+    if [[ -f "$IGNORE_FILE" ]]; then
+        RCLONE_ARGS+=(--exclude-from "$IGNORE_FILE")
+    fi
+
+    rclone "${RCLONE_ARGS[@]}"
 done
+
