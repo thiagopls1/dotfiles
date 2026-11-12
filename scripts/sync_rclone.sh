@@ -20,7 +20,8 @@ for FOLDER in "${FOLDERS[@]}"; do
         --verbose
         --resilient
         --recover
-        --check-access
+        --conflict-resolve
+        none
     )
 
     if [[ -f "$IGNORE_FILE" ]]; then
