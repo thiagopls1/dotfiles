@@ -48,7 +48,7 @@ Plug 'akinsho/git-conflict.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'brenoprata10/nvim-highlight-colors'
 Plug 'onsails/lspkind.nvim'
-Plug 'andweeb/presence.nvim'
+" Plug 'andweeb/presence.nvim'
 Plug 'nvimdev/dashboard-nvim'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/lsp-format.nvim'
@@ -74,10 +74,10 @@ require("catppuccin").setup({
 	transparent_background = true,
 })
 
-require("presence").setup({
-	auto_update = true,
-	debounce_timeout = 1,
-})
+-- require("presence").setup({
+-- 	auto_update = true,
+-- 	debounce_timeout = 1,
+-- })
 
 require("nvim-autopairs").setup({
 	check_ts = false,
